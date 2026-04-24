@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { 
-  Search, ChevronDown, Heart, Star, ShoppingCart,
+  Search, ChevronDown, Heart, Star,
   SlidersHorizontal, X, Check, Grid3X3, List, ChevronRight
 } from 'lucide-react';
 
@@ -36,7 +36,7 @@ const sortOptions = [
   { value: 'newest', label: 'Nouveautés' },
 ];
 
-export default function ProductsPage() {
+function ProductsContent() {
   const searchParams = useSearchParams();
   const initialSearch = searchParams.get('search') || '';
   const initialCategory = searchParams.get('category') || 'Tous';
@@ -48,12 +48,11 @@ export default function ProductsPage() {
   const [sortBy, setSortBy] = useState('relevance');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
-  const [cart, setCart] = useState<number[]>([]);
   const [wishlist, setWishlist] = useState<number[]>([]);
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
-    let result = products.filter(product => {
+    const result = products.filter(product => {
       const matchesSearch = searchQuery === '' || 
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -84,12 +83,6 @@ export default function ProductsPage() {
 
     return result;
   }, [searchQuery, selectedCategory, selectedBrand, priceRange, sortBy]);
-
-  const addToCart = (productId: number) => {
-    if (!cart.includes(productId)) {
-      setCart([...cart, productId]);
-    }
-  };
 
   const toggleWishlist = (productId: number) => {
     if (wishlist.includes(productId)) {
@@ -181,13 +174,6 @@ export default function ProductsPage() {
               </button>
             </div>
 
-            {/* Cart Summary */}
-            {cart.length > 0 && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg">
-                <ShoppingCart className="w-4 h-4" />
-                <span className="font-semibold">{cart.length}</span>
-              </div>
-            )}
           </div>
         </div>
 
@@ -379,12 +365,6 @@ export default function ProductsPage() {
                           Voir le produit
                           <ChevronRight className="w-5 h-5" />
                         </Link>
-                        {cart.includes(product.id) && (
-                          <div className="w-full py-2 bg-green-100 text-green-700 rounded-lg text-center text-sm font-medium">
-                            <Check className="w-4 h-4 inline mr-1" />
-                            Dans le panier
-                          </div>
-                        )}
                       </div>
                     </div>
                   </div>
@@ -397,5 +377,25 @@ export default function ProductsPage() {
 
       <Footer />
     </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen flex flex-col bg-slate-50">
+      <Navigation />
+      <div className="flex-1 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+      <Footer />
+    </div>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ProductsContent />
+    </Suspense>
   );
 }
