@@ -66,11 +66,14 @@ export default function AboutPage() {
             <span className="text-blue-200 text-sm font-medium">Depuis 2009</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
-            À propos d&apos;<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">Injection Diesel</span>
+            Les experts du{' '}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+              turbo reconditionné
+            </span>
           </h1>
           <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-            Votre spécialiste de confiance pour les turbos, injecteurs et pièces diesel. 
-            Qualité professionnelle à prix compétitif depuis plus de 15 ans.
+            Solution fiable et rapide pour votre moteur diesel avec nos injecteurs Bosch, Delphi, Siemens et Denso. 
+            Qualité garantie et performance optimale.
           </p>
         </div>
       </section>

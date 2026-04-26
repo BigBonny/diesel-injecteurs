@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ChatWidget from '@/components/ChatWidget';
+import ProductList from '@/components/ProductList';
 import { 
   Search, Car, Wrench, Zap, Package, Truck, Shield, Clock, 
   ArrowRight, CheckCircle, Star, Phone, Mail, ChevronRight, 
@@ -91,10 +92,7 @@ function useScrollReveal<T extends HTMLElement>() {
 }
 
 export default function Home() {
-  const [vehicleType, setVehicleType] = useState('');
-  const [brand, setBrand] = useState('');
-  const [model, setModel] = useState('');
-  const [engine, setEngine] = useState('');
+  const [licensePlate, setLicensePlate] = useState('');
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -133,8 +131,6 @@ export default function Home() {
     { name: "Marie Lefebvre", text: "Excellent rapport qualité-prix. Je recommande vivement Injection Diesel !", rating: 5, date: "Il y a 1 semaine" },
     { name: "Pierre Martin", text: "Commande facile, produit de qualité. Mon garage n'achète plus qu'ici.", rating: 5, date: "Il y a 2 semaines" },
   ];
-
-  const brands = ["Renault", "Peugeot", "Citroën", "VW", "BMW", "Mercedes", "Audi", "Ford", "Toyota", "Opel"];
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
@@ -241,22 +237,40 @@ export default function Home() {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+          {/* Background Images - Split Left and Right */}
+          <div className="absolute left-0 -top-10 w-[600px] h-[600px] opacity-40 pointer-events-none z-0 hidden lg:block">
+            <img 
+              src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&h=800&fit=crop" 
+              alt="Turbo Diesel" 
+              className="w-full h-full object-cover rounded-3xl"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-950/50 to-slate-950 rounded-3xl" />
+          </div>
+          <div className="absolute -right-70 top-32 w-[500px] h-[500px] opacity-35 pointer-events-none z-0 hidden lg:block">
+            <img 
+              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=800&fit=crop" 
+              alt="Moteur Diesel" 
+              className="w-full h-full object-cover rounded-3xl"
+            />
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-slate-950/50 to-slate-950 rounded-3xl" />
+          </div>
+
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 z-10">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 backdrop-blur-sm rounded-full border border-blue-500/30">
                 <Sparkles className="w-4 h-4 text-blue-400" />
-                <span className="text-blue-200 text-sm font-medium">+50 000 pièces en stock</span>
+                <span className="text-blue-200 text-sm font-medium">Les experts du turbo reconditionné</span>
               </div>
 
               <div>
                 <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
-                  Pièces Auto{' '}
+                  Turbos et{' '}
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-                    Premium
+                    Injecteurs
                   </span>
                 </h1>
                 <p className="text-xl text-slate-400 mt-6 max-w-lg">
-                  Spécialiste turbos et injecteurs diesel depuis 2009. Qualité OEM garantie, prix compétitifs.
+                  Solution fiable et rapide pour votre moteur diesel avec nos injecteurs Bosch, Delphi, Siemens et Denso. Qualité garantie et performance optimale.
                 </p>
               </div>
 
@@ -286,8 +300,10 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Vehicle Finder Card - Glassmorphism */}
-            <div className="bg-slate-900/50 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 shadow-2xl shadow-blue-500/10">
+            {/* Right Side - Vehicle Finder */}
+            <div className="relative">
+              {/* Vehicle Finder Card - Glassmorphism */}
+              <div className="relative bg-slate-900/50 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 shadow-2xl shadow-blue-500/10">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
                   <Car className="w-6 h-6 text-white" />
@@ -299,26 +315,33 @@ export default function Home() {
               </div>
 
               <div className="space-y-4">
-                <select value={vehicleType} onChange={(e) => setVehicleType(e.target.value)} className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white focus:bg-slate-800 focus:border-blue-500 transition">
-                  <option value="" className="bg-slate-900">Type de véhicule</option>
-                  <option value="voiture" className="bg-slate-900">Voiture</option>
-                  <option value="utilitaire" className="bg-slate-900">Utilitaire</option>
-                  <option value="camion" className="bg-slate-900">Camion</option>
-                </select>
+                <div className="text-center mb-4">
+                  <p className="text-white font-medium mb-2">SÉLECTIONNER VOTRE VÉHICULE :</p>
+                  <p className="text-slate-400 text-sm">Saisissez votre plaque d&apos;immatriculation</p>
+                </div>
 
-                <select value={brand} onChange={(e) => setBrand(e.target.value)} className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white focus:bg-slate-800 focus:border-blue-500 transition">
-                  <option value="" className="bg-slate-900">Marque</option>
-                  {brands.map(b => <option key={b} value={b.toLowerCase()} className="bg-slate-900">{b}</option>)}
-                </select>
+                <input 
+                  type="text" 
+                  value={licensePlate} 
+                  onChange={(e) => setLicensePlate(e.target.value.toUpperCase())}
+                  placeholder="AB-123-CD"
+                  maxLength={9}
+                  className="w-full px-4 py-4 bg-slate-800/50 border border-slate-700 rounded-xl text-white text-center text-2xl font-bold tracking-wider placeholder-slate-500 focus:bg-slate-800 focus:border-blue-500 transition uppercase"
+                />
 
-                <input type="text" value={model} onChange={(e) => setModel(e.target.value)} placeholder="Modèle (ex: Clio, 308...)" className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:bg-slate-800 focus:border-blue-500 transition" />
-                <input type="text" value={engine} onChange={(e) => setEngine(e.target.value)} placeholder="Moteur (ex: 1.5 dCi, HDi...)" className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:bg-slate-800 focus:border-blue-500 transition" />
+                <div className="text-center">
+                  <span className="text-slate-400 text-sm">OU</span>
+                </div>
 
-                <Link href="/produits" className="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition flex items-center justify-center gap-2">
+                <Link 
+                  href="/produits" 
+                  className="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition flex items-center justify-center gap-2"
+                >
                   <Search className="w-5 h-5" />
-                  Rechercher
+                  Rechercher par marque/modèle
                 </Link>
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -388,24 +411,126 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Products */}
-      <section className="py-20 bg-slate-100">
+      {/* Videos Section */}
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">Best-sellers</span>
-              <h2 className="text-4xl font-bold text-gray-900 mt-2">Produits populaires</h2>
-            </div>
-            <Link href="/produits" className="hidden md:inline-flex items-center gap-2 px-6 py-3 bg-white text-gray-900 rounded-full font-semibold hover:bg-slate-50 transition shadow-sm">
-              Voir tous
-              <ChevronRight className="w-5 h-5" />
-            </Link>
+          <div className="text-center mb-12">
+            <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">Nos vidéos</span>
+            <h2 className="text-4xl font-bold text-gray-900 mt-2">Découvrez nos produits en action</h2>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              Vidéos explicatives et démonstrations de nos turbos et injecteurs
+            </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map((product, index) => (
-              <ProductCard key={index} product={product} index={index} />
-            ))}
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Video 1 */}
+            <div className="relative group">
+              <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-900 shadow-xl">
+                <video 
+                  src="/assets/vid1.mp4" 
+                  controls
+                  playsInline
+                  className="w-full h-full object-cover"
+                  poster="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&fit=crop"
+                />
+              </div>
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold text-gray-900">Installation Turbo 1.9</h3>
+                <p className="text-gray-600 text-sm">Guide complet d&apos;installation pas à pas</p>
+              </div>
+            </div>
+            
+            {/* Video 2 - Placeholder until added */}
+            <div className="relative group">
+              <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-900 shadow-xl">
+                <video 
+                  src="/assets/vid2.mp4" 
+                  controls
+                  playsInline
+                  className="w-full h-full object-cover"
+                  poster="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&fit=crop"
+                />
+              </div>
+              <div className="mt-4">
+                <h3 className="text-lg font-semibold text-gray-900">Test Injecteur Bosch</h3>
+                <p className="text-gray-600 text-sm">Test de performance sur banc d&apos;essai</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Injecteur Échange Standard Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">Injecteur échange standard & turbo pas cher</span>
+            <h2 className="text-4xl font-bold text-gray-900 mt-2">Solution fiable et rapide pour votre moteur diesel</h2>
+            <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+              Nos injecteurs Bosch, Delphi, Siemens et Denso. Qualité garantie et performance optimale.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Avantages */}
+            <div className="bg-slate-50 rounded-2xl p-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Avantages</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Économique par rapport à une pièce neuve</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Testé et conforme aux normes constructeur</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Prêt à l&apos;emploi pour une expédition rapide</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Fonction */}
+            <div className="bg-slate-50 rounded-2xl p-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Fonction</h3>
+              <ul className="space-y-4">
+                <li className="flex items-start gap-3">
+                  <Zap className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Injection précise du carburant</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Zap className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Consommation réduite</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <Zap className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <span className="text-gray-700">Puissance moteur maintenue</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* Marques disponibles */}
+            <div className="bg-slate-50 rounded-2xl p-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Marques disponibles</h3>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                  <span className="font-semibold text-gray-900">Bosch</span>
+                </div>
+                <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                  <span className="font-semibold text-gray-900">Delphi</span>
+                </div>
+                <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                  <span className="font-semibold text-gray-900">Siemens</span>
+                </div>
+                <div className="bg-white rounded-xl p-4 text-center shadow-sm">
+                  <span className="font-semibold text-gray-900">Denso</span>
+                </div>
+              </div>
+              <Link href="/produits?category=injecteurs" className="mt-6 block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition">
+                Commander un injecteur
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -450,21 +575,6 @@ export default function Home() {
                 {/* Animated border effect */}
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 group-hover:w-1/2 transition-all duration-500" />
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">Témoignages</span>
-            <h2 className="text-4xl font-bold text-gray-900 mt-2">Avis clients</h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((t, idx) => (
-              <TestimonialCard key={idx} testimonial={t} index={idx} />
             ))}
           </div>
         </div>
@@ -519,7 +629,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white mb-1">Appelez-nous</h3>
-                    <p className="text-2xl font-bold text-blue-400 mb-1">+33 1 23 45 67 89</p>
+                    <p className="text-2xl font-bold text-blue-400 mb-1">+33 6 12 42 98 80</p>
                     <p className="text-sm text-gray-500">Lun-Ven • 8h-19h</p>
                   </div>
                 </div>
@@ -534,7 +644,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white mb-1">Email</h3>
-                    <p className="text-xl font-bold text-cyan-400 mb-1">contact@injection-diesel.fr</p>
+                    <p className="text-xl font-bold text-cyan-400 mb-1">diesel.injecteurs@gmail.com</p>
                     <p className="text-sm text-gray-500">Réponse sous 2h</p>
                   </div>
                 </div>

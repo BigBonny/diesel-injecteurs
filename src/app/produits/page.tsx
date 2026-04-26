@@ -1,95 +1,297 @@
 'use client';
 
-import { useState, useMemo, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState, useEffect, useMemo, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { 
-  Search, ChevronDown, Heart, Star,
-  SlidersHorizontal, X, Check, Grid3X3, List, ChevronRight
+  Search, ChevronDown, Heart, 
+  SlidersHorizontal, X, Check, Grid3X3, List, Package
 } from 'lucide-react';
 
-// Mock product data - will be replaced with Prestashop API
-const products = [
-  { id: 1, name: 'Turbo Garrett GT1749V', category: 'Turbos', price: 349, originalPrice: 450, rating: 4.8, reviews: 124, inStock: true, brand: 'Garrett', model: 'GT1749V', image: '🔧', tags: ['Renault', 'Nissan'] },
-  { id: 2, name: 'Injecteur Bosch 0445110', category: 'Injecteurs', price: 89, originalPrice: 120, rating: 4.9, reviews: 89, inStock: true, brand: 'Bosch', model: '0445110', image: '⚙️', tags: ['Mercedes', 'BMW'] },
-  { id: 3, name: 'Pompe Denso HP3', category: 'Pompes', price: 289, originalPrice: 380, rating: 4.7, reviews: 56, inStock: true, brand: 'Denso', model: 'HP3', image: '🔩', tags: ['Toyota', 'Ford'] },
-  { id: 4, name: 'Kit Réparation Turbo', category: 'Kits', price: 45, originalPrice: 65, rating: 4.6, reviews: 203, inStock: true, brand: 'Generic', model: 'Universal', image: '🛠️', tags: ['Universal'] },
-  { id: 5, name: 'Turbo KKK K03', category: 'Turbos', price: 299, originalPrice: 380, rating: 4.7, reviews: 87, inStock: true, brand: 'KKK', model: 'K03', image: '🔧', tags: ['VW', 'Audi'] },
-  { id: 6, name: 'Injecteur Delphi EJBR', category: 'Injecteurs', price: 125, originalPrice: 165, rating: 4.8, reviews: 45, inStock: true, brand: 'Delphi', model: 'EJBR', image: '⚙️', tags: ['Renault', 'Dacia'] },
-  { id: 7, name: 'Pompe Bosch CP1', category: 'Pompes', price: 199, originalPrice: 250, rating: 4.5, reviews: 32, inStock: false, brand: 'Bosch', model: 'CP1', image: '🔩', tags: ['Opel', 'Fiat'] },
-  { id: 8, name: 'Turbo Mitsubishi TD04', category: 'Turbos', price: 389, originalPrice: 490, rating: 4.9, reviews: 76, inStock: true, brand: 'Mitsubishi', model: 'TD04', image: '🔧', tags: ['Volvo', 'Saab'] },
-  { id: 9, name: 'Injecteur Siemens 5WS4', category: 'Injecteurs', price: 79, originalPrice: 110, rating: 4.4, reviews: 28, inStock: true, brand: 'Siemens', model: '5WS4', image: '⚙️', tags: ['Ford', 'Peugeot'] },
-  { id: 10, name: 'Pompe VP44', category: 'Pompes', price: 450, originalPrice: 590, rating: 4.7, reviews: 15, inStock: true, brand: 'Bosch', model: 'VP44', image: '🔩', tags: ['BMW', 'Land Rover'] },
-  { id: 11, name: 'Kit Joints Turbo', category: 'Kits', price: 29, originalPrice: 45, rating: 4.3, reviews: 156, inStock: true, brand: 'Generic', model: 'Universal', image: '🛠️', tags: ['Universal'] },
-  { id: 12, name: 'Turbo Holset HE221W', category: 'Turbos', price: 529, originalPrice: 680, rating: 4.8, reviews: 42, inStock: true, brand: 'Holset', model: 'HE221W', image: '🔧', tags: ['Cummins', 'Iveco'] },
-];
-
-const categories = ['Tous', 'Turbos', 'Injecteurs', 'Pompes', 'Kits'];
-const brands = ['Toutes', 'Garrett', 'Bosch', 'Denso', 'KKK', 'Delphi', 'Mitsubishi', 'Siemens', 'Holset'];
-const sortOptions = [
-  { value: 'relevance', label: 'Pertinence' },
-  { value: 'price-asc', label: 'Prix croissant' },
-  { value: 'price-desc', label: 'Prix décroissant' },
-  { value: 'rating', label: 'Meilleures notes' },
-  { value: 'newest', label: 'Nouveautés' },
-];
+interface PrestaShopProduct {
+  id: string;
+  name: string;
+  description: string;
+  price: string;
+  reference: string;
+  link_rewrite: string;
+  id_default_image: string;
+  id_category_default: string;
+  associations?: {
+    images: Array<{ id: string }>;
+  };
+  images?: Array<{ id: string }>;
+}
 
 function ProductsContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const initialSearch = searchParams.get('search') || '';
-  const initialCategory = searchParams.get('category') || 'Tous';
 
   const [searchQuery, setSearchQuery] = useState(initialSearch);
-  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
-  const [selectedBrand, setSelectedBrand] = useState('Toutes');
   const [priceRange, setPriceRange] = useState({ min: 0, max: 1000 });
   const [sortBy, setSortBy] = useState('relevance');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showFilters, setShowFilters] = useState(false);
   const [wishlist, setWishlist] = useState<number[]>([]);
+  const [allProducts, setAllProducts] = useState<PrestaShopProduct[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Filter and sort products
+  // Get category and brand directly from URL
+  const selectedCategory = searchParams.get('category') || 'Tous';
+  const selectedBrand = searchParams.get('brand') || 'Toutes';
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        const categoryParam = selectedCategory && selectedCategory !== 'Tous' ? `&category=${selectedCategory}` : '';
+        const brandParam = selectedBrand && selectedBrand !== 'Toutes' ? `&brand=${selectedBrand}` : '';
+        const searchParam = searchQuery ? `&search=${encodeURIComponent(searchQuery)}` : '';
+        const url = `/api/products?limit=500${categoryParam}${brandParam}${searchParam}`;
+        console.log('Fetching products:', url);
+        const startTime = Date.now();
+        
+        const response = await fetch(url);
+        const duration = Date.now() - startTime;
+        console.log(`API response time: ${duration}ms`);
+        
+        if (response.ok) {
+          const data = await response.json();
+          const products = data.products || [];
+          console.log('Products received:', products.length);
+          
+          setAllProducts(products);
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    
+    fetchProducts();
+  }, [selectedCategory, selectedBrand, searchQuery]);
+
+  // Extract brands and models from product names for hierarchical filtering
+  const brandModelStructure = useMemo(() => {
+    const structure: Record<string, Record<string, number>> = {};
+    
+    allProducts.forEach(product => {
+      const name = product.name.toLowerCase();
+      
+      // Extract brand from product name
+      let brand = 'Autres';
+      if (name.includes('renault')) brand = 'Renault';
+      else if (name.includes('audi')) brand = 'Audi';
+      else if (name.includes('bmw')) brand = 'BMW';
+      else if (name.includes('peugeot')) brand = 'Peugeot';
+      else if (name.includes('citroën') || name.includes('citroen')) brand = 'Citroën';
+      else if (name.includes('volkswagen') || name.includes('vw')) brand = 'Volkswagen';
+      else if (name.includes('mercedes')) brand = 'Mercedes';
+      else if (name.includes('ford')) brand = 'Ford';
+      else if (name.includes('opel')) brand = 'Opel';
+      else if (name.includes('toyota')) brand = 'Toyota';
+      else if (name.includes('hyundai')) brand = 'Hyundai';
+      else if (name.includes('kia')) brand = 'Kia';
+      else if (name.includes('mazda')) brand = 'Mazda';
+      else if (name.includes('nissan')) brand = 'Nissan';
+      else if (name.includes('honda')) brand = 'Honda';
+      else if (name.includes('volvo')) brand = 'Volvo';
+      else if (name.includes('alfa romeo') || name.includes('alfa')) brand = 'Alfa Romeo';
+      else if (name.includes('fiat')) brand = 'Fiat';
+      else if (name.includes('seat')) brand = 'Seat';
+      else if (name.includes('skoda')) brand = 'Skoda';
+      else if (name.includes('suzuki')) brand = 'Suzuki';
+      else if (name.includes('mitsubishi')) brand = 'Mitsubishi';
+      else if (name.includes('chevrolet')) brand = 'Chevrolet';
+      else if (name.includes('dodge')) brand = 'Dodge';
+      else if (name.includes('jeep')) brand = 'Jeep';
+      else if (name.includes('land rover')) brand = 'Land Rover';
+      else if (name.includes('mini')) brand = 'Mini';
+      else if (name.includes('smart')) brand = 'Smart';
+      else if (name.includes('saab')) brand = 'Saab';
+      else if (name.includes('jaguar')) brand = 'Jaguar';
+      else if (name.includes('iveco')) brand = 'Iveco';
+      else if (name.includes('subaru')) brand = 'Subaru';
+      else if (name.includes('porsche')) brand = 'Porsche';
+      else if (name.includes('rover')) brand = 'Rover';
+      else if (name.includes('lotus')) brand = 'Lotus';
+      else if (name.includes('ds')) brand = 'DS';
+      else if (name.includes('pontiac')) brand = 'Pontiac';
+      else if (name.includes('infiniti')) brand = 'Infiniti';
+      else if (name.includes('hitachi')) brand = 'Hitachi';
+      else if (name.includes('isuzu')) brand = 'Isuzu';
+      else if (name.includes('ferrari')) brand = 'Ferrari';
+      else if (name.includes('dacia')) brand = 'Dacia';
+      else if (name.includes('lancia')) brand = 'Lancia';
+      else if (name.includes('chrysler')) brand = 'Chrysler';
+      else if (name.includes('ssang-yong')) brand = 'Ssang-Yong';
+      else if (name.includes('daihatsu')) brand = 'Daihatsu';
+      else if (name.includes('cadillac')) brand = 'Cadillac';
+      else if (name.includes('mercury')) brand = 'Mercury';
+      else if (name.includes('lexus')) brand = 'Lexus';
+      
+      // Extract model from product name (simplified)
+      let model = 'Autres';
+      const modelPatterns = [
+        'clio', 'megane', 'laguna', 'scenic', 'espace', 'trafic', 'kangoo', 'master', 'vel satis', 'twingo', 'mascott', 'modus', 'koleos', 'grand modus', 'avantime', 'safrane', 'captur', 'sofim', 'r 19', 'messenger', 'r 11', 'r 5', 'r 25', 'r 21',
+        'a3', 'a4', 'a5', 'a6', 'a8', 'a2', 'a1', 'tt',
+        'série 1', 'série 3', 'série 5', 'série 7', 'x3', 'x5', 'x1', 'x6', 'm3', 'm5', 'm6', 'z4', 'm4', 'm550d', 'm140 i', 'm240 i', 'x4', 'm135i', 'm2', 'm235i',
+        '307', '407', '308', '207', '807', '607', '206', '3008', '5008', '406', 'partner', '4008', 'boxer', 'expert', '1007', '208', '107', 'j5', '806', '4007', 'rcz', '508', '306', 'bipper', '405', '605', '312', '408', '313', '310', '311', '205', '2008', '309', 'rifter', 'traveller',
+        'c4', 'picasso', 'berlingo', 'c8', 'c5', 'aircross', 'xsara', 'c3', 'jumpy', 'c1', 'crosser', 'jumper', 'c6', 'c2', 'ds3', 'nemo', 'c25', 'ds 3', 'xantia', 'evasion', 'ds 5', 'ds 7', 'zx', 'xm', 'ds 4', 'bx', 'spacetourer',
+        'rav4', 'yaris', 'corolla', 'auris', 'previa', 'avensis', 'landcruiser', 'hilux', 'picnic', 'verso', 'hiace', 'supra', 'camry', '4 runner', 'celica', 'caldina', 'ritz', 'iq', 'proace',
+        'golf', 'touran', 'tiguan', 'passat', 'transporter', 'touareg', 'scirocco', 'caddy', 'bora', 'eos', 'sharan', 'beetle', 'polo', 'crafter', 'amarok', 'jetta', 'lt', 'lupo', 'fox', 'parati', 'cc', 'teramont', 'arteon', 'phaeton', 'vento', 'l80', 'marine',
+        'tucson', 'ix35', 'santa fe', 'h-1', 'sonata', 'i30', 'trajet', 'getz', 'starex', 'matrix', 'terracan', 'coupe s', 'mighty', 'van', 'grandeur', 'xg', 'elantra', 'accent', 'gallopper', 'veloster', 'ix55', 'veracruz', 'i20',
+        'astra', 'zafira', 'meriva', 'vectra', 'vivaro', 'corsa', 'insignia', 'antara', 'signum', 'frontera', 'combo', 'movano', 'omega', 'grandland x', 'agila', 'speedster', 'sintra', 'adam', 'cascada', 'mokka', 'crossland x', 'kadett', 'monterey', 'campo', 'calibra', 'rekord', 'senator', 'tigra',
+        'qashqai', 'x-trail', 'juke', 'navara', 'atleon', 'pathfinder', 'terrano', 'patrol', 'almera', 'primera', 'cabstar', 'trade', 'interstar', 'micra', '200sx', 'sunny', '300zx', 'murano', 'evalia', 'nv200', 'primastar', 'nv400', 'nv300', 'gt-r',
+        's40', 'c30', 'v70', 'v50', 'xc90', 'c70', 'xc70', 's60', 's80', 'v60', 'v40', '240', '760', '765', '940', '960', '740', '780', '480', '850', 's70', 'cross country',
+        'c-max', 'focus', 'transit', 'fiesta', 'kuga', 's-max', 'galaxy', 'mondeo', 'fusion', 'maverick', 'ranger', 'tourneo', 'f450', 'f550', 'escort', 'orion', 'sierra', 'scorpio', 'probe', 'ka', 'mustang',
+        '6', '3', '5', '2', 'premacy', 'cx-5', 'cx-7', '626', '323', 'mpv', 'b2500',
+        'altea', 'leon', 'ibiza', 'alhambra', 'toledo', 'cordoba', 'exeo', 'ateca', 'arosa',
+        'vitara', 'sx4', 'ignis', 'swift', 'baleno', 'samurai', 'splash', 'wagon r+', 'jimny', 'liana',
+        'classe m', 'vito', 'classe c', 'classe e', 'sprinter', 'viano', 'classe s', 'classe r', 'classe b', 'classe a', 'glk', 'gt', 'cls', 'vaneo', 'classe 5', 'classe g', 'classe gl', 'classe cl', 'amg gt', 'classe sl', 'gle',
+        'range rover', 'freelander', 'defender', 'discovery', 'evoque', 'velar',
+        '300c', 'voyager', 'pt cruiser', 'sebring', 'le baron',
+        'logan', 'duster', 'sandero', 'lodgy',
+        'civic', 'accord', 'cr-5',
+        'grande punto', 'stilo', 'doblo', 'bravo', 'scudo', 'ulysse', 'sedici', 'panda', 'linea', '500', 'multipla', 'punto', 'ducato', 'fiorino', 'croma', 'idea', 'coupe', 'marea', 'brava', 'tempra', 'uno', 'palio', 'regata', 'ritmo', 'tipo', 'argenta', 'cinquecento', 'viaggio', 'freemont', 'talento',
+        'asx', 'carisma', 'l200', 'space star', 'pajero', 'grandis', 'lancer', 'galant', 'canter', 'colt', 'l 300', 'space gear', 'space wagon', '3000 gt', 'eclipse', 'starion', 'outlander',
+        'captiva', 'cruze', 'pick-up', 'lacetti', 'nubira', 'orlando', 'aveo', 'express', 'silverado', 'trax',
+        'journey', 'caliber', 'avenger', 'ram', 'neon', 'sprinter', 'dart',
+        'sorento', 'sportage', 'cerato', 'carens', 'ceed', 'picanto', 'rio', 'magentis', 'retona', 'soul', 'carnival', 'pregio', 'optima', 'stinger',
+        '9-3', '9-5', '9000', '900',
+        'grand cherokee', 'cherokee', 'patriot', 'renegade', 'compass', 'wrangler', 'liberty',
+        'superb', 'octavia', 'yeti', 'fabia', 'roomster', 'rapid', 'karoq', 'kodiaq',
+        'delta', 'phedra', 'musa', 'kappa', 'zeta', 'thema', 'dedra', 'ypsilon', 'prisma', 'lybra', 'thesis', 'y10',
+        'x type', 's type', 'xf', 'f-pace', 'xe', 'xj',
+        'daily', 'eurotech',
+        'forester', 'impreza', 'outback', 'legacy', 'sedan',
+        'forfour', 'fortwo',
+        'kyron', 'rexton', 'musso', 'rodius', 'actyon', 'korando',
+        'charade', 'rocky', 'mira', 'move', 'copen',
+        'bls', 'srx',
+        'gs', 'nx', 'rc', 'is',
+        '718', 'cayenne', 'panamera', '930', '997', '991', '996', '993', '924', '956', '944', '959', '935', '964',
+        '200', '220', '420', '600', '620', '75', 'mg r75', 'mg zt',
+        'esprit',
+        'solstice', '530 d', 'b5',
+        'q50', 'q60',
+        'ex200', 'ex120', 'ex150', 'ex300', 'sh220', 'zx330', 'zx350', 'zx450', 'lx160', 'sh300', 'zx600', 'zx800', 'zx850', 'lx210e', 'zx200', 'sh330', 'sh350', 'zx140w', 'zx160lc', 'zx120', 'zx160', 'ex220', 'ex270',
+        'trooper', 'bighorn', 'd-max', 'kb 300', 'rodeo', 'nkr', 'npr',
+        'f40'
+      ];
+      
+      for (const pattern of modelPatterns) {
+        if (name.includes(pattern)) {
+          model = pattern.charAt(0).toUpperCase() + pattern.slice(1);
+          break;
+        }
+      }
+      
+      if (!structure[brand]) {
+        structure[brand] = {};
+      }
+      if (!structure[brand][model]) {
+        structure[brand][model] = 0;
+      }
+      structure[brand][model]++;
+    });
+    
+    return structure;
+  }, [allProducts]);
+
+  const brands = Object.keys(brandModelStructure).sort();
+  const modelsForSelectedBrand = selectedBrand !== 'Toutes' ? Object.keys(brandModelStructure[selectedBrand] || {}).sort() : [];
+
+  const sortOptions = [
+    { value: 'relevance', label: 'Pertinence' },
+    { value: 'price-asc', label: 'Prix croissant' },
+    { value: 'price-desc', label: 'Prix décroissant' },
+    { value: 'rating', label: 'Meilleures notes' },
+    { value: 'newest', label: 'Nouveautés' },
+  ];
+
+  // Filter and sort products (brand is already filtered by API)
   const filteredProducts = useMemo(() => {
-    const result = products.filter(product => {
-      const matchesSearch = searchQuery === '' || 
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.brand.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+    const result = allProducts.filter(product => {
+      const price = parseFloat(product.price) || 0;
       
-      const matchesCategory = selectedCategory === 'Tous' || product.category === selectedCategory;
-      const matchesBrand = selectedBrand === 'Toutes' || product.brand === selectedBrand;
-      const matchesPrice = product.price >= priceRange.min && product.price <= priceRange.max;
+      // Skip client-side search filtering if API already handled it (via URL search param)
+      const urlSearch = searchParams.get('search');
+      let matchesSearch = true;
       
-      return matchesSearch && matchesCategory && matchesBrand && matchesPrice;
+      if (!urlSearch) {
+        // Only apply client-side search if API didn't handle it
+        if (searchQuery !== '') {
+          const nameMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+          const refMatch = product.reference ? product.reference.toLowerCase().includes(searchQuery.toLowerCase()) : false;
+          matchesSearch = nameMatch || refMatch;
+        }
+      }
+      
+      const matchesPrice = price >= priceRange.min && price <= priceRange.max;
+      
+      return matchesSearch && matchesPrice;
     });
 
     // Sort
     switch (sortBy) {
       case 'price-asc':
-        result.sort((a, b) => a.price - b.price);
+        result.sort((a, b) => parseFloat(a.price || '0') - parseFloat(b.price || '0'));
         break;
       case 'price-desc':
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case 'rating':
-        result.sort((a, b) => b.rating - a.rating);
+        result.sort((a, b) => parseFloat(b.price || '0') - parseFloat(a.price || '0'));
         break;
       default:
         break;
     }
 
     return result;
-  }, [searchQuery, selectedCategory, selectedBrand, priceRange, sortBy]);
+  }, [allProducts, searchQuery, priceRange, sortBy, searchParams]);
 
-  const toggleWishlist = (productId: number) => {
-    if (wishlist.includes(productId)) {
-      setWishlist(wishlist.filter(id => id !== productId));
+  const toggleWishlist = (productId: string) => {
+    const id = parseInt(productId);
+    if (wishlist.includes(id)) {
+      setWishlist(wishlist.filter(i => i !== id));
     } else {
-      setWishlist([...wishlist, productId]);
+      setWishlist([...wishlist, id]);
     }
+  };
+
+  const getImageUrl = (product: PrestaShopProduct): string => {
+    // Check id_default_image first
+    if (product.id_default_image) {
+      return `/api/product-image/${product.id}/${product.id_default_image}`;
+    }
+    // Check associations.images (from old PrestaShop format)
+    else if (product.associations?.images && product.associations.images.length > 0) {
+      const imageId = product.associations.images[0].id;
+      return `/api/product-image/${product.id}/${imageId}`;
+    }
+    // Check images array directly (from Supabase)
+    else if (product.images && product.images.length > 0) {
+      const imageId = product.images[0].id;
+      return `/api/product-image/${product.id}/${imageId}`;
+    }
+    // Fallback: fetch image directly from PrestaShop
+    else {
+      return `/api/product-image-direct/${product.id}`;
+    }
+  };
+
+  const getProductUrl = (product: PrestaShopProduct): string => {
+    if (product.link_rewrite) {
+      return `/produits/${product.id}-${product.link_rewrite}`;
+    }
+    return `/produits/${product.id}`;
+  };
+
+  const formatPrice = (price: string): string => {
+    const num = parseFloat(price) || 0;
+    return `${num.toFixed(2)} €`;
   };
 
   return (
@@ -188,29 +390,6 @@ function ProductsContent() {
                 </button>
               </div>
 
-              {/* Category Filter */}
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Catégorie</h3>
-                <div className="space-y-2">
-                  {categories.map(cat => (
-                    <label key={cat} className="flex items-center gap-3 cursor-pointer group">
-                      <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition ${selectedCategory === cat ? 'bg-blue-600 border-blue-600' : 'border-slate-300 group-hover:border-blue-400'}`}>
-                        {selectedCategory === cat && <Check className="w-3 h-3 text-white" />}
-                      </div>
-                      <input
-                        type="radio"
-                        name="category"
-                        value={cat}
-                        checked={selectedCategory === cat}
-                        onChange={() => setSelectedCategory(cat)}
-                        className="hidden"
-                      />
-                      <span className={`text-sm ${selectedCategory === cat ? 'text-blue-600 font-medium' : 'text-slate-600'}`}>{cat}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
               {/* Brand Filter */}
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3">Marque</h3>
@@ -225,7 +404,7 @@ function ProductsContent() {
                         name="brand"
                         value={brand}
                         checked={selectedBrand === brand}
-                        onChange={() => setSelectedBrand(brand)}
+                        onChange={() => router.push(`/produits?category=${selectedCategory}&brand=${brand}`)}
                         className="hidden"
                       />
                       <span className={`text-sm ${selectedBrand === brand ? 'text-blue-600 font-medium' : 'text-gray-600'}`}>{brand}</span>
@@ -233,6 +412,31 @@ function ProductsContent() {
                   ))}
                 </div>
               </div>
+
+              {/* Model Filter (shows when brand is selected) */}
+              {selectedBrand !== 'Toutes' && modelsForSelectedBrand.length > 0 && (
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-3">Modèle</h3>
+                  <div className="space-y-2 max-h-48 overflow-y-auto">
+                    {modelsForSelectedBrand.map(model => (
+                      <label key={model} className="flex items-center gap-3 cursor-pointer group">
+                        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition ${selectedCategory === model ? 'bg-blue-600 border-blue-600' : 'border-slate-300 group-hover:border-blue-400'}`}>
+                          {selectedCategory === model && <Check className="w-3 h-3 text-white" />}
+                        </div>
+                        <input
+                          type="radio"
+                          name="model"
+                          value={model}
+                          checked={selectedCategory === model}
+                          onChange={() => router.push(`/produits?category=${model}&brand=${selectedBrand}`)}
+                          className="hidden"
+                        />
+                        <span className={`text-sm ${selectedCategory === model ? 'text-blue-600 font-medium' : 'text-gray-600'}`}>{model}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Price Range */}
               <div>
@@ -260,8 +464,7 @@ function ProductsContent() {
               {/* Reset Filters */}
               <button
                 onClick={() => {
-                  setSelectedCategory('Tous');
-                  setSelectedBrand('Toutes');
+                  router.push('/produits');
                   setPriceRange({ min: 0, max: 1000 });
                   setSearchQuery('');
                 }}
@@ -274,7 +477,11 @@ function ProductsContent() {
 
           {/* Product Grid */}
           <div className="flex-1">
-            {filteredProducts.length === 0 ? (
+            {loading ? (
+              <div className="flex items-center justify-center py-16">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              </div>
+            ) : filteredProducts.length === 0 ? (
               <div className="text-center py-16">
                 <div className="w-24 h-24 bg-slate-200 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Search className="w-10 h-10 text-gray-400" />
@@ -283,8 +490,7 @@ function ProductsContent() {
                 <p className="text-gray-600 mb-6">Essayez de modifier vos critères de recherche</p>
                 <button
                   onClick={() => {
-                    setSelectedCategory('Tous');
-                    setSelectedBrand('Toutes');
+                    router.push('/produits');
                     setPriceRange({ min: 0, max: 1000 });
                     setSearchQuery('');
                   }}
@@ -294,82 +500,112 @@ function ProductsContent() {
                 </button>
               </div>
             ) : (
-              <div className={viewMode === 'grid' ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
-                {filteredProducts.map(product => (
-                  <div 
-                    key={product.id} 
-                    className={`bg-white rounded-xl overflow-hidden group transition-all duration-300 hover:shadow-xl border border-slate-200 ${viewMode === 'list' ? 'flex' : ''}`}
-                  >
-                    {/* Image - Link to detail */}
-                    <Link 
-                      href={`/produits/${product.id}`}
-                      className={`${viewMode === 'list' ? 'w-48 shrink-0' : ''} relative h-48 bg-gradient-to-br from-slate-200 to-slate-100 flex items-center justify-center overflow-hidden block`}
-                    >
-                      <div className="text-6xl transform group-hover:scale-110 transition-transform duration-500">{product.image}</div>
-                      
-                      {/* Badges */}
-                      <div className="absolute top-3 left-3 flex flex-col gap-2">
-                        <span className="px-2 py-1 bg-red-500 text-white text-xs font-bold rounded">
-                          -{Math.round((product.originalPrice - product.price) / product.originalPrice * 100)}%
-                        </span>
-                        {!product.inStock && (
-                          <span className="px-2 py-1 bg-gray-600 text-white text-xs rounded">
-                            Rupture
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Quick Actions */}
-                      <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button 
-                          onClick={(e) => { e.preventDefault(); toggleWishlist(product.id); }}
-                          className={`w-10 h-10 rounded-full flex items-center justify-center shadow-md transition ${wishlist.includes(product.id) ? 'bg-red-500 text-white' : 'bg-white hover:bg-red-50'}`}
-                        >
-                          <Heart className={`w-5 h-5 ${wishlist.includes(product.id) ? 'fill-current' : ''}`} />
-                        </button>
-                      </div>
-                    </Link>
-
-                    {/* Content */}
-                    <div className="p-5 flex-1 flex flex-col">
-                      <div className="flex items-center gap-1 mb-2">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm text-gray-600">{product.rating}</span>
-                        <span className="text-sm text-gray-400">({product.reviews})</span>
-                      </div>
-
-                      <Link href={`/produits/${product.id}`}>
-                        <h3 className="font-bold text-gray-900 mb-1 hover:text-blue-600 transition">{product.name}</h3>
+              <>
+                {/* Loading State */}
+                {loading && (
+                  <div className="flex flex-col items-center justify-center py-20">
+                    <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+                    <p className="text-slate-600">Chargement des produits...</p>
+                    <p className="text-sm text-slate-500 mt-2">Premier chargement peut prendre quelques secondes</p>
+                  </div>
+                )}
+                
+                {/* No category selected */}
+                {!loading && !selectedCategory && (
+                  <div className="flex flex-col items-center justify-center py-20 text-center">
+                    <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                      <svg className="w-10 h-10 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      </svg>
+                    </div>
+                    <h2 className="text-xl font-bold text-slate-900 mb-2">Sélectionnez une catégorie</h2>
+                    <p className="text-slate-600 mb-4">Utilisez le menu de navigation pour choisir entre Turbos, Injecteurs ou Kit CHRA</p>
+                    <div className="flex gap-4">
+                      <Link href="/produits?category=turbos" className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        Turbos
                       </Link>
-                      <p className="text-sm text-gray-500 mb-3">{product.brand} - {product.model}</p>
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-1 mb-3">
-                        {product.tags.map(tag => (
-                          <span key={tag} className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-
-                      <div className="flex items-baseline gap-2 mb-4">
-                        <span className="text-2xl font-bold text-blue-600">{product.price}€</span>
-                        <span className="text-sm text-gray-400 line-through">{product.originalPrice}€</span>
-                      </div>
-
-                      <div className="mt-auto space-y-2">
-                        <Link
-                          href={`/produits/${product.id}`}
-                          className="w-full py-3 rounded-lg font-semibold transition flex items-center justify-center gap-2 bg-blue-600 text-white hover:bg-blue-700"
-                        >
-                          Voir le produit
-                          <ChevronRight className="w-5 h-5" />
-                        </Link>
-                      </div>
+                      <Link href="/produits?category=injecteurs" className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        Injecteurs
+                      </Link>
+                      <Link href="/produits?category=kit-turbo-chra" className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                        Kit CHRA
+                      </Link>
                     </div>
                   </div>
-                ))}
-              </div>
+                )}
+                
+                {/* Loading Progress Bar (background loading) */}
+                {!loading && allProducts.length > 0 && (
+                  <div className="mb-4 text-sm text-slate-600">
+                    {allProducts.length} produits chargés
+                  </div>
+                )}
+                
+                {/* Products Grid */}
+                {!loading && filteredProducts.length > 0 && (
+                  <div className={viewMode === 'grid' ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
+                    {filteredProducts.map(product => (
+                      <div 
+                        key={product.id} 
+                        className={`bg-white rounded-xl overflow-hidden group transition-all duration-300 hover:shadow-xl border border-slate-200 ${viewMode === 'list' ? 'flex' : ''}`}
+                      >
+                        {/* Image - Link to detail */}
+                        <Link 
+                          href={getProductUrl(product)}
+                          className={`${viewMode === 'list' ? 'w-48 shrink-0' : ''} relative h-48 bg-gradient-to-br from-slate-200 to-slate-100 flex items-center justify-center overflow-hidden block`}
+                        >
+                          {getImageUrl(product) ? (
+                            <img 
+                              src={getImageUrl(product)} 
+                              alt={product.name}
+                              className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                              }}
+                            />
+                          ) : (
+                            <Package className="w-20 h-20 text-slate-400 transform group-hover:scale-110 transition-transform duration-500" />
+                          )}
+
+                          {/* Quick Actions */}
+                          <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button 
+                              onClick={(e) => { e.preventDefault(); toggleWishlist(product.id); }}
+                              className={`w-10 h-10 rounded-full flex items-center justify-center shadow-md transition ${wishlist.includes(parseInt(product.id)) ? 'bg-red-500 text-white' : 'bg-white hover:bg-red-50'}`}
+                            >
+                              <Heart className={`w-5 h-5 ${wishlist.includes(parseInt(product.id)) ? 'fill-current' : ''}`} />
+                            </button>
+                          </div>
+                        </Link>
+
+                        {/* Content */}
+                        <div className="p-5 flex-1 flex flex-col">
+                          <Link href={getProductUrl(product)}>
+                            <h3 className="font-bold text-gray-900 mb-1 hover:text-blue-600 transition line-clamp-2">{product.name}</h3>
+                          </Link>
+                          
+                          {product.reference && (
+                            <p className="text-sm text-gray-500 mb-2">Ref: {product.reference}</p>
+                          )}
+
+                          <div className="mt-auto pt-3 border-t border-slate-100">
+                            <div className="flex items-center justify-between">
+                              <span className="text-2xl font-bold text-blue-600">{formatPrice(product.price)}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {/* Products count */}
+                {!loading && (
+                  <div className="mb-4 text-sm text-slate-600">
+                    {filteredProducts.length} produits trouvés
+                  </div>
+                )}
+              </>
             )}
           </div>
         </div>

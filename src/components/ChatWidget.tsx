@@ -28,10 +28,15 @@ const quickReplies = [
 
 export default function ChatWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [messages, setMessages] = useState<Message[]>(initialMessages);
-  const [inputText, setInputText] = useState('');
+  const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -72,17 +77,17 @@ export default function ChatWidget() {
   };
 
   const handleSend = () => {
-    if (!inputText.trim()) return;
+    if (!inputValue.trim()) return;
 
     const userMessage: Message = {
       id: messages.length + 1,
-      text: inputText,
+      text: inputValue,
       sender: 'user',
       timestamp: new Date(),
     };
 
     setMessages(prev => [...prev, userMessage]);
-    setInputText('');
+    setInputValue('');
     setIsTyping(true);
 
     // Simulate bot typing delay
@@ -99,7 +104,7 @@ export default function ChatWidget() {
   };
 
   const handleQuickReply = (text: string) => {
-    setInputText(text);
+    setInputValue(text);
     setTimeout(() => handleSend(), 100);
   };
 
@@ -169,11 +174,13 @@ export default function ChatWidget() {
                       : 'bg-white/10 text-gray-200 rounded-bl-md border border-white/10'
                   }`}>
                     <p className="whitespace-pre-line">{message.text}</p>
-                    <span className={`text-xs mt-1 block ${
-                      message.sender === 'user' ? 'text-blue-200' : 'text-gray-500'
-                    }`}>
-                      {message.timestamp.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
-                    </span>
+                    {isClient && (
+                      <span className={`text-xs mt-1 block ${
+                        message.sender === 'user' ? 'text-blue-200' : 'text-gray-500'
+                      }`}>
+                        {message.timestamp.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -218,15 +225,15 @@ export default function ChatWidget() {
             <div className="flex gap-2">
               <input
                 type="text"
-                value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSend()}
                 placeholder="Écrivez votre message..."
                 className="flex-1 px-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:border-blue-500 focus:bg-white/10 transition outline-none text-sm"
               />
               <button
                 onClick={handleSend}
-                disabled={!inputText.trim()}
+                disabled={!inputValue.trim()}
                 className="p-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl hover:shadow-lg hover:shadow-blue-600/30 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="w-5 h-5" />

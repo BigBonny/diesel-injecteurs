@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
@@ -15,34 +15,56 @@ import { useCart } from '@/app/CartContext';
 
 const CORE_CHARGE_AMOUNT = 80;
 
-// Product data - same as produits page
-const products = [
-  { id: 1, name: 'Turbo Garrett GT1749V', category: 'Turbos', price: 349, originalPrice: 450, rating: 4.8, reviews: 124, inStock: true, brand: 'Garrett', model: 'GT1749V', image: '🔧', description: 'Turbo neuf Garrett GT1749V pour moteurs diesel 1.5 dCi. Performance OEM garantie.', specs: { 'Ref OEM': '454232-0001', 'Puissance': '105-110 CV', 'Années': '2003-2012', 'Garantie': '2 ans' }, compatible: ['Renault Clio III 1.5 dCi', 'Nissan Micra 1.5 dCi', 'Dacia Logan 1.5 dCi', 'Renault Kangoo 1.5 dCi'] },
-  { id: 2, name: 'Injecteur Bosch 0445110', category: 'Injecteurs', price: 89, originalPrice: 120, rating: 4.9, reviews: 89, inStock: true, brand: 'Bosch', model: '0445110', image: '⚙️', description: 'Injecteur Bosch rénové et testé. Débit contrôlé sur banc d\'essai.', specs: { 'Ref OEM': '0445110015', 'Pression': '1600 bar', 'Type': 'Piézoélectrique', 'Garantie': '2 ans' }, compatible: ['Mercedes C220 CDI', 'BMW 320d E46', 'Audi A4 2.0 TDI'] },
-  { id: 3, name: 'Pompe Denso HP3', category: 'Pompes', price: 289, originalPrice: 380, rating: 4.7, reviews: 56, inStock: true, brand: 'Denso', model: 'HP3', image: '🔩', description: 'Pompe à injection haute pression Denso HP3 reconditionnée.', specs: { 'Ref OEM': '294000-0120', 'Débit': '300 L/h', 'Pression': '2000 bar', 'Garantie': '2 ans' }, compatible: ['Toyota Hilux 2.5 D-4D', 'Ford Ranger 2.5 TDCi'] },
-  { id: 4, name: 'Kit Réparation Turbo', category: 'Kits', price: 45, originalPrice: 65, rating: 4.6, reviews: 203, inStock: true, brand: 'Generic', model: 'Universal', image: '🛠️', description: 'Kit complet de réparation pour turbo K03/K04.', specs: { 'Contenu': 'Joints + paliers + clip', 'Universel': 'K03/K04 compatible', 'Qualité': 'OEM', 'Garantie': '1 an' }, compatible: ['VW Golf', 'Audi A3', 'Seat Leon', 'Skoda Octavia'] },
-  { id: 5, name: 'Turbo KKK K03', category: 'Turbos', price: 299, originalPrice: 380, rating: 4.7, reviews: 87, inStock: true, brand: 'KKK', model: 'K03', image: '🔧', description: 'Turbo KKK K03 reconditionné avec vanne de régulation.', specs: { 'Ref OEM': '53039880029', 'Puissance': '90-115 CV', 'Vanne': 'VNT rénovée', 'Garantie': '2 ans' }, compatible: ['VW Golf IV 1.9 TDI', 'Audi A3 1.9 TDI', 'Seat Leon 1.9 TDI'] },
-  { id: 6, name: 'Injecteur Delphi EJBR', category: 'Injecteurs', price: 125, originalPrice: 165, rating: 4.8, reviews: 45, inStock: true, brand: 'Delphi', model: 'EJBR', image: '⚙️', description: 'Injecteur Delphi EJBR pour moteurs Renault/Dacia.', specs: { 'Ref OEM': 'EJBR01801A', 'Pression': '1800 bar', 'Type': 'Common Rail', 'Garantie': '2 ans' }, compatible: ['Renault Clio 1.5 dCi', 'Dacia Logan 1.5 dCi', 'Renault Megane 1.5 dCi'] },
-  { id: 7, name: 'Pompe Bosch CP1', category: 'Pompes', price: 199, originalPrice: 250, rating: 4.5, reviews: 32, inStock: false, brand: 'Bosch', model: 'CP1', image: '🔩', description: 'Pompe Bosch CP1 reconditionnée avec régulateur neuf.', specs: { 'Ref OEM': '0445010042', 'Débit': '400 L/h', 'Pression': '1600 bar', 'Garantie': '2 ans' }, compatible: ['Opel Astra 1.9 CDTI', 'Fiat Stilo 1.9 JTD'] },
-  { id: 8, name: 'Turbo Mitsubishi TD04', category: 'Turbos', price: 389, originalPrice: 490, rating: 4.9, reviews: 76, inStock: true, brand: 'Mitsubishi', model: 'TD04', image: '🔧', description: 'Turbo Mitsubishi TD04 haute performance.', specs: { 'Ref OEM': '49177-02510', 'Puissance': '163-185 CV', 'Roulement': 'BB upgradé', 'Garantie': '2 ans' }, compatible: ['Volvo S60 2.4 D5', 'Volvo V70 2.4 D5', 'Saab 9-3 1.9 TiD'] },
-  { id: 9, name: 'Injecteur Siemens 5WS4', category: 'Injecteurs', price: 79, originalPrice: 110, rating: 4.4, reviews: 28, inStock: true, brand: 'Siemens', model: '5WS4', image: '⚙️', description: 'Injecteur Siemens 5WS4 pour Ford et PSA.', specs: { 'Ref OEM': '5WS40156', 'Pression': '1650 bar', 'Type': 'Common Rail', 'Garantie': '2 ans' }, compatible: ['Ford Focus 1.6 TDCi', 'Peugeot 307 1.6 HDi', 'Citroen C4 1.6 HDi'] },
-  { id: 10, name: 'Pompe VP44', category: 'Pompes', price: 450, originalPrice: 590, rating: 4.7, reviews: 15, inStock: true, brand: 'Bosch', model: 'VP44', image: '🔩', description: 'Pompe Bosch VP44 pour moteurs 5 cylindres.', specs: { 'Ref OEM': '0470504029', 'Débit': '500 L/h', 'Pression': '1800 bar', 'Garantie': '2 ans' }, compatible: ['BMW 525d E39', 'BMW X5 3.0d E53', 'Land Rover Defender'] },
-  { id: 11, name: 'Kit Joints Turbo', category: 'Kits', price: 29, originalPrice: 45, rating: 4.3, reviews: 156, inStock: true, brand: 'Generic', model: 'Universal', image: '🛠️', description: 'Kit de joints pour turbo compresseur.', specs: { 'Contenu': 'Joints + circlips', 'Universel': 'Multi-marques', 'Qualité': 'Standard', 'Garantie': '1 an' }, compatible: ['Universel turbos'] },
-  { id: 12, name: 'Turbo Holset HE221W', category: 'Turbos', price: 529, originalPrice: 680, rating: 4.8, reviews: 42, inStock: true, brand: 'Holset', model: 'HE221W', image: '🔧', description: 'Turbo Holset HE221W pour utilitaires et poids lourds.', specs: { 'Ref OEM': '4045878', 'Puissance': '200-250 CV', 'Wastegate': 'Électronique', 'Garantie': '2 ans' }, compatible: ['Cummins ISBe 4.5', 'Iveco Daily 3.0', 'Case IH Farmall'] },
-];
-
 export default function ProductDetailPage() {
   const params = useParams();
-  const productId = Number(params.id);
+  const productId = Number(Array.isArray(params.id) ? params.id[0].split('-')[0] : params.id?.split('-')[0]);
   const { addItem, items } = useCart();
   
+  const [product, setProduct] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
   const [coreChargeAccepted, setCoreChargeAccepted] = useState(false);
   const [showCoreChargeInfo, setShowCoreChargeInfo] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
 
-  const product = products.find(p => p.id === productId);
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        console.log('Fetching product with ID:', productId);
+        const response = await fetch(`/api/product/${productId}`);
+        console.log('API response status:', response.status);
+        
+        if (response.ok) {
+          const productData = await response.json();
+          console.log('Parsed product data:', productData);
+          setProduct(productData);
+        } else {
+          console.error('API response not OK');
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    if (productId) {
+      fetchProduct();
+    }
+  }, [productId]);
+
   const inCart = items.find(item => item.id === productId);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-slate-50">
+        <Navigation />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -61,7 +83,22 @@ export default function ProductDetailPage() {
     );
   }
 
-  const totalPrice = product.price + (coreChargeAccepted ? CORE_CHARGE_AMOUNT : 0);
+  const price = product.price || 0;
+  const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
+  const formattedPrice = `${numericPrice.toFixed(2)} €`;
+
+  // Get image URL - try id_default_image first, then associations
+  let imageUrl = '';
+  if (product.id_default_image) {
+    imageUrl = `/api/product-image/${product.id}/${product.id_default_image}`;
+  } else if (product.associations?.images && product.associations.images.length > 0) {
+    const imageId = product.associations.images[0].id;
+    imageUrl = `/api/product-image/${product.id}/${imageId}`;
+  }
+
+  console.log('Product data for display:', { product, price, numericPrice, formattedPrice, imageUrl });
+
+  const totalPrice = numericPrice + (coreChargeAccepted ? CORE_CHARGE_AMOUNT : 0);
   const totalWithQuantity = totalPrice * quantity;
 
   const handleAddToCart = () => {
@@ -73,11 +110,11 @@ export default function ProductDetailPage() {
       addItem({
         id: product.id,
         name: product.name,
-        price: product.price,
-        originalPrice: product.originalPrice,
-        image: product.image,
-        brand: product.brand,
-        category: product.category,
+        price: numericPrice,
+        originalPrice: numericPrice,
+        image: imageUrl || '🔧',
+        brand: 'PrestaShop',
+        category: 'Pièces',
         coreChargeAccepted,
         coreChargeAmount: CORE_CHARGE_AMOUNT,
       });
@@ -109,58 +146,25 @@ export default function ProductDetailPage() {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Image */}
             <div className="bg-white rounded-2xl p-8 border border-slate-200">
-              <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center">
-                <span className="text-9xl">{product.image}</span>
-              </div>
-              <div className="flex gap-4 mt-4">
-                <div className="w-20 h-20 bg-slate-100 rounded-lg flex items-center justify-center border-2 border-blue-500">
-                  <span className="text-3xl">{product.image}</span>
-                </div>
-                <div className="w-20 h-20 bg-slate-100 rounded-lg flex items-center justify-center opacity-50">
-                  <Package className="w-8 h-8 text-slate-400" />
-                </div>
-                <div className="w-20 h-20 bg-slate-100 rounded-lg flex items-center justify-center opacity-50">
-                  <Wrench className="w-8 h-8 text-slate-400" />
-                </div>
+              <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center overflow-hidden">
+                {imageUrl ? (
+                  <img src={imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                ) : (
+                  <Package className="w-32 h-32 text-slate-400" />
+                )}
               </div>
             </div>
 
             {/* Info */}
             <div>
               <div className="flex items-center gap-3 mb-4">
-                <span className="px-3 py-1 bg-blue-100 text-blue-700 text-sm font-medium rounded-full">
-                  {product.brand}
+                <span className="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full flex items-center gap-1">
+                  <Check className="w-4 h-4" />
+                  En stock
                 </span>
-                <span className="px-3 py-1 bg-slate-100 text-slate-600 text-sm rounded-full">
-                  {product.category}
-                </span>
-                {product.inStock ? (
-                  <span className="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full flex items-center gap-1">
-                    <Check className="w-4 h-4" />
-                    En stock
-                  </span>
-                ) : (
-                  <span className="px-3 py-1 bg-red-100 text-red-700 text-sm rounded-full">
-                    Rupture
-                  </span>
-                )}
               </div>
 
               <h1 className="text-3xl font-bold text-slate-900 mb-4">{product.name}</h1>
-
-              <div className="flex items-center gap-4 mb-6">
-                <div className="flex items-center gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <Star 
-                      key={i} 
-                      className={`w-5 h-5 ${i < Math.floor(product.rating) ? 'fill-yellow-400 text-yellow-400' : 'text-slate-300'}`} 
-                    />
-                  ))}
-                </div>
-                <span className="text-slate-600">{product.rating} ({product.reviews} avis)</span>
-              </div>
-
-              <p className="text-lg text-slate-600 mb-8">{product.description}</p>
 
               {/* Core Charge Section - MANDATORY */}
               <div className={`rounded-xl p-6 mb-8 border-2 transition-all ${coreChargeAccepted ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-400'}`}>
@@ -223,18 +227,18 @@ export default function ProductDetailPage() {
 
               {/* Quantity */}
               <div className="flex items-center gap-4 mb-6">
-                <span className="text-slate-700 font-medium">Quantité:</span>
-                <div className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl">
+                <span className="text-slate-900 font-medium">Quantité:</span>
+                <div className="flex items-center gap-3 bg-white border border-slate-300 rounded-xl">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-3 hover:bg-slate-100 rounded-l-xl transition"
+                    className="p-3 hover:bg-slate-100 rounded-l-xl transition text-slate-700"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="w-12 text-center font-bold">{quantity}</span>
+                  <span className="w-12 text-center font-bold text-slate-900">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="p-3 hover:bg-slate-100 rounded-r-xl transition"
+                    className="p-3 hover:bg-slate-100 rounded-r-xl transition text-slate-700"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -246,7 +250,7 @@ export default function ProductDetailPage() {
                 <div className="space-y-2">
                   <div className="flex justify-between text-slate-600">
                     <span>Prix unitaire</span>
-                    <span>{product.price}€</span>
+                    <span>{formattedPrice}</span>
                   </div>
                   {coreChargeAccepted && (
                     <div className="flex justify-between text-green-600">
@@ -281,14 +285,13 @@ export default function ProductDetailPage() {
               <div className="flex gap-4">
                 <button
                   onClick={handleAddToCart}
-                  disabled={!product.inStock}
                   className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-xl font-semibold transition ${
                     addedToCart 
                       ? 'bg-green-500 text-white' 
                       : !coreChargeAccepted
                         ? 'bg-amber-500 text-white hover:bg-amber-600'
                         : 'bg-blue-600 text-white hover:bg-blue-700'
-                  } ${!product.inStock && 'opacity-50 cursor-not-allowed'}`}
+                  }`}
                 >
                   {addedToCart ? (
                     <>
@@ -330,56 +333,17 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
-          {/* Tabs Section */}
-          <div className="mt-16">
-            <div className="border-b border-slate-200 mb-8">
-              <div className="flex gap-8">
-                <button className="pb-4 border-b-2 border-blue-600 text-blue-600 font-medium">
-                  Spécifications
-                </button>
-                <button className="pb-4 border-b-2 border-transparent text-slate-600 hover:text-slate-900">
-                  Compatibilité
-                </button>
-                <button className="pb-4 border-b-2 border-transparent text-slate-600 hover:text-slate-900">
-                  Avis ({product.reviews})
-                </button>
-              </div>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-12">
-              {/* Specs */}
-              <div>
-                <h3 className="text-xl font-bold text-slate-900 mb-6">Caractéristiques techniques</h3>
-                <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-                  {Object.entries(product.specs).map(([key, value], index) => (
-                    <div 
-                      key={key} 
-                      className={`flex justify-between p-4 ${index !== Object.keys(product.specs).length - 1 ? 'border-b border-slate-200' : ''} ${index % 2 === 0 ? 'bg-slate-50' : 'bg-white'}`}
-                    >
-                      <span className="text-slate-600">{key}</span>
-                      <span className="font-medium text-slate-900">{value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Compatibility */}
-              <div>
-                <h3 className="text-xl font-bold text-slate-900 mb-6">Véhicules compatibles</h3>
-                <div className="bg-white rounded-xl border border-slate-200 p-6">
-                  <ul className="space-y-3">
-                    {product.compatible.map((vehicle, index) => (
-                      <li key={index} className="flex items-center gap-3">
-                        <Check className="w-5 h-5 text-green-500 flex-shrink-0" />
-                        <span className="text-slate-700">{vehicle}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="text-sm text-slate-500 mt-4">
-                    Cette liste n&apos;est pas exhaustive. Contactez-nous pour vérifier la compatibilité avec votre véhicule.
-                  </p>
-                </div>
-              </div>
+          {/* Description Section */}
+          <div className="mt-16 bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
+            <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-4 border-b border-slate-100">
+              Description du produit
+            </h2>
+            <div className="prose prose-lg max-w-none text-slate-600 leading-relaxed">
+              {product.description ? (
+                <div dangerouslySetInnerHTML={{ __html: product.description }} />
+              ) : (
+                <p className="text-slate-400 italic">Aucune description disponible pour ce produit.</p>
+              )}
             </div>
           </div>
         </div>

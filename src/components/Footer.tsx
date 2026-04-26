@@ -28,11 +28,10 @@ export default function Footer() {
       { name: 'Support Technique', href: '#contact' },
     ],
     entreprise: [
-      { name: 'À Propos', href: '#' },
-      { name: 'Nos Ateliers', href: '#' },
-      { name: 'Carrière', href: '#' },
-      { name: 'Blog', href: '#' },
-      { name: 'Contact', href: '#contact' },
+      { name: 'À Propos', href: '/apropos' },
+      { name: 'Blog', href: '/blog' },
+      { name: 'Retour Consigne', href: '/retour-consigne' },
+      { name: 'Contact', href: '/contact' },
     ],
   };
 
@@ -102,28 +101,28 @@ export default function Footer() {
               </div>
 
               <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-sm">
-                Votre spécialiste en pièces auto premium depuis 2009. 
-                Turbos, injecteurs et pompes de qualité OEM à prix compétitifs.
+                Les experts du turbo reconditionné. Solution fiable et rapide 
+                pour votre moteur diesel avec injecteurs Bosch, Delphi, Siemens et Denso.
               </p>
 
               {/* Contact Info */}
               <div className="space-y-3">
-                <a href="tel:+33123456789" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
+                <a href="tel:+33612429880" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
                   <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-blue-600/20 transition">
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
                     <p className="text-xs text-gray-500">Assistance 24/7</p>
-                    <p className="font-semibold">+33 1 23 45 67 89</p>
+                    <p className="font-semibold">+33 6 12 42 98 80</p>
                   </div>
                 </a>
-                <a href="mailto:contact@injection-diesel.fr" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
+                <a href="mailto:diesel.injecteurs@gmail.com" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
                   <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-cyan-600/20 transition">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
                     <p className="text-xs text-gray-500">Email</p>
-                    <p className="font-semibold">contact@injection-diesel.fr</p>
+                    <p className="font-semibold">diesel.injecteurs@gmail.com</p>
                   </div>
                 </a>
               </div>

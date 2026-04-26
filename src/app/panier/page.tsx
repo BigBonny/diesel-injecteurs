@@ -8,21 +8,70 @@ import ChatWidget from '@/components/ChatWidget';
 import { useCart } from '@/app/CartContext';
 import { 
   ShoppingCart, Trash2, Plus, Minus, ArrowRight, Package, 
-  Truck, ShieldCheck, CreditCard, Gift, ChevronRight, RotateCcw
+  Truck, ShieldCheck, CreditCard, Gift, ChevronRight, RotateCcw, Loader2
 } from 'lucide-react';
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem, subtotal, coreChargeTotal, grandTotal } = useCart();
+  const { items, updateQuantity, removeItem, subtotal, coreChargeTotal, clearCart } = useCart();
   const [promoCode, setPromoCode] = useState('');
   const [promoApplied, setPromoApplied] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [customerEmail, setCustomerEmail] = useState('');
+  const [customerName, setCustomerName] = useState('');
 
   const discount = promoApplied ? subtotal * 0.1 : 0;
-  const shipping = grandTotal > 150 ? 0 : 15;
-  const finalTotal = grandTotal - discount + shipping;
+  // Temporarily disable shipping and core charge for testing
+  const shipping = 0;
+  const finalTotal = subtotal - discount + shipping;
 
   const applyPromo = () => {
     if (promoCode.toLowerCase() === 'id10' || promoCode.toLowerCase() === 'welcome10') {
       setPromoApplied(true);
+    }
+  };
+
+  const handleCheckout = async () => {
+    if (!customerEmail || !customerName) {
+      alert('Veuillez remplir votre email et votre nom');
+      return;
+    }
+
+    if (items.length === 0) {
+      alert('Votre panier est vide');
+      return;
+    }
+
+    setIsProcessing(true);
+
+    try {
+      const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      
+      const response = await fetch('/api/payment/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: finalTotal,
+          currency: 'EUR',
+          orderId,
+          customerEmail,
+          customerName,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create payment');
+      }
+
+      const data = await response.json();
+      
+      // Clear cart and redirect to Sogecommerce payment page
+      clearCart();
+      window.location.href = data.formToken;
+    } catch (error) {
+      console.error('Payment error:', error);
+      alert('Une erreur est survenue lors de la création du paiement');
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -75,8 +124,19 @@ export default function CartPage() {
                 >
                   <div className="flex gap-6">
                     {/* Product Image */}
-                    <div className="w-24 h-24 bg-slate-200 rounded-xl flex items-center justify-center shrink-0">
-                      <span className="text-4xl">{item.image}</span>
+                    <div className="w-24 h-24 bg-slate-200 rounded-xl flex items-center justify-center shrink-0 overflow-hidden">
+                      {item.image.startsWith('/api/') ? (
+                        <img 
+                          src={item.image} 
+                          alt={item.name}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <span className="text-4xl">{item.image}</span>
+                      )}
                     </div>
 
                     {/* Product Info */}
@@ -207,6 +267,32 @@ export default function CartPage() {
               <div className="bg-white rounded-2xl p-6 border border-slate-200 sticky top-24">
                 <h2 className="text-xl font-bold text-stone-900 mb-6">Récapitulatif</h2>
 
+                {/* Customer Info */}
+                <div className="space-y-4 mb-6">
+                  <div>
+                    <label className="block text-sm font-medium text-stone-700 mb-2">Email *</label>
+                    <input
+                      type="email"
+                      value={customerEmail}
+                      onChange={(e) => setCustomerEmail(e.target.value)}
+                      placeholder="votre@email.com"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 focus:bg-white transition outline-none text-slate-900"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-stone-700 mb-2">Nom complet *</label>
+                    <input
+                      type="text"
+                      value={customerName}
+                      onChange={(e) => setCustomerName(e.target.value)}
+                      placeholder="Jean Dupont"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 focus:bg-white transition outline-none text-slate-900"
+                      required
+                    />
+                  </div>
+                </div>
+
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-stone-600">
                     <span>Sous-total produits</span>
@@ -259,9 +345,22 @@ export default function CartPage() {
                   )}
                 </div>
 
-                <button className="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-blue-600/30 transition flex items-center justify-center gap-2">
-                  <CreditCard className="w-5 h-5" />
-                  Commander
+                <button
+                  onClick={handleCheckout}
+                  disabled={isProcessing}
+                  className="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-blue-600/30 transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isProcessing ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Traitement...
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="w-5 h-5" />
+                      Commander
+                    </>
+                  )}
                 </button>
 
                 <div className="mt-6 space-y-3">
