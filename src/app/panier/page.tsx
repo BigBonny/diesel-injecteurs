@@ -21,7 +21,7 @@ export default function CartPage() {
 
   const discount = promoApplied ? subtotal * 0.1 : 0;
   // Temporarily disable shipping and core charge for testing
-  const shipping = 0;
+  const shipping: number = 0;
   const finalTotal = subtotal - discount + shipping;
 
   const applyPromo = () => {
