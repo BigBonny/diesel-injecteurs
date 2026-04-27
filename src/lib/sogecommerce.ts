@@ -65,7 +65,8 @@ export async function createSogecommercePayment(
   console.log('Sogecommerce signature:', signature);
 
   // Build the hosted payment page URL with query parameters
-  const baseUrl = 'https://secure.sogecommerce.societegenerale.eu/vads-payment/';
+  // Use the correct Sogecommerce payment URL
+  const baseUrl = 'https://paiement.sogecommerce.societegenerale.eu/vads-payment/';
   const queryParams = new URLSearchParams(paymentData).toString();
   const paymentUrl = `${baseUrl}?${queryParams}`;
 
