@@ -31,6 +31,10 @@ export async function POST(request: Request) {
 
     console.log('Sogecommerce payment response:', paymentResponse);
 
+    if (!paymentResponse.formToken) {
+      throw new Error('No formToken returned from Sogecommerce');
+    }
+
     // Store order in Supabase
     const { error } = await supabase.from('orders').insert({
       id: orderId,
