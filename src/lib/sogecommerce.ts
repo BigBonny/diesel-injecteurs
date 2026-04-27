@@ -25,88 +25,58 @@ export interface SogecommerceNotification {
 export async function createSogecommercePayment(
   request: SogecommercePaymentRequest
 ): Promise<SogecommercePaymentResponse> {
-  const mode = process.env.NEXT_PUBLIC_SOGECOMMERCE_MODE || 'test';
-  
-  // Use hardcoded production credentials since env vars may be wrong
+  // Use production credentials from Sogecommerce Back Office
   const siteId = '56994465';
   const hmacKey = 'zFuFb9QpAMOJJVzv';
-  
-  // For Authorization header, try just the siteId
-  const publicKey = siteId;
 
-  // Sogecommerce REST API endpoint
-  const apiUrl = 'https://api-sogecommerce.societegenerale.eu/api-payment/V4/Charge/CreatePayment';
-
-  // Build payment request body according to Sogecommerce V4 API
-  const paymentRequest = {
-    amount: Math.round(request.amount * 100), // Convert to cents
-    currency: request.currency,
-    orderId: request.orderId,
-    customer: {
-      email: request.customerEmail,
-      billingDetails: {
-        firstName: request.customerName.split(' ')[0] || request.customerName,
-        lastName: request.customerName.split(' ').slice(1).join(' ') || request.customerName,
-      },
-    },
-    formToken: {
-      action: 'ASK_REGISTER_PAY',
-    },
-    transactionOptions: {
-      cardOptions: {
-        paymentMode: 'SINGLE',
-      },
-    },
-    returnUrl: request.returnURL,
-    cancelUrl: request.cancelURL,
-    notificationUrl: request.notificationURL,
+  // Build payment parameters for Sogecommerce hosted payment page
+  const paymentData: Record<string, string> = {
+    vads_site_id: siteId,
+    vads_ctx_mode: 'PRODUCTION',
+    vads_trans_id: request.orderId.slice(-6), // Last 6 chars of order ID
+    vads_trans_date: new Date().toISOString().replace(/[-:T.Z]/g, '').slice(0, 14),
+    vads_amount: Math.round(request.amount * 100).toString(), // Convert to cents
+    vads_currency: '978', // EUR currency code
+    vads_action_mode: 'INTERACTIVE',
+    vads_page_action: 'PAYMENT',
+    vads_version: 'V2',
+    vads_payment_config: 'SINGLE',
+    vads_capture_delay: '0',
+    vads_validation_mode: '0',
+    vads_cust_email: request.customerEmail,
+    vads_cust_first_name: request.customerName.split(' ')[0] || request.customerName,
+    vads_cust_last_name: request.customerName.split(' ').slice(1).join(' ') || '',
+    vads_url_return: request.returnURL,
+    vads_url_cancel: request.cancelURL,
+    vads_url_check: request.notificationURL,
+    vads_url_refused: request.cancelURL,
   };
 
-  // Generate signature: HMAC-SHA256 of the JSON body
-  const requestBody = JSON.stringify(paymentRequest);
-  const signature = crypto.createHmac('sha256', hmacKey).update(requestBody).digest('hex');
+  // Sort parameters alphabetically and build signature string
+  const sortedKeys = Object.keys(paymentData).sort();
+  const signatureString = sortedKeys.map(key => paymentData[key]).join('+') + '+' + hmacKey;
+  const signature = crypto.createHmac('sha256', hmacKey).update(signatureString).digest('hex');
 
-  console.log('Sogecommerce request body:', requestBody);
+  // Add signature to payment data
+  paymentData.signature = signature;
+
+  console.log('Sogecommerce payment data:', paymentData);
+  console.log('Sogecommerce signature string:', signatureString);
   console.log('Sogecommerce signature:', signature);
-  console.log('Sogecommerce publicKey:', publicKey);
-  console.log('Sogecommerce hmacKey length:', hmacKey.length);
 
-  try {
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': publicKey,
-        'X-Signature': signature,
-      },
-      body: requestBody,
-    });
+  // Build the hosted payment page URL with query parameters
+  const baseUrl = 'https://secure.sogecommerce.societegenerale.eu/vads-payment/';
+  const queryParams = new URLSearchParams(paymentData).toString();
+  const paymentUrl = `${baseUrl}?${queryParams}`;
 
-    const responseText = await response.text();
-    console.log('Sogecommerce API raw response:', responseText);
+  console.log('Sogecommerce payment URL:', paymentUrl);
 
-    if (!response.ok) {
-      console.error('Sogecommerce API error:', responseText);
-      throw new Error(`Sogecommerce API error: ${response.status} - ${responseText}`);
-    }
-
-    const data = JSON.parse(responseText);
-    console.log('Sogecommerce API parsed response:', JSON.stringify(data, null, 2));
-    
-    // Return the formToken for embedded payment
-    if (!data.answer || !data.answer.formToken) {
-      console.error('Invalid response structure:', data);
-      throw new Error('No formToken in Sogecommerce response');
-    }
-    
-    return {
-      formToken: data.answer.formToken,
-      publicKey,
-    };
-  } catch (error) {
-    console.error('Sogecommerce payment creation error:', error);
-    throw error;
-  }
+  // Return a formToken that is actually the payment URL
+  // The payment page will use this URL directly
+  return {
+    formToken: paymentUrl,
+    publicKey: siteId,
+  };
 }
 
 function generateHMACSignature(data: string, key: string): string {
