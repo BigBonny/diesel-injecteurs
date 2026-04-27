@@ -57,7 +57,8 @@ export async function createSogecommercePayment(
     .filter(key => key.startsWith('vads_') && paymentData[key] !== '')
     .sort();
   const signatureString = vadsKeys.map(key => paymentData[key]).join('+') + '+' + hmacKey;
-  const signature = crypto.createHmac('sha256', hmacKey).update(signatureString).digest('hex');
+  // Use base64 encoding for SHA-256 (as per PrestaShop module)
+  const signature = Buffer.from(crypto.createHmac('sha256', hmacKey).update(signatureString).digest()).toString('base64');
 
   // Add signature to payment data
   paymentData.signature = signature;
