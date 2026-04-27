@@ -25,7 +25,6 @@ export interface SogecommerceNotification {
 export async function createSogecommercePayment(
   request: SogecommercePaymentRequest
 ): Promise<SogecommercePaymentResponse> {
-  const siteId = process.env.SOGECOMMERCE_SITE_ID || '';
   const mode = process.env.NEXT_PUBLIC_SOGECOMMERCE_MODE || 'test';
   const publicKey = mode === 'test' 
     ? process.env.SOGECOMMERCE_TEST_PUBLIC_KEY || ''
@@ -34,36 +33,63 @@ export async function createSogecommercePayment(
     ? process.env.SOGECOMMERCE_TEST_HMAC_KEY || ''
     : process.env.SOGECOMMERCE_PROD_HMAC_KEY || '';
 
-  // Sogecommerce hosted payment page URL
-  const paymentUrl = 'https://payment.sogecommerce.societegenerale.eu/standard-payment';
+  // Sogecommerce REST API endpoint
+  const apiUrl = 'https://api-sogecommerce.societegenerale.eu/api-payment/V4/Charge/CreatePayment';
 
-  // Build payment parameters
-  const params = new URLSearchParams({
-    siteId,
-    amount: request.amount.toString(),
+  // Build payment request body
+  const paymentRequest = {
+    amount: request.amount,
     currency: request.currency,
     orderId: request.orderId,
-    customerEmail: request.customerEmail,
-    customerName: request.customerName,
-    returnURL: request.returnURL,
-    cancelURL: request.cancelURL,
-    notificationURL: request.notificationURL,
-    publicKey,
-  });
+    customer: {
+      email: request.customerEmail,
+      reference: request.customerName,
+    },
+    formToken: {
+      action: 'ASK_REGISTER_PAY',
+    },
+    transactionOptions: {
+      cardOptions: {
+        paymentMode: 'SINGLE',
+      },
+    },
+    returnUrl: request.returnURL,
+    cancelUrl: request.cancelURL,
+    notificationUrl: request.notificationURL,
+  };
 
   // Generate signature using HMAC-SHA256
-  const sortedParams = Array.from(params.entries()).sort(([a], [b]) => a.localeCompare(b));
-  const signatureString = sortedParams.map(([k, v]) => `${k}=${v}`).join('+') + '+' + hmacKey;
+  const signatureString = JSON.stringify(paymentRequest) + hmacKey;
   const signature = crypto.createHmac('sha256', hmacKey).update(signatureString).digest('hex');
-  params.append('signature', signature);
 
-  // Build the full payment URL
-  const fullPaymentUrl = `${paymentUrl}?${params.toString()}`;
+  try {
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': publicKey,
+        'X-Signature': signature,
+      },
+      body: JSON.stringify(paymentRequest),
+    });
 
-  return {
-    formToken: fullPaymentUrl,
-    publicKey,
-  };
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Sogecommerce API error:', errorText);
+      throw new Error(`Sogecommerce API error: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    
+    // Return the formToken for embedded payment
+    return {
+      formToken: data.answer.formToken,
+      publicKey,
+    };
+  } catch (error) {
+    console.error('Sogecommerce payment creation error:', error);
+    throw error;
+  }
 }
 
 function generateHMACSignature(data: string, key: string): string {
