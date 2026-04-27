@@ -52,13 +52,12 @@ export async function createSogecommercePayment(
     vads_url_refused: request.cancelURL,
   };
 
-  // Build signature string: only vads_ parameters, sorted alphabetically, joined with +
+  // Build signature string: only vads_ parameters with non-empty values, sorted alphabetically, joined with +
   const vadsKeys = Object.keys(paymentData)
-    .filter(key => key.startsWith('vads_'))
+    .filter(key => key.startsWith('vads_') && paymentData[key] !== '')
     .sort();
   const signatureString = vadsKeys.map(key => paymentData[key]).join('+') + '+' + hmacKey;
-  // Try SHA-1 algorithm (some Sogecommerce implementations use SHA-1)
-  const signature = crypto.createHmac('sha1', hmacKey).update(signatureString).digest('hex');
+  const signature = crypto.createHmac('sha256', hmacKey).update(signatureString).digest('hex');
 
   // Add signature to payment data
   paymentData.signature = signature;
