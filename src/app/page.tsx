@@ -137,7 +137,7 @@ export default function Home() {
       <Navigation />
 
       {/* Hero Section - 3D Animated */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-slate-950">
+      <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-b from-[#3d5a80] via-[#2d4a6f] to-slate-950">
         {/* Animated Background Grid */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
@@ -257,15 +257,15 @@ export default function Home() {
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 z-10">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 backdrop-blur-sm rounded-full border border-blue-500/30">
-                <Sparkles className="w-4 h-4 text-blue-400" />
-                <span className="text-blue-200 text-sm font-medium">Les experts du turbo reconditionné</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#c41e3a]/10 backdrop-blur-sm rounded-full border border-[#c41e3a]/30">
+                <Sparkles className="w-4 h-4 text-[#c41e3a]" />
+                <span className="text-red-200 text-sm font-medium">Les experts du turbo reconditionné</span>
               </div>
 
               <div>
                 <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
                   Turbos et{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1e3a5f] to-[#c41e3a]">
                     Injecteurs
                   </span>
                 </h1>
@@ -275,7 +275,7 @@ export default function Home() {
               </div>
 
               <div className="flex flex-wrap gap-4">
-                <Link href="/produits" className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-full font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition hover:scale-105">
+                <Link href="/produits" className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#1e3a5f] to-[#c41e3a] text-white rounded-full font-semibold hover:shadow-lg hover:shadow-[#c41e3a]/30 transition hover:scale-105">
                   Découvrir nos produits
                   <ArrowUpRight className="w-5 h-5" />
                 </Link>
@@ -305,7 +305,7 @@ export default function Home() {
               {/* Vehicle Finder Card - Glassmorphism */}
               <div className="relative bg-slate-900/50 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 shadow-2xl shadow-blue-500/10">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+                <div className="w-12 h-12 bg-gradient-to-br from-[#1e3a5f] to-[#c41e3a] rounded-xl flex items-center justify-center shadow-lg shadow-[#c41e3a]/30">
                   <Car className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -335,7 +335,7 @@ export default function Home() {
 
                 <Link 
                   href="/produits" 
-                  className="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-gradient-to-r from-[#1e3a5f] to-[#c41e3a] text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[#c41e3a]/30 transition flex items-center justify-center gap-2"
                 >
                   <Search className="w-5 h-5" />
                   Rechercher par marque/modèle
