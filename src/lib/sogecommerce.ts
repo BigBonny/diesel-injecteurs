@@ -81,8 +81,11 @@ export async function createSogecommercePayment(
 
     const data = await response.json();
     
+    // Return the hosted payment page URL instead of formToken
+    const hostedPaymentUrl = `https://payment.sogecommerce.societegenerale.eu/standard-payment/${data.answer.formToken}`;
+    
     return {
-      formToken: data.answer.formToken,
+      formToken: hostedPaymentUrl,
       publicKey,
     };
   } catch (error) {
