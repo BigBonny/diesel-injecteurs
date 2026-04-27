@@ -15,6 +15,20 @@ export async function POST(request: Request) {
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const mode = process.env.NEXT_PUBLIC_SOGECOMMERCE_MODE || 'test';
+    const publicKey = mode === 'test' 
+      ? process.env.SOGECOMMERCE_TEST_PUBLIC_KEY || ''
+      : process.env.SOGECOMMERCE_PROD_PUBLIC_KEY || '';
+    const hmacKey = mode === 'test' 
+      ? process.env.SOGECOMMERCE_TEST_HMAC_KEY || ''
+      : process.env.SOGECOMMERCE_PROD_HMAC_KEY || '';
+
+    console.log('Environment check:', { 
+      mode, 
+      hasPublicKey: !!publicKey, 
+      hasHmacKey: !!hmacKey,
+      baseUrl 
+    });
 
     console.log('Creating Sogecommerce payment with:', { amount, currency, orderId, customerEmail, customerName });
 
