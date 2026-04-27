@@ -61,7 +61,7 @@ export async function createSogecommercePayment(
     notificationUrl: request.notificationURL,
   };
 
-  // Generate signature: HMAC-SHA256 of the JSON body + key
+  // Generate signature: HMAC-SHA256 of the JSON body
   const requestBody = JSON.stringify(paymentRequest);
   const signature = crypto.createHmac('sha256', hmacKey).update(requestBody).digest('hex');
 
@@ -73,8 +73,7 @@ export async function createSogecommercePayment(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': publicKey,
-        'X-Signature': signature,
+        'Authorization': `${publicKey}:${signature}`,
       },
       body: requestBody,
     });
