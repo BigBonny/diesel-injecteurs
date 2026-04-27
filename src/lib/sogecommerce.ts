@@ -36,14 +36,17 @@ export async function createSogecommercePayment(
   // Sogecommerce REST API endpoint
   const apiUrl = 'https://api-sogecommerce.societegenerale.eu/api-payment/V4/Charge/CreatePayment';
 
-  // Build payment request body
+  // Build payment request body according to Sogecommerce V4 API
   const paymentRequest = {
     amount: request.amount,
     currency: request.currency,
     orderId: request.orderId,
     customer: {
       email: request.customerEmail,
-      reference: request.customerName,
+      billingDetails: {
+        firstName: request.customerName.split(' ')[0] || request.customerName,
+        lastName: request.customerName.split(' ').slice(1).join(' ') || '',
+      },
     },
     formToken: {
       action: 'ASK_REGISTER_PAY',
@@ -58,9 +61,9 @@ export async function createSogecommercePayment(
     notificationUrl: request.notificationURL,
   };
 
-  // Generate signature using HMAC-SHA256
-  const signatureString = JSON.stringify(paymentRequest) + hmacKey;
-  const signature = crypto.createHmac('sha256', hmacKey).update(signatureString).digest('hex');
+  // Generate signature: HMAC-SHA256 of the JSON body + key
+  const requestBody = JSON.stringify(paymentRequest);
+  const signature = crypto.createHmac('sha256', hmacKey).update(requestBody).digest('hex');
 
   try {
     const response = await fetch(apiUrl, {
@@ -70,7 +73,7 @@ export async function createSogecommercePayment(
         'Authorization': publicKey,
         'X-Signature': signature,
       },
-      body: JSON.stringify(paymentRequest),
+      body: requestBody,
     });
 
     const responseText = await response.text();
