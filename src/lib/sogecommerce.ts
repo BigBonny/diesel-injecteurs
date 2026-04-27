@@ -38,14 +38,14 @@ export async function createSogecommercePayment(
 
   // Build payment request body according to Sogecommerce V4 API
   const paymentRequest = {
-    amount: request.amount,
+    amount: Math.round(request.amount * 100), // Convert to cents
     currency: request.currency,
     orderId: request.orderId,
     customer: {
       email: request.customerEmail,
       billingDetails: {
         firstName: request.customerName.split(' ')[0] || request.customerName,
-        lastName: request.customerName.split(' ').slice(1).join(' ') || '',
+        lastName: request.customerName.split(' ').slice(1).join(' ') || request.customerName,
       },
     },
     formToken: {
