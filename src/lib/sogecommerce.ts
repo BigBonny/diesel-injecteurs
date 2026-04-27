@@ -31,8 +31,8 @@ export async function createSogecommercePayment(
   const siteId = '56994465';
   const hmacKey = 'zFuFb9QpAMOJJVzv';
   
-  // For Authorization header, use siteId:password format
-  const publicKey = `${siteId}:prodpassword_5Hj3uEVHz0Rgr864dtnrvQ14VNfu0GLyZjWx1Ct1c6SjO`;
+  // For Authorization header, try just the siteId
+  const publicKey = siteId;
 
   // Sogecommerce REST API endpoint
   const apiUrl = 'https://api-sogecommerce.societegenerale.eu/api-payment/V4/Charge/CreatePayment';
