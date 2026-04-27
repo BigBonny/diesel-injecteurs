@@ -52,10 +52,10 @@ export async function createSogecommercePayment(
     vads_url_refused: request.cancelURL,
   };
 
-  // Build signature string: only vads_ parameters with non-empty values, sorted alphabetically, joined with +
+  // Build signature string: only vads_ parameters, sorted by key name (ksort), joined with +
   const vadsKeys = Object.keys(paymentData)
-    .filter(key => key.startsWith('vads_') && paymentData[key] !== '')
-    .sort();
+    .filter(key => key.startsWith('vads_'))
+    .sort(); // Sort by key name (like PHP ksort)
   const signatureString = vadsKeys.map(key => paymentData[key]).join('+') + '+' + hmacKey;
   // Use base64 encoding for SHA-256 (as per PrestaShop module)
   const signature = Buffer.from(crypto.createHmac('sha256', hmacKey).update(signatureString).digest()).toString('base64');
