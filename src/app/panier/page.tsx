@@ -64,9 +64,8 @@ export default function CartPage() {
 
       const data = await response.json();
       
-      // Clear cart and redirect to Sogecommerce payment page
-      clearCart();
-      window.location.href = data.formToken;
+      // Redirect to payment page with formToken and publicKey
+      window.location.href = `/payment?formToken=${encodeURIComponent(data.formToken)}&publicKey=${encodeURIComponent(data.publicKey)}`;
     } catch (error) {
       console.error('Payment error:', error);
       alert('Une erreur est survenue lors de la création du paiement');
