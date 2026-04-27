@@ -62,9 +62,10 @@ export async function createSogecommercePayment(
   // Add signature to payment data
   paymentData.signature = signature;
 
-  console.log('Sogecommerce payment data:', paymentData);
+  console.log('Sogecommerce vads keys:', vadsKeys);
   console.log('Sogecommerce signature string:', signatureString);
   console.log('Sogecommerce signature:', signature);
+  console.log('Sogecommerce hmacKey:', hmacKey);
 
   // Build the hosted payment page URL with query parameters
   // Use the correct Sogecommerce production payment URL
