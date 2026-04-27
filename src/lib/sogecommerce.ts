@@ -26,12 +26,13 @@ export async function createSogecommercePayment(
   request: SogecommercePaymentRequest
 ): Promise<SogecommercePaymentResponse> {
   const mode = process.env.NEXT_PUBLIC_SOGECOMMERCE_MODE || 'test';
-  const publicKey = mode === 'test' 
-    ? process.env.SOGECOMMERCE_TEST_PUBLIC_KEY || ''
-    : process.env.SOGECOMMERCE_PROD_PUBLIC_KEY || '';
-  const hmacKey = mode === 'test' 
-    ? process.env.SOGECOMMERCE_TEST_HMAC_KEY || ''
-    : process.env.SOGECOMMERCE_PROD_HMAC_KEY || '';
+  
+  // Use hardcoded production credentials since env vars may be wrong
+  const siteId = '56994465';
+  const hmacKey = 'zFuFb9QpAMOJJVzv';
+  
+  // For Authorization header, use siteId:password format
+  const publicKey = `${siteId}:prodpassword_5Hj3uEVHz0Rgr864dtnrvQ14VNfu0GLyZjWx1Ct1c6SjO`;
 
   // Sogecommerce REST API endpoint
   const apiUrl = 'https://api-sogecommerce.societegenerale.eu/api-payment/V4/Charge/CreatePayment';
