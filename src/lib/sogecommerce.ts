@@ -57,7 +57,8 @@ export async function createSogecommercePayment(
     .filter(key => key.startsWith('vads_'))
     .sort();
   const signatureString = vadsKeys.map(key => paymentData[key]).join('+') + '+' + hmacKey;
-  const signature = crypto.createHmac('sha256', hmacKey).update(signatureString).digest('hex');
+  // Try SHA-1 algorithm (some Sogecommerce implementations use SHA-1)
+  const signature = crypto.createHmac('sha1', hmacKey).update(signatureString).digest('hex');
 
   // Add signature to payment data
   paymentData.signature = signature;
