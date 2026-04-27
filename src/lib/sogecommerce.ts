@@ -65,6 +65,9 @@ export async function createSogecommercePayment(
   const requestBody = JSON.stringify(paymentRequest);
   const signature = crypto.createHmac('sha256', hmacKey).update(requestBody).digest('hex');
 
+  console.log('Sogecommerce request body:', requestBody);
+  console.log('Sogecommerce signature:', signature);
+
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',
