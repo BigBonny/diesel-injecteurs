@@ -25,14 +25,14 @@ export interface SogecommerceNotification {
 export async function createSogecommercePayment(
   request: SogecommercePaymentRequest
 ): Promise<SogecommercePaymentResponse> {
-  // Use test credentials from Sogecommerce Back Office
+  // Use production credentials from Sogecommerce Back Office
   const siteId = '56994465';
-  const hmacKey = '5gWnZKbf8HCOnndO'; // Test key
+  const hmacKey = 'zFuFb9QpAMOJJVzv'; // Production key
 
   // Build payment parameters for Sogecommerce hosted payment page
   const paymentData: Record<string, string> = {
     vads_site_id: siteId,
-    vads_ctx_mode: 'TEST',
+    vads_ctx_mode: 'PRODUCTION',
     vads_trans_id: request.orderId.slice(-6), // Last 6 chars of order ID
     vads_trans_date: new Date().toISOString().replace(/[-:T.Z]/g, '').slice(0, 14),
     vads_amount: Math.round(request.amount * 100).toString(), // Convert to cents
@@ -65,8 +65,8 @@ export async function createSogecommercePayment(
   console.log('Sogecommerce signature:', signature);
 
   // Build the hosted payment page URL with query parameters
-  // Use the Sogecommerce test payment URL
-  const baseUrl = 'https://secure.sogecommerce.societegenerale.eu/vads-payment/';
+  // Use the correct Sogecommerce production payment URL
+  const baseUrl = 'https://sogecommerce.societegenerale.eu/vads-payment/';
   const queryParams = new URLSearchParams(paymentData).toString();
   const paymentUrl = `${baseUrl}?${queryParams}`;
 
