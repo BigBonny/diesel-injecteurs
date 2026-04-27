@@ -52,9 +52,11 @@ export async function createSogecommercePayment(
     vads_url_refused: request.cancelURL,
   };
 
-  // Sort parameters alphabetically and build signature string
-  const sortedKeys = Object.keys(paymentData).sort();
-  const signatureString = sortedKeys.map(key => paymentData[key]).join('+') + '+' + hmacKey;
+  // Build signature string: only vads_ parameters, sorted alphabetically, joined with +
+  const vadsKeys = Object.keys(paymentData)
+    .filter(key => key.startsWith('vads_'))
+    .sort();
+  const signatureString = vadsKeys.map(key => paymentData[key]).join('+') + '+' + hmacKey;
   const signature = crypto.createHmac('sha256', hmacKey).update(signatureString).digest('hex');
 
   // Add signature to payment data
