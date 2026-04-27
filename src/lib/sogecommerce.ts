@@ -73,7 +73,8 @@ export async function createSogecommercePayment(
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `${publicKey}:${signature}`,
+        'Authorization': publicKey,
+        'X-Signature': signature,
       },
       body: requestBody,
     });
