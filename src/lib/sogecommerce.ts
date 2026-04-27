@@ -73,15 +73,23 @@ export async function createSogecommercePayment(
       body: JSON.stringify(paymentRequest),
     });
 
+    const responseText = await response.text();
+    console.log('Sogecommerce API raw response:', responseText);
+
     if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Sogecommerce API error:', errorText);
-      throw new Error(`Sogecommerce API error: ${response.status} - ${errorText}`);
+      console.error('Sogecommerce API error:', responseText);
+      throw new Error(`Sogecommerce API error: ${response.status} - ${responseText}`);
     }
 
-    const data = await response.json();
+    const data = JSON.parse(responseText);
+    console.log('Sogecommerce API parsed response:', JSON.stringify(data, null, 2));
     
     // Return the formToken for embedded payment
+    if (!data.answer || !data.answer.formToken) {
+      console.error('Invalid response structure:', data);
+      throw new Error('No formToken in Sogecommerce response');
+    }
+    
     return {
       formToken: data.answer.formToken,
       publicKey,
