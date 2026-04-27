@@ -61,35 +61,24 @@ export async function createSogecommercePayment(
     notificationUrl: request.notificationURL,
   };
 
-  // Convert to form-urlencoded format
-  const formData = new URLSearchParams();
-  formData.append('amount', paymentRequest.amount.toString());
-  formData.append('currency', paymentRequest.currency);
-  formData.append('orderId', paymentRequest.orderId);
-  formData.append('customer[email]', paymentRequest.customer.email);
-  formData.append('customer[billingDetails][firstName]', paymentRequest.customer.billingDetails.firstName);
-  formData.append('customer[billingDetails][lastName]', paymentRequest.customer.billingDetails.lastName);
-  formData.append('formToken[action]', paymentRequest.formToken.action);
-  formData.append('transactionOptions[cardOptions][paymentMode]', paymentRequest.transactionOptions.cardOptions.paymentMode);
-  formData.append('returnUrl', paymentRequest.returnUrl);
-  formData.append('cancelUrl', paymentRequest.cancelUrl);
-  formData.append('notificationUrl', paymentRequest.notificationUrl);
+  // Generate signature: HMAC-SHA256 of the JSON body
+  const requestBody = JSON.stringify(paymentRequest);
+  const signature = crypto.createHmac('sha256', hmacKey).update(requestBody).digest('hex');
 
-  // Generate signature: HMAC-SHA256 of the form data
-  const signature = crypto.createHmac('sha256', hmacKey).update(formData.toString()).digest('hex');
-
-  console.log('Sogecommerce request body:', formData.toString());
+  console.log('Sogecommerce request body:', requestBody);
   console.log('Sogecommerce signature:', signature);
+  console.log('Sogecommerce publicKey:', publicKey);
+  console.log('Sogecommerce hmacKey length:', hmacKey.length);
 
   try {
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
         'Authorization': publicKey,
         'X-Signature': signature,
       },
-      body: formData.toString(),
+      body: requestBody,
     });
 
     const responseText = await response.text();
