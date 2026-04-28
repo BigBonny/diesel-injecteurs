@@ -23,22 +23,22 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="bg-[#3d5a80]/95 backdrop-blur-xl border-b border-white/10 z-[60] transition-all duration-500 ease-in-out">
+      <nav className="bg-[#fbbf24]/95 backdrop-blur-xl border-b border-white/10 z-[60] transition-all duration-500 ease-in-out">
         {/* Top Bar - Contact Info */}
-        <div className="bg-gradient-to-r from-[#3d5a80] to-[#4d6a90] border-b border-white/5">
+        <div className="bg-gradient-to-r from-[#1e3a5f] to-[#2d4a6f] border-b border-white/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center py-2 text-xs">
-              <div className="flex items-center gap-6 text-gray-400">
+              <div className="flex items-center gap-6 text-gray-300">
                 <a href="tel:+33612429880" className="flex items-center gap-2 hover:text-white transition">
                   <Phone className="w-3 h-3" />
                   <span>+33 6 12 42 98 80</span>
                 </a>
-                <span className="hidden sm:inline text-[#c41e3a]">|</span>
-                <span className="hidden sm:inline">Livraison 24-48h • Garantie 2 ans</span>
+                <span className="hidden sm:inline text-gray-400">|</span>
+                <span className="hidden sm:inline text-gray-300">Livraison 24-48h • Garantie 2 ans</span>
               </div>
-              <div className="flex items-center gap-4 text-gray-400">
+              <div className="flex items-center gap-4 text-gray-300">
                 <span className="flex items-center gap-1">
-                  <span className="w-2 h-2 bg-[#c41e3a] rounded-full animate-pulse" />
+                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                   <span>En ligne</span>
                 </span>
               </div>
@@ -84,7 +84,7 @@ export default function Navigation() {
                   {item.hasDropdown ? (
                     <button
                       onClick={() => setActiveDropdown(activeDropdown === item.category ? null : item.category)}
-                      className="relative px-4 py-2 text-sm text-gray-300 hover:text-white font-medium transition group flex items-center gap-1"
+                      className="relative px-4 py-2 text-sm text-gray-900 hover:text-gray-700 font-bold transition group flex items-center gap-1"
                     >
                       <span className="relative z-10">{item.name}</span>
                       <ChevronDown className="w-4 h-4" />
@@ -93,7 +93,7 @@ export default function Navigation() {
                   ) : (
                     <Link
                       href={item.href}
-                      className="relative px-4 py-2 text-sm text-gray-300 hover:text-white font-medium transition group flex items-center gap-1"
+                      className="relative px-4 py-2 text-sm text-gray-900 hover:text-gray-700 font-bold transition group flex items-center gap-1"
                     >
                       <span className="relative z-10">{item.name}</span>
                       <div className="absolute inset-0 bg-white/5 rounded-lg scale-0 group-hover:scale-100 transition-transform" />
@@ -158,13 +158,13 @@ export default function Navigation() {
               {/* Search Toggle */}
               <button 
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="p-2.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-xl transition relative z-[70]"
+                className="p-2.5 text-gray-900 hover:text-gray-700 hover:bg-black/10 rounded-xl transition relative z-[70]"
               >
                 <Search className="w-5 h-5" />
               </button>
 
               {/* Account */}
-              <button className="hidden sm:flex p-2.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-xl transition">
+              <button className="hidden sm:flex p-2.5 text-gray-900 hover:text-gray-700 hover:bg-black/10 rounded-xl transition">
                 <User className="w-5 h-5" />
               </button>
 
@@ -183,7 +183,7 @@ export default function Navigation() {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="lg:hidden p-2.5 text-gray-400 hover:text-white hover:bg-white/10 rounded-xl transition relative z-[70]"
+                className="lg:hidden p-2.5 text-gray-900 hover:text-gray-700 hover:bg-black/10 rounded-xl transition relative z-[70]"
               >
                 {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>

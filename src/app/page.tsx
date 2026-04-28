@@ -137,7 +137,7 @@ export default function Home() {
       <Navigation />
 
       {/* Hero Section - 3D Animated */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-b from-[#3d5a80] via-[#2d4a6f] to-slate-950">
+      <section className="relative min-h-screen flex items-center overflow-hidden bg-white">
         {/* Animated Background Grid */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
@@ -238,48 +238,48 @@ export default function Home() {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
           {/* Background Images - Split Left and Right */}
-          <div className="absolute left-0 -top-10 w-[600px] h-[600px] opacity-40 pointer-events-none z-0 hidden lg:block">
+          <div className="absolute left-0 -top-10 w-[600px] h-[600px] opacity-30 pointer-events-none z-0 hidden lg:block">
             <img 
-              src="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&h=800&fit=crop" 
+              src="/assets/turbo.png" 
               alt="Turbo Diesel" 
-              className="w-full h-full object-cover rounded-3xl"
+              className="w-full h-full object-contain rounded-3xl"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-950/50 to-slate-950 rounded-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-white rounded-3xl" />
           </div>
-          <div className="absolute -right-70 top-32 w-[500px] h-[500px] opacity-35 pointer-events-none z-0 hidden lg:block">
+          <div className="absolute -right-70 top-32 w-[500px] h-[500px] opacity-25 pointer-events-none z-0 hidden lg:block">
             <img 
-              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=800&fit=crop" 
-              alt="Moteur Diesel" 
-              className="w-full h-full object-cover rounded-3xl"
+              src="/assets/injecteur.png" 
+              alt="Injecteur Diesel" 
+              className="w-full h-full object-contain rounded-3xl"
             />
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-slate-950/50 to-slate-950 rounded-3xl" />
+            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-white/50 to-white rounded-3xl" />
           </div>
 
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-8 z-10">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#c41e3a]/10 backdrop-blur-sm rounded-full border border-[#c41e3a]/30">
-                <Sparkles className="w-4 h-4 text-[#c41e3a]" />
-                <span className="text-red-200 text-sm font-medium">Les experts du turbo reconditionné</span>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 backdrop-blur-sm rounded-full border border-yellow-400/50">
+                <Sparkles className="w-4 h-4 text-yellow-600" />
+                <span className="text-gray-800 text-sm font-medium">Les experts du turbo reconditionné</span>
               </div>
 
               <div>
-                <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
+                <h1 className="text-5xl md:text-7xl font-bold text-gray-900 leading-tight">
                   Turbos et{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#1e3a5f] to-[#c41e3a]">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fbbf24] to-[#f59e0b]">
                     Injecteurs
                   </span>
                 </h1>
-                <p className="text-xl text-slate-400 mt-6 max-w-lg">
+                <p className="text-xl text-gray-600 mt-6 max-w-lg">
                   Solution fiable et rapide pour votre moteur diesel avec nos injecteurs Bosch, Delphi, Siemens et Denso. Qualité garantie et performance optimale.
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-4">
-                <Link href="/produits" className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#1e3a5f] to-[#c41e3a] text-white rounded-full font-semibold hover:shadow-lg hover:shadow-[#c41e3a]/30 transition hover:scale-105">
+                <Link href="/produits" className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] text-gray-900 rounded-full font-semibold hover:shadow-lg hover:shadow-yellow-500/30 transition hover:scale-105">
                   Découvrir nos produits
                   <ArrowUpRight className="w-5 h-5" />
                 </Link>
-                <a href="#quick-finder" className="inline-flex items-center gap-2 px-8 py-4 bg-slate-800/50 text-white rounded-full font-semibold hover:bg-slate-800 transition backdrop-blur-sm border border-slate-700">
+                <a href="#quick-finder" className="inline-flex items-center gap-2 px-8 py-4 bg-gray-100 text-gray-900 rounded-full font-semibold hover:bg-gray-200 transition border border-gray-300">
                   <Search className="w-5 h-5" />
                   Trouver ma pièce
                 </a>
@@ -293,8 +293,8 @@ export default function Home() {
                   { value: '24h', label: 'Livraison' },
                 ].map((stat, i) => (
                   <div key={i} className="text-center">
-                    <div className="text-2xl font-bold text-white">{stat.value}</div>
-                    <div className="text-sm text-slate-500">{stat.label}</div>
+                    <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+                    <div className="text-sm text-gray-500">{stat.label}</div>
                   </div>
                 ))}
               </div>
@@ -302,22 +302,22 @@ export default function Home() {
 
             {/* Right Side - Vehicle Finder */}
             <div className="relative">
-              {/* Vehicle Finder Card - Glassmorphism */}
-              <div className="relative bg-slate-900/50 backdrop-blur-xl rounded-3xl p-8 border border-slate-700/50 shadow-2xl shadow-blue-500/10">
+              {/* Vehicle Finder Card - Clean Design for White Background */}
+              <div className="relative bg-white rounded-3xl p-8 border border-gray-200 shadow-2xl shadow-gray-200/50">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#1e3a5f] to-[#c41e3a] rounded-xl flex items-center justify-center shadow-lg shadow-[#c41e3a]/30">
-                  <Car className="w-6 h-6 text-white" />
+                <div className="w-12 h-12 bg-gradient-to-br from-[#fbbf24] to-[#f59e0b] rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/30">
+                  <Car className="w-6 h-6 text-gray-900" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">Trouver votre pièce</h3>
-                  <p className="text-slate-400 text-sm">Sélectionnez votre véhicule</p>
+                  <h3 className="text-xl font-bold text-gray-900">Trouver votre pièce</h3>
+                  <p className="text-gray-500 text-sm">Sélectionnez votre véhicule</p>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div className="text-center mb-4">
-                  <p className="text-white font-medium mb-2">SÉLECTIONNER VOTRE VÉHICULE :</p>
-                  <p className="text-slate-400 text-sm">Saisissez votre plaque d&apos;immatriculation</p>
+                  <p className="text-gray-900 font-medium mb-2">SÉLECTIONNER VOTRE VÉHICULE :</p>
+                  <p className="text-gray-500 text-sm">Saisissez votre plaque d&apos;immatriculation</p>
                 </div>
 
                 <input 
@@ -326,16 +326,16 @@ export default function Home() {
                   onChange={(e) => setLicensePlate(e.target.value.toUpperCase())}
                   placeholder="AB-123-CD"
                   maxLength={9}
-                  className="w-full px-4 py-4 bg-slate-800/50 border border-slate-700 rounded-xl text-white text-center text-2xl font-bold tracking-wider placeholder-slate-500 focus:bg-slate-800 focus:border-blue-500 transition uppercase"
+                  className="w-full px-4 py-4 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 text-center text-2xl font-bold tracking-wider placeholder-gray-400 focus:bg-white focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 transition uppercase"
                 />
 
                 <div className="text-center">
-                  <span className="text-slate-400 text-sm">OU</span>
+                  <span className="text-gray-400 text-sm">OU</span>
                 </div>
 
                 <Link 
                   href="/produits" 
-                  className="w-full py-4 bg-gradient-to-r from-[#1e3a5f] to-[#c41e3a] text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-[#c41e3a]/30 transition flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] text-gray-900 rounded-xl font-semibold hover:shadow-lg hover:shadow-yellow-500/30 transition flex items-center justify-center gap-2"
                 >
                   <Search className="w-5 h-5" />
                   Rechercher par marque/modèle
