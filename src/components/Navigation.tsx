@@ -43,12 +43,12 @@ export default function Navigation() {
         </div>
 
         {/* Logo Section - Full Width */}
-        <div className="w-full flex justify-start py-1 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="w-full flex justify-start py-0 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <Link href="/" className="group block">
             <img 
-              src="/images/newLogo.png" 
+              src="/images/newLogo.svg" 
               alt="Injection Diesel Logo" 
-              style={{ width: '500px', height: '350px', maxWidth: '90vw', transform: 'scaleX(1.2)' }}
+              style={{ width: '400px', height: '250px', maxWidth: '90vw', transform: 'scaleX(1.2)' }}
             />
           </Link>
         </div>
