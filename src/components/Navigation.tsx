@@ -44,11 +44,11 @@ export default function Navigation() {
 
         {/* Logo Section - Full Width */}
         <div className="w-full flex justify-start py-0 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <Link href="/" className="group block">
+          <Link href="/" className="group block w-full max-w-[400px]">
             <img 
               src="/images/newLogo.svg" 
               alt="Injection Diesel Logo" 
-              style={{ width: '400px', height: '250px', maxWidth: '90vw', transform: 'scaleX(1.2)' }}
+              className="w-full h-auto max-h-[180px] sm:max-h-[250px] object-contain"
             />
           </Link>
         </div>
@@ -211,7 +211,7 @@ export default function Navigation() {
 
       {/* Mobile Menu - Slide in from right */}
       <div 
-        className={`lg:hidden fixed inset-0 z-[100] transition-all duration-300 ${
+        className={`lg:hidden fixed inset-0 z-[10000] transition-all duration-300 ${
           isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
