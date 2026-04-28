@@ -299,7 +299,7 @@ function ProductsContent() {
       <Navigation />
 
       {/* Hero Search Banner */}
-      <div className="bg-gradient-to-r from-slate-900 to-slate-800 py-12">
+      <div className="bg-gradient-to-r from-[#fbbf24] via-[#2d4a6f] to-slate-900 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-6">Nos Produits</h1>
           <div className="relative max-w-2xl">

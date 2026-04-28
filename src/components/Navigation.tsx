@@ -23,46 +23,38 @@ export default function Navigation() {
 
   return (
     <>
-      <nav className="bg-[#fbbf24]/95 backdrop-blur-xl border-b border-white/10 z-[60] transition-all duration-500 ease-in-out">
+      <nav className="bg-[#fbbf24]/95 backdrop-blur-xl border-b border-white/10 z-[9999] transition-all duration-500 ease-in-out relative">
         {/* Top Bar - Contact Info */}
         <div className="bg-gradient-to-r from-[#1e3a5f] to-[#2d4a6f] border-b border-white/5">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center py-2 text-xs">
-              <div className="flex items-center gap-6 text-gray-300">
+              <div className="text-gray-300">
+                <span>Bienvenue sur Diesel-injecteurs.com</span>
+              </div>
+              <div className="flex items-center gap-2 text-gray-300">
+                <span className="text-gray-400">|</span>
                 <a href="tel:+33612429880" className="flex items-center gap-2 hover:text-white transition">
                   <Phone className="w-3 h-3" />
-                  <span>+33 6 12 42 98 80</span>
+                  <span>Appelez-nous : +33 6 12 42 98 80</span>
                 </a>
-                <span className="hidden sm:inline text-gray-400">|</span>
-                <span className="hidden sm:inline text-gray-300">Livraison 24-48h • Garantie 2 ans</span>
-              </div>
-              <div className="flex items-center gap-4 text-gray-300">
-                <span className="flex items-center gap-1">
-                  <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                  <span>En ligne</span>
-                </span>
               </div>
             </div>
           </div>
         </div>
 
+        {/* Logo Section - Full Width */}
+        <div className="w-full flex justify-start py-1 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <Link href="/" className="group block">
+            <img 
+              src="/images/newLogo.png" 
+              alt="Injection Diesel Logo" 
+              style={{ width: '500px', height: '350px', maxWidth: '90vw', transform: 'scaleX(1.2)' }}
+            />
+          </Link>
+        </div>
+
         {/* Main Navigation - Stacked Layout */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          {/* Top Row - Logo Above Navigation */}
-          <div className="flex justify-center mb-2">
-            <Link href="/" className="group ml-[-50px] lg:ml-[-900px]">
-              <div className="relative w-40 h-40 flex items-center justify-center">
-                <Image 
-                  src="/images/newLogo.png" 
-                  alt="Injection Diesel Logo" 
-                  width={600} 
-                  height={600} 
-                  className="w-full h-full object-contain scale-150"
-                />
-              </div>
-            </Link>
-          </div>
-
           {/* Bottom Row - Navigation Tabs & Actions */}
           <div className="flex justify-between items-center">
             {/* Desktop Navigation - Tabs */}
@@ -102,44 +94,44 @@ export default function Navigation() {
                   
                   {/* Dropdown Menu */}
                   {item.hasDropdown && activeDropdown === item.category && (
-                    <div className="absolute top-full left-0 mt-1 w-64 bg-slate-900 border border-white/10 rounded-xl shadow-2xl overflow-hidden">
+                    <div className="absolute top-full left-0 mt-1 w-64 bg-white border border-gray-200 rounded-xl shadow-2xl overflow-hidden z-[100]">
                       <div className="p-4">
-                        <p className="text-xs text-gray-400 mb-3 uppercase tracking-wider">Par marque</p>
+                        <p className="text-xs text-gray-500 mb-3 uppercase tracking-wider font-semibold">Par marque</p>
                         <div className="space-y-2">
                           {item.category === 'turbos' && (
                             <>
-                              <Link href={`/produits?category=turbos&brand=Renault`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Renault</Link>
-                              <Link href={`/produits?category=turbos&brand=Peugeot`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Peugeot</Link>
-                              <Link href={`/produits?category=turbos&brand=Citroën`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Citroën</Link>
-                              <Link href={`/produits?category=turbos&brand=Volkswagen`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Volkswagen</Link>
-                              <Link href={`/produits?category=turbos&brand=BMW`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">BMW</Link>
-                              <Link href={`/produits?category=turbos&brand=Mercedes`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Mercedes</Link>
-                              <Link href={`/produits?category=turbos&brand=Audi`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Audi</Link>
-                              <Link href={`/produits?category=turbos&brand=Ford`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Ford</Link>
-                              <Link href={`/produits?category=turbos&brand=Opel`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Opel</Link>
+                              <Link href={`/produits?category=turbos&brand=Renault`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Renault</Link>
+                              <Link href={`/produits?category=turbos&brand=Peugeot`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Peugeot</Link>
+                              <Link href={`/produits?category=turbos&brand=Citroën`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Citroën</Link>
+                              <Link href={`/produits?category=turbos&brand=Volkswagen`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Volkswagen</Link>
+                              <Link href={`/produits?category=turbos&brand=BMW`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">BMW</Link>
+                              <Link href={`/produits?category=turbos&brand=Mercedes`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Mercedes</Link>
+                              <Link href={`/produits?category=turbos&brand=Audi`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Audi</Link>
+                              <Link href={`/produits?category=turbos&brand=Ford`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Ford</Link>
+                              <Link href={`/produits?category=turbos&brand=Opel`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Opel</Link>
                             </>
                           )}
                           {item.category === 'injecteurs' && (
                             <>
-                              <Link href={`/produits?category=injecteurs&brand=Renault`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Renault</Link>
-                              <Link href={`/produits?category=injecteurs&brand=Peugeot`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Peugeot</Link>
-                              <Link href={`/produits?category=injecteurs&brand=Citroën`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Citroën</Link>
-                              <Link href={`/produits?category=injecteurs&brand=Volkswagen`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Volkswagen</Link>
-                              <Link href={`/produits?category=injecteurs&brand=BMW`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">BMW</Link>
-                              <Link href={`/produits?category=injecteurs&brand=Mercedes`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Mercedes</Link>
-                              <Link href={`/produits?category=injecteurs&brand=Ford`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Ford</Link>
+                              <Link href={`/produits?category=injecteurs&brand=Renault`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Renault</Link>
+                              <Link href={`/produits?category=injecteurs&brand=Peugeot`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Peugeot</Link>
+                              <Link href={`/produits?category=injecteurs&brand=Citroën`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Citroën</Link>
+                              <Link href={`/produits?category=injecteurs&brand=Volkswagen`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Volkswagen</Link>
+                              <Link href={`/produits?category=injecteurs&brand=BMW`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">BMW</Link>
+                              <Link href={`/produits?category=injecteurs&brand=Mercedes`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Mercedes</Link>
+                              <Link href={`/produits?category=injecteurs&brand=Ford`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Ford</Link>
                             </>
                           )}
                           {item.category === 'kit-turbo-chra' && (
                             <>
-                              <Link href={`/produits?category=kit-turbo-chra&brand=Renault`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Renault</Link>
-                              <Link href={`/produits?category=kit-turbo-chra&brand=Peugeot`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Peugeot</Link>
-                              <Link href={`/produits?category=kit-turbo-chra&brand=Citroën`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Citroën</Link>
-                              <Link href={`/produits?category=kit-turbo-chra&brand=Audi`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Audi</Link>
-                              <Link href={`/produits?category=kit-turbo-chra&brand=BMW`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">BMW</Link>
-                              <Link href={`/produits?category=kit-turbo-chra&brand=Mercedes`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Mercedes</Link>
-                              <Link href={`/produits?category=kit-turbo-chra&brand=Volkswagen`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Volkswagen</Link>
-                              <Link href={`/produits?category=kit-turbo-chra&brand=Ford`} className="block px-3 py-2 text-sm text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition">Ford</Link>
+                              <Link href={`/produits?category=kit-turbo-chra&brand=Renault`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Renault</Link>
+                              <Link href={`/produits?category=kit-turbo-chra&brand=Peugeot`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Peugeot</Link>
+                              <Link href={`/produits?category=kit-turbo-chra&brand=Citroën`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Citroën</Link>
+                              <Link href={`/produits?category=kit-turbo-chra&brand=Audi`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Audi</Link>
+                              <Link href={`/produits?category=kit-turbo-chra&brand=BMW`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">BMW</Link>
+                              <Link href={`/produits?category=kit-turbo-chra&brand=Mercedes`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Mercedes</Link>
+                              <Link href={`/produits?category=kit-turbo-chra&brand=Volkswagen`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Volkswagen</Link>
+                              <Link href={`/produits?category=kit-turbo-chra&brand=Ford`} className="block px-3 py-2 text-sm text-gray-700 hover:text-gray-900 hover:bg-yellow-50 rounded-lg transition">Ford</Link>
                             </>
                           )}
                         </div>
@@ -193,7 +185,7 @@ export default function Navigation() {
 
         {/* Search Bar - Expandable */}
         <div className={`overflow-hidden transition-all duration-300 ${isSearchOpen ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}`}>
-          <div className="border-t border-white/10 bg-slate-900/50">
+          <div className="border-t border-gray-200 bg-white">
             <div className="max-w-3xl mx-auto px-4 py-3">
               <div className="relative">
                 <input
@@ -201,15 +193,14 @@ export default function Navigation() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Rechercher une pièce (ex: Turbo Clio 3...)"
-                  className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/20 rounded-xl text-white placeholder-gray-500 focus:bg-white/10 focus:border-blue-500 transition"
-                  autoFocus={isSearchOpen}
+                  className="w-full pl-12 pr-24 py-3 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:bg-white focus:border-yellow-500 transition"
                 />
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-500" />
                 <Link 
                   href={searchQuery ? `/produits?search=${encodeURIComponent(searchQuery)}` : '/produits'}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition flex items-center gap-2"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-yellow-500 text-gray-900 rounded-lg text-sm font-bold hover:bg-yellow-400 transition"
                 >
-                  <span className="text-sm">Rechercher</span>
+                  Rechercher
                 </Link>
               </div>
             </div>
