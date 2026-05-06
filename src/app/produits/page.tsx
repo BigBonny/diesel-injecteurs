@@ -299,7 +299,7 @@ function ProductsContent() {
       <Navigation />
 
       {/* Hero Search Banner */}
-      <div className="bg-gradient-to-r from-[#fbbf24] via-[#2d4a6f] to-slate-900 py-12">
+      <div className="bg-[#1e2a4a] py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-6">Nos Produits</h1>
           <div className="relative max-w-2xl">
@@ -308,7 +308,7 @@ function ProductsContent() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Rechercher un produit, une marque, un modèle..."
-              className="w-full pl-12 pr-4 py-4 bg-white rounded-xl text-slate-900 placeholder-slate-500 focus:ring-4 focus:ring-blue-500/30 transition border border-slate-200"
+              className="w-full pl-12 pr-4 py-4 bg-white rounded-xl text-slate-900 placeholder-slate-500 focus:ring-4 focus:ring-yellow-400/30 transition border border-slate-200"
             />
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             {searchQuery && (
@@ -335,7 +335,7 @@ function ProductsContent() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-blue-500 transition md:hidden"
+              className="flex items-center gap-2 px-4 py-2 bg-white rounded-lg border border-slate-200 hover:border-yellow-400 transition md:hidden"
             >
               <SlidersHorizontal className="w-4 h-4" />
               Filtres
@@ -351,7 +351,7 @@ function ProductsContent() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="appearance-none px-4 py-2 pr-10 bg-white rounded-lg border border-slate-200 hover:border-blue-500 transition cursor-pointer text-slate-900"
+                className="appearance-none px-4 py-2 pr-10 bg-white rounded-lg border border-slate-200 hover:border-yellow-400 transition cursor-pointer text-slate-900"
               >
                 {sortOptions.map(opt => (
                   <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -364,13 +364,13 @@ function ProductsContent() {
             <div className="flex bg-white rounded-lg border border-slate-200 p-1">
               <button
                 onClick={() => setViewMode('grid')}
-                className={`p-2 rounded ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`p-2 rounded ${viewMode === 'grid' ? 'bg-yellow-100 text-yellow-700' : 'text-slate-600 hover:text-slate-900'}`}
               >
                 <Grid3X3 className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setViewMode('list')}
-                className={`p-2 rounded ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-slate-600 hover:text-slate-900'}`}
+                className={`p-2 rounded ${viewMode === 'list' ? 'bg-yellow-100 text-yellow-700' : 'text-slate-600 hover:text-slate-900'}`}
               >
                 <List className="w-4 h-4" />
               </button>
@@ -396,7 +396,7 @@ function ProductsContent() {
                 <div className="space-y-2 max-h-48 overflow-y-auto">
                   {brands.map(brand => (
                     <label key={brand} className="flex items-center gap-3 cursor-pointer group">
-                      <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition ${selectedBrand === brand ? 'bg-blue-600 border-blue-600' : 'border-slate-300 group-hover:border-blue-400'}`}>
+                      <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition ${selectedBrand === brand ? 'bg-yellow-400 border-yellow-400' : 'border-slate-300 group-hover:border-yellow-400'}`}>
                         {selectedBrand === brand && <Check className="w-3 h-3 text-white" />}
                       </div>
                       <input
@@ -407,7 +407,7 @@ function ProductsContent() {
                         onChange={() => router.push(`/produits?category=${selectedCategory}&brand=${brand}`)}
                         className="hidden"
                       />
-                      <span className={`text-sm ${selectedBrand === brand ? 'text-blue-600 font-medium' : 'text-gray-600'}`}>{brand}</span>
+                      <span className={`text-sm ${selectedBrand === brand ? 'text-yellow-700 font-medium' : 'text-gray-600'}`}>{brand}</span>
                     </label>
                   ))}
                 </div>
@@ -420,7 +420,7 @@ function ProductsContent() {
                   <div className="space-y-2 max-h-48 overflow-y-auto">
                     {modelsForSelectedBrand.map(model => (
                       <label key={model} className="flex items-center gap-3 cursor-pointer group">
-                        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition ${selectedCategory === model ? 'bg-blue-600 border-blue-600' : 'border-slate-300 group-hover:border-blue-400'}`}>
+                        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition ${selectedCategory === model ? 'bg-yellow-400 border-yellow-400' : 'border-slate-300 group-hover:border-yellow-400'}`}>
                           {selectedCategory === model && <Check className="w-3 h-3 text-white" />}
                         </div>
                         <input
@@ -431,7 +431,7 @@ function ProductsContent() {
                           onChange={() => router.push(`/produits?category=${model}&brand=${selectedBrand}`)}
                           className="hidden"
                         />
-                        <span className={`text-sm ${selectedCategory === model ? 'text-blue-600 font-medium' : 'text-gray-600'}`}>{model}</span>
+                        <span className={`text-sm ${selectedCategory === model ? 'text-yellow-700 font-medium' : 'text-gray-600'}`}>{model}</span>
                       </label>
                     ))}
                   </div>
@@ -468,7 +468,7 @@ function ProductsContent() {
                   setPriceRange({ min: 0, max: 1000 });
                   setSearchQuery('');
                 }}
-                className="w-full py-2 text-blue-600 border border-blue-600 rounded-lg hover:bg-slate-50 transition text-sm font-medium"
+                className="w-full py-2 text-[#1e2a4a] border border-yellow-400 rounded-lg hover:bg-yellow-50 transition text-sm font-medium"
               >
                 Réinitialiser les filtres
               </button>
@@ -479,7 +479,7 @@ function ProductsContent() {
           <div className="flex-1">
             {loading ? (
               <div className="flex items-center justify-center py-16">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
               </div>
             ) : filteredProducts.length === 0 ? (
               <div className="text-center py-16">
@@ -494,7 +494,7 @@ function ProductsContent() {
                     setPriceRange({ min: 0, max: 1000 });
                     setSearchQuery('');
                   }}
-                  className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                  className="px-6 py-3 bg-yellow-400 text-[#1e2a4a] rounded-lg hover:bg-yellow-300 transition"
                 >
                   Réinitialiser les filtres
                 </button>
@@ -504,7 +504,7 @@ function ProductsContent() {
                 {/* Loading State */}
                 {loading && (
                   <div className="flex flex-col items-center justify-center py-20">
-                    <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+                    <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mb-4"></div>
                     <p className="text-slate-600">Chargement des produits...</p>
                     <p className="text-sm text-slate-500 mt-2">Premier chargement peut prendre quelques secondes</p>
                   </div>
@@ -521,13 +521,13 @@ function ProductsContent() {
                     <h2 className="text-xl font-bold text-slate-900 mb-2">Sélectionnez une catégorie</h2>
                     <p className="text-slate-600 mb-4">Utilisez le menu de navigation pour choisir entre Turbos, Injecteurs ou Kit CHRA</p>
                     <div className="flex gap-4">
-                      <Link href="/produits?category=turbos" className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                      <Link href="/produits?category=turbos" className="px-6 py-3 bg-yellow-400 text-[#1e2a4a] rounded-lg hover:bg-yellow-300 transition font-semibold">
                         Turbos
                       </Link>
-                      <Link href="/produits?category=injecteurs" className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                      <Link href="/produits?category=injecteurs" className="px-6 py-3 bg-yellow-400 text-[#1e2a4a] rounded-lg hover:bg-yellow-300 transition font-semibold">
                         Injecteurs
                       </Link>
-                      <Link href="/produits?category=kit-turbo-chra" className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                      <Link href="/produits?category=kit-turbo-chra" className="px-6 py-3 bg-yellow-400 text-[#1e2a4a] rounded-lg hover:bg-yellow-300 transition font-semibold">
                         Kit CHRA
                       </Link>
                     </div>
@@ -581,7 +581,7 @@ function ProductsContent() {
                         {/* Content */}
                         <div className="p-5 flex-1 flex flex-col">
                           <Link href={getProductUrl(product)}>
-                            <h3 className="font-bold text-gray-900 mb-1 hover:text-blue-600 transition line-clamp-2">{product.name}</h3>
+                            <h3 className="font-bold text-gray-900 mb-1 hover:text-yellow-600 transition line-clamp-2">{product.name}</h3>
                           </Link>
                           
                           {product.reference && (
@@ -590,7 +590,7 @@ function ProductsContent() {
 
                           <div className="mt-auto pt-3 border-t border-slate-100">
                             <div className="flex items-center justify-between">
-                              <span className="text-2xl font-bold text-blue-600">{formatPrice(product.price)}</span>
+                              <span className="text-2xl font-bold text-[#1e2a4a]">{formatPrice(product.price)}</span>
                             </div>
                           </div>
                         </div>
@@ -621,7 +621,7 @@ function LoadingFallback() {
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Navigation />
       <div className="flex-1 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-400"></div>
       </div>
       <Footer />
     </div>

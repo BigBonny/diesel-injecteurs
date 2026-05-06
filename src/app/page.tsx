@@ -4,11 +4,11 @@ import { useState, useEffect, useRef } from 'react';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ChatWidget from '@/components/ChatWidget';
-import ProductList from '@/components/ProductList';
+import TurboHero from '@/components/TurboHero';
 import { 
-  Search, Car, Wrench, Zap, Package, Truck, Shield, Clock, 
+  Car, Wrench, Zap, Package, Truck, Shield, Clock, 
   ArrowRight, CheckCircle, Star, Phone, Mail, ChevronRight, 
-  Sparkles, ArrowUpRight, ShoppingCart, Heart, TrendingUp
+  ArrowUpRight, ShoppingCart, Heart
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -92,18 +92,6 @@ function useScrollReveal<T extends HTMLElement>() {
 }
 
 export default function Home() {
-  const [licensePlate, setLicensePlate] = useState('');
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 2;
-      const y = (e.clientY / window.innerHeight - 0.5) * 2;
-      setMousePos({ x, y });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
   const categories = [
     { name: 'Turbos', icon: Zap, color: 'bg-blue-500', description: 'Turbos reconditionnés et neufs' },
@@ -136,238 +124,27 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Navigation />
 
-      {/* Hero Section - 3D Animated */}
-      <section className="relative min-h-screen flex items-center overflow-hidden bg-white">
-        {/* Animated Background Grid */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
-        </div>
+      {/* Hero Section with Scroll-Triggered Turbo Animation */}
+      <TurboHero />
 
-        {/* Floating 3D Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          {/* Main Turbo 3D - Left Side with Mouse Reactivity */}
-          <div 
-            className="absolute left-[5%] top-1/2 -translate-y-1/2 hidden lg:block opacity-60 transition-transform duration-200 ease-out"
-            style={{
-              transform: `translate(-50%, -50%) rotateY(${mousePos.x * 15}deg) rotateX(${-mousePos.y * 15}deg) translateX(${mousePos.x * 20}px) translateY(${mousePos.y * 20}px)`,
-            }}
-          >
-            <div className="relative w-[400px] h-[400px]">
-              {/* Outer Ring */}
-              <div className="absolute inset-0 animate-[spin_20s_linear_infinite]">
-                <svg viewBox="0 0 200 200" className="w-full h-full">
-                  <defs>
-                    <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.5" />
-                      <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.3" />
-                      <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.5" />
-                    </linearGradient>
-                  </defs>
-                  <circle cx="100" cy="100" r="90" fill="none" stroke="url(#ringGradient)" strokeWidth="1" strokeDasharray="10 5" />
-                  <circle cx="100" cy="100" r="80" fill="none" stroke="#3b82f6" strokeWidth="0.5" strokeOpacity="0.3" />
-                </svg>
-              </div>
-
-              {/* Middle Ring - Reverse */}
-              <div className="absolute inset-8 animate-[spin_15s_linear_infinite_reverse]">
-                <svg viewBox="0 0 200 200" className="w-full h-full">
-                  <circle cx="100" cy="100" r="85" fill="none" stroke="#06b6d4" strokeWidth="1" strokeOpacity="0.4" strokeDasharray="20 10" />
-                </svg>
-              </div>
-
-              {/* Inner Turbo */}
-              <div className="absolute inset-16 animate-[spin_10s_linear_infinite]">
-                <svg viewBox="0 0 200 200" className="w-full h-full">
-                  <defs>
-                    <linearGradient id="turboGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#3b82f6" />
-                      <stop offset="100%" stopColor="#06b6d4" />
-                    </linearGradient>
-                  </defs>
-                  {/* Turbo Blades */}
-                  {[...Array(8)].map((_, i) => (
-                    <path
-                      key={i}
-                      d="M100 100 L100 20 A80 80 0 0 1 170 50 Z"
-                      fill="url(#turboGradient)"
-                      opacity="0.8"
-                      transform={`rotate(${i * 45} 100 100)`}
-                    />
-                  ))}
-                  <circle cx="100" cy="100" r="25" fill="#1e293b" stroke="#3b82f6" strokeWidth="3" />
-                </svg>
-              </div>
-
-              {/* Glow Effect */}
-              <div className="absolute inset-0 bg-blue-500/10 rounded-full blur-3xl animate-pulse" />
-            </div>
-          </div>
-
-          {/* Floating Particles - Predefined positions */}
-          {[
-            { l: 10, t: 20, d: 0 }, { l: 85, t: 15, d: 1 }, { l: 70, t: 80, d: 2 },
-            { l: 25, t: 60, d: 0.5 }, { l: 90, t: 40, d: 1.5 }, { l: 15, t: 85, d: 2.5 },
-            { l: 50, t: 30, d: 0.8 }, { l: 75, t: 65, d: 1.8 }, { l: 35, t: 45, d: 2.2 },
-            { l: 60, t: 90, d: 0.3 }, { l: 5, t: 70, d: 1.2 }, { l: 95, t: 25, d: 2.8 },
-          ].map((p, i) => (
-            <div
-              key={i}
-              className="absolute w-2 h-2 bg-blue-400/30 rounded-full animate-float"
-              style={{
-                left: `${p.l}%`,
-                top: `${p.t}%`,
-                animationDelay: `${p.d}s`,
-                animationDuration: `${5 + (i % 3)}s`,
-              }}
-            />
-          ))}
-
-          {/* Connection Lines */}
-          <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#3b82f6" stopOpacity="0" />
-                <stop offset="50%" stopColor="#06b6d4" stopOpacity="0.5" />
-                <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            <line x1="0" y1="50%" x2="40%" y2="50%" stroke="url(#lineGrad)" strokeWidth="1" className="animate-pulse" />
-            <line x1="60%" y1="30%" x2="90%" y2="60%" stroke="url(#lineGrad)" strokeWidth="1" opacity="0.5" />
-          </svg>
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
-          {/* Background Images - Split Left and Right */}
-          <div className="absolute left-0 -top-10 w-[600px] h-[600px] opacity-30 pointer-events-none z-0 hidden lg:block">
-            <img 
-              src="/assets/turbo.png" 
-              alt="Turbo Diesel" 
-              className="w-full h-full object-contain rounded-3xl"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-white rounded-3xl" />
-          </div>
-          <div className="absolute -right-70 top-32 w-[500px] h-[500px] opacity-25 pointer-events-none z-0 hidden lg:block">
-            <img 
-              src="/assets/injecteur.png" 
-              alt="Injecteur Diesel" 
-              className="w-full h-full object-contain rounded-3xl"
-            />
-            <div className="absolute inset-0 bg-gradient-to-l from-transparent via-white/50 to-white rounded-3xl" />
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8 z-10">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-100 backdrop-blur-sm rounded-full border border-yellow-400/50">
-                <Sparkles className="w-4 h-4 text-yellow-600" />
-                <span className="text-gray-800 text-sm font-medium">Les experts du turbo reconditionné</span>
-              </div>
-
-              <div>
-                <h1 className="text-5xl md:text-7xl font-bold text-gray-900 leading-tight">
-                  Turbos et{' '}
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#fbbf24] to-[#f59e0b]">
-                    Injecteurs
-                  </span>
-                </h1>
-                <p className="text-xl text-gray-600 mt-6 max-w-lg">
-                  Solution fiable et rapide pour votre moteur diesel avec nos injecteurs Bosch, Delphi, Siemens et Denso. Qualité garantie et performance optimale.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-4">
-                <Link href="/produits" className="group inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] text-gray-900 rounded-full font-semibold hover:shadow-lg hover:shadow-yellow-500/30 transition hover:scale-105">
-                  Découvrir nos produits
-                  <ArrowUpRight className="w-5 h-5" />
-                </Link>
-                <a href="#quick-finder" className="inline-flex items-center gap-2 px-8 py-4 bg-gray-100 text-gray-900 rounded-full font-semibold hover:bg-gray-200 transition border border-gray-300">
-                  <Search className="w-5 h-5" />
-                  Trouver ma pièce
-                </a>
-              </div>
-
-              {/* Quick Stats */}
-              <div className="flex gap-8 pt-4">
-                {[
-                  { value: '50K+', label: 'Pièces' },
-                  { value: '15K+', label: 'Clients' },
-                  { value: '24h', label: 'Livraison' },
-                ].map((stat, i) => (
-                  <div key={i} className="text-center">
-                    <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
-                    <div className="text-sm text-gray-500">{stat.label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Side - Vehicle Finder */}
-            <div className="relative">
-              {/* Vehicle Finder Card - Clean Design for White Background */}
-              <div className="relative bg-white rounded-3xl p-8 border border-gray-200 shadow-2xl shadow-gray-200/50">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-gradient-to-br from-[#fbbf24] to-[#f59e0b] rounded-xl flex items-center justify-center shadow-lg shadow-yellow-500/30">
-                  <Car className="w-6 h-6 text-gray-900" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">Trouver votre pièce</h3>
-                  <p className="text-gray-500 text-sm">Sélectionnez votre véhicule</p>
-                </div>
-              </div>
-
-              <div className="space-y-4">
-                <div className="text-center mb-4">
-                  <p className="text-gray-900 font-medium mb-2">SÉLECTIONNER VOTRE VÉHICULE :</p>
-                  <p className="text-gray-500 text-sm">Saisissez votre plaque d&apos;immatriculation</p>
-                </div>
-
-                <input 
-                  type="text" 
-                  value={licensePlate} 
-                  onChange={(e) => setLicensePlate(e.target.value.toUpperCase())}
-                  placeholder="AB-123-CD"
-                  maxLength={9}
-                  className="w-full px-4 py-4 bg-gray-50 border border-gray-300 rounded-xl text-gray-900 text-center text-2xl font-bold tracking-wider placeholder-gray-400 focus:bg-white focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 transition uppercase"
-                />
-
-                <div className="text-center">
-                  <span className="text-gray-400 text-sm">OU</span>
-                </div>
-
-                <Link 
-                  href="/produits" 
-                  className="w-full py-4 bg-gradient-to-r from-[#fbbf24] to-[#f59e0b] text-gray-900 rounded-xl font-semibold hover:shadow-lg hover:shadow-yellow-500/30 transition flex items-center justify-center gap-2"
-                >
-                  <Search className="w-5 h-5" />
-                  Rechercher par marque/modèle
-                </Link>
-              </div>
-            </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom Gradient Fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-slate-50 to-transparent" />
-      </section>
-
-      {/* Trust Bar */}
-      <section className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          {/* ... */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+      {/* Trust Bar - Like reference */}
+      <section className="bg-white border-y border-slate-200 relative">
+        <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-yellow-400 via-yellow-500 to-yellow-400" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { icon: Shield, label: 'Garantie 2 ans', sublabel: 'Toutes nos pièces' },
-              { icon: Truck, label: 'Livraison 24h', sublabel: 'Gratuite dès 150€' },
-              { icon: Star, label: 'Qualité OEM', sublabel: 'Certifié & testé' },
-              { icon: CheckCircle, label: '-30% en moyenne', sublabel: 'vs concessionnaire' },
+              { icon: Truck, label: 'Livraison express', sublabel: '24/48h dans le monde entier', color: 'text-yellow-500' },
+              { icon: Shield, label: 'Satisfait ou remboursé', sublabel: 'Jusqu\'à 15 jours', color: 'text-yellow-500' },
+              { icon: CheckCircle, label: 'Paiement sécurisé', sublabel: '3x sans frais possible', color: 'text-yellow-500' },
+              { icon: Star, label: 'Garantie qualité', sublabel: 'Pièces certifiées OEM', color: 'text-yellow-500' },
             ].map((item, idx) => (
-              <div key={idx} className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
-                  <item.icon className="w-6 h-6 text-blue-600" />
+              <div key={idx} className="flex items-center gap-4 group">
+                <div className="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center border border-yellow-200 group-hover:bg-yellow-100 group-hover:scale-110 transition-all duration-300">
+                  <item.icon className={`w-6 h-6 ${item.color}`} />
                 </div>
                 <div>
-                  <div className="font-semibold text-gray-900">{item.label}</div>
-                  <div className="text-sm text-stone-500">{item.sublabel}</div>
+                  <div className="font-bold text-slate-900 text-sm">{item.label}</div>
+                  <div className="text-xs text-slate-500">{item.sublabel}</div>
                 </div>
               </div>
             ))}
@@ -375,14 +152,16 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-20 bg-slate-100">
+      {/* Features - Premium navy section */}
+      <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">Nos avantages</span>
-            <h2 className="text-4xl font-bold text-gray-900 mt-2">Pourquoi nous choisir ?</h2>
+            <span className="text-yellow-500 font-bold text-sm uppercase tracking-[0.2em]">Choisissez la performance</span>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3">
+              Les experts du turbo <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-blue-800">reconditionné</span>
+            </h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, index) => (
               <FeatureCard key={index} feature={feature} index={index} />
             ))}
@@ -390,17 +169,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Categories */}
-      <section id="categories" className="py-20 bg-white">
+      {/* Categories - Dark navy section */}
+      <section id="categories" className="py-20 bg-[#1e2a4a]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">Catalogue</span>
-              <h2 className="text-4xl font-bold text-gray-900 mt-2">Nos catégories</h2>
+              <span className="text-yellow-400 font-bold text-sm uppercase tracking-[0.2em]">Catalogue</span>
+              <h2 className="text-4xl font-black text-white mt-3">Nos catégories</h2>
             </div>
-            <Link href="/produits" className="hidden md:flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700 transition">
+            <Link href="/produits" className="hidden md:flex items-center gap-2 text-yellow-400 font-bold hover:text-yellow-300 transition group">
               Voir tout
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -415,9 +194,9 @@ export default function Home() {
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">Nos vidéos</span>
-            <h2 className="text-4xl font-bold text-gray-900 mt-2">Découvrez nos produits en action</h2>
-            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+            <span className="text-yellow-500 font-bold text-sm uppercase tracking-[0.2em]">Nos vidéos</span>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3">Découvrez nos produits en action</h2>
+            <p className="text-slate-500 mt-4 max-w-2xl mx-auto">
               Vidéos explicatives et démonstrations de nos turbos et injecteurs
             </p>
           </div>
@@ -461,73 +240,75 @@ export default function Home() {
       </section>
 
       {/* Injecteur Échange Standard Section */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">Injecteur échange standard & turbo pas cher</span>
-            <h2 className="text-4xl font-bold text-gray-900 mt-2">Solution fiable et rapide pour votre moteur diesel</h2>
-            <p className="text-gray-600 mt-4 max-w-3xl mx-auto">
+            <span className="text-yellow-500 font-bold text-sm uppercase tracking-[0.2em]">Injecteur échange standard & turbo pas cher</span>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3">Solution fiable et rapide pour votre moteur diesel</h2>
+            <p className="text-slate-500 mt-4 max-w-3xl mx-auto">
               Nos injecteurs Bosch, Delphi, Siemens et Denso. Qualité garantie et performance optimale.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-6">
             {/* Avantages */}
-            <div className="bg-slate-50 rounded-2xl p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Avantages</h3>
+            <div className="bg-white rounded-2xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#1e2a4a] rounded-xl flex items-center justify-center mb-6">
+                <CheckCircle className="w-6 h-6 text-yellow-400" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-6">Avantages</h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Économique par rapport à une pièce neuve</span>
+                  <CheckCircle className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />
+                  <span className="text-slate-600 text-sm">Économique par rapport à une pièce neuve</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Testé et conforme aux normes constructeur</span>
+                  <CheckCircle className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />
+                  <span className="text-slate-600 text-sm">Testé et conforme aux normes constructeur</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <CheckCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Prêt à l&apos;emploi pour une expédition rapide</span>
+                  <CheckCircle className="w-5 h-5 text-yellow-500 shrink-0 mt-0.5" />
+                  <span className="text-slate-600 text-sm">Prêt à l&apos;emploi pour une expédition rapide</span>
                 </li>
               </ul>
             </div>
 
             {/* Fonction */}
-            <div className="bg-slate-50 rounded-2xl p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Fonction</h3>
+            <div className="bg-white rounded-2xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-[#1e2a4a] rounded-xl flex items-center justify-center mb-6">
+                <Zap className="w-6 h-6 text-yellow-400" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-6">Fonction</h3>
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
-                  <Zap className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Injection précise du carburant</span>
+                  <Zap className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                  <span className="text-slate-600 text-sm">Injection précise du carburant</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Zap className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Consommation réduite</span>
+                  <Zap className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                  <span className="text-slate-600 text-sm">Consommation réduite</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <Zap className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700">Puissance moteur maintenue</span>
+                  <Zap className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
+                  <span className="text-slate-600 text-sm">Puissance moteur maintenue</span>
                 </li>
               </ul>
             </div>
 
             {/* Marques disponibles */}
-            <div className="bg-slate-50 rounded-2xl p-8">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Marques disponibles</h3>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                  <span className="font-semibold text-gray-900">Bosch</span>
-                </div>
-                <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                  <span className="font-semibold text-gray-900">Delphi</span>
-                </div>
-                <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                  <span className="font-semibold text-gray-900">Siemens</span>
-                </div>
-                <div className="bg-white rounded-xl p-4 text-center shadow-sm">
-                  <span className="font-semibold text-gray-900">Denso</span>
-                </div>
+            <div className="bg-[#1e2a4a] rounded-2xl p-8 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+              <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center mb-6">
+                <Star className="w-6 h-6 text-[#1e2a4a]" />
               </div>
-              <Link href="/produits?category=injecteurs" className="mt-6 block w-full text-center px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition">
+              <h3 className="text-xl font-bold text-white mb-6">Marques disponibles</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {['Bosch', 'Delphi', 'Siemens', 'Denso'].map((brand) => (
+                  <div key={brand} className="bg-white/10 rounded-xl p-3 text-center border border-white/10">
+                    <span className="font-bold text-white text-sm">{brand}</span>
+                  </div>
+                ))}
+              </div>
+              <Link href="/produits?category=injecteurs" className="mt-6 block w-full text-center px-6 py-3.5 bg-yellow-400 text-[#1e2a4a] rounded-xl font-bold hover:bg-yellow-300 hover:shadow-lg hover:shadow-yellow-400/30 transition-all">
                 Commander un injecteur
               </Link>
             </div>
@@ -536,21 +317,17 @@ export default function Home() {
       </section>
 
       {/* Stats - With Animated Counters */}
-      <section className="py-20 bg-slate-900 text-white relative overflow-hidden">
-        {/* Background Decoration */}
+      <section className="py-20 bg-[#1e2a4a] text-white relative overflow-hidden">
         <div className="absolute inset-0">
-          <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-yellow-400/5 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
         </div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 rounded-full border border-white/10 mb-6">
-              <TrendingUp className="w-4 h-4 text-blue-400" />
-              <span className="text-sm text-gray-300">Nos chiffres en temps réel</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">Ils nous font confiance</h2>
-            <p className="text-gray-400 text-lg">Des milliers de professionnels nous font confiance chaque jour</p>
+            <span className="text-yellow-400 font-bold text-sm uppercase tracking-[0.2em]">Nos chiffres</span>
+            <h2 className="text-4xl md:text-5xl font-black mt-3">Ils nous font confiance</h2>
+            <p className="text-slate-400 text-lg mt-4">Des milliers de professionnels nous font confiance chaque jour</p>
           </div>
           
           <div className="grid md:grid-cols-3 gap-8">
@@ -561,19 +338,16 @@ export default function Home() {
             ].map((stat, idx) => (
               <div 
                 key={idx} 
-                className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10 hover:border-blue-500/50 transition-all duration-500"
+                className="group relative bg-white/5 rounded-2xl p-8 border border-white/10 hover:border-yellow-400/50 transition-all duration-500"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-cyan-600/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative text-center">
-                  <div className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-2">
+                  <div className="text-5xl md:text-6xl font-black text-yellow-400 mb-2">
                     <AnimatedCounter end={stat.value} suffix={stat.suffix} />
                   </div>
-                  <div className="text-xl font-semibold mb-1">{stat.label}</div>
-                  <div className="text-sm text-gray-400">{stat.sublabel}</div>
+                  <div className="text-xl font-bold mb-1">{stat.label}</div>
+                  <div className="text-sm text-slate-400">{stat.sublabel}</div>
                 </div>
-                
-                {/* Animated border effect */}
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 group-hover:w-1/2 transition-all duration-500" />
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-yellow-400 group-hover:w-1/2 transition-all duration-500" />
               </div>
             ))}
           </div>
@@ -594,9 +368,9 @@ export default function Home() {
           </div>
           {/* Floating Piston-like Bars */}
           <div className="absolute top-1/4 right-1/4 flex gap-2">
-            <div className="w-3 h-20 bg-gradient-to-b from-blue-500/30 to-transparent rounded-full animate-pulse" style={{ animationDelay: '0s' }} />
-            <div className="w-3 h-32 bg-gradient-to-b from-cyan-500/30 to-transparent rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
-            <div className="w-3 h-16 bg-gradient-to-b from-blue-500/30 to-transparent rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
+            <div className="w-3 h-20 bg-linear-to-b from-blue-500/30 to-transparent rounded-full animate-pulse" style={{ animationDelay: '0s' }} />
+            <div className="w-3 h-32 bg-linear-to-b from-cyan-500/30 to-transparent rounded-full animate-pulse" style={{ animationDelay: '0.5s' }} />
+            <div className="w-3 h-16 bg-linear-to-b from-blue-500/30 to-transparent rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
           </div>
           {/* Grid Pattern */}
           <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%220%200%2040%2040%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%234f46e5%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M0%200h40v40H0V0zm20%2020h20v20H20V20zM0%2020h20v20H0V20z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30" />
@@ -610,7 +384,7 @@ export default function Home() {
               <span className="text-blue-400 text-sm font-medium">24/7 Support Expert</span>
             </div>
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">
-              Parlons de votre <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">projet</span>
+              Parlons de votre <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-400">projet</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
               Besoin d&apos;aide pour trouver la pièce parfaite ? Notre équipe d&apos;ingénieurs est là pour vous guider.
@@ -622,9 +396,9 @@ export default function Home() {
             <div className="lg:col-span-2 space-y-6">
               {/* Phone Card */}
               <div className="group relative bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-blue-500/50 transition-all duration-500 hover:bg-white/10">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-cyan-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-r from-blue-600/20 to-cyan-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative flex items-start gap-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
+                  <div className="w-14 h-14 bg-linear-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
                     <Phone className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -637,9 +411,9 @@ export default function Home() {
 
               {/* Email Card */}
               <div className="group relative bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-cyan-500/50 transition-all duration-500 hover:bg-white/10">
-                <div className="absolute inset-0 bg-gradient-to-r from-cyan-600/20 to-blue-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="absolute inset-0 bg-linear-to-r from-cyan-600/20 to-blue-600/20 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div className="relative flex items-start gap-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/30 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-500">
+                  <div className="w-14 h-14 bg-linear-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/30 group-hover:scale-110 group-hover:-rotate-6 transition-all duration-500">
                     <Mail className="w-7 h-7 text-white" />
                   </div>
                   <div>
@@ -653,7 +427,7 @@ export default function Home() {
               {/* Live Chat Card */}
               <div className="group relative bg-white/5 backdrop-blur-lg rounded-2xl p-6 border border-white/10 hover:border-green-500/50 transition-all duration-500 hover:bg-white/10">
                 <div className="relative flex items-start gap-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30">
+                  <div className="w-14 h-14 bg-linear-to-br from-green-500 to-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-green-500/30">
                     <div className="relative">
                       <div className="w-3 h-3 bg-white rounded-full" />
                       <div className="absolute inset-0 w-3 h-3 bg-white rounded-full animate-ping" />
@@ -674,7 +448,7 @@ export default function Home() {
             <div className="lg:col-span-3">
               <div className="relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-white/10 shadow-2xl">
                 {/* Glow Effect */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 via-cyan-600/20 to-blue-600/20 rounded-3xl blur-xl opacity-50" />
+                <div className="absolute -inset-1 bg-linear-to-r from-blue-600/20 via-cyan-600/20 to-blue-600/20 rounded-3xl blur-xl opacity-50" />
                 
                 <div className="relative">
                   <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
@@ -750,13 +524,13 @@ export default function Home() {
 
                     <button 
                       type="submit" 
-                      className="group w-full py-5 bg-gradient-to-r from-blue-600 via-cyan-600 to-blue-600 text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
+                      className="group w-full py-5 bg-linear-to-r from-blue-600 via-cyan-600 to-blue-600 text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 flex items-center justify-center gap-3 relative overflow-hidden"
                     >
                       <span className="relative z-10 flex items-center gap-2">
                         Envoyer ma demande
                         <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
                       </span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-cyan-600 via-blue-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <div className="absolute inset-0 bg-linear-to-r from-cyan-600 via-blue-600 to-cyan-600 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </button>
 
                     <p className="text-center text-sm text-gray-500">
@@ -770,72 +544,37 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Banner - Dynamic Design */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-900 via-slate-900 to-cyan-900">
-          {/* Animated Background */}
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%23ffffff%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
-        </div>
-        
-        {/* Floating Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-10 left-10 w-20 h-20 border-2 border-blue-500/30 rounded-full animate-pulse" />
-          <div className="absolute bottom-10 right-20 w-32 h-32 border-2 border-cyan-500/20 rounded-full animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/4 w-40 h-1 bg-gradient-to-r from-transparent via-blue-500/50 to-transparent animate-shimmer" />
+      {/* CTA Banner */}
+      <section className="relative py-20 overflow-hidden bg-yellow-400">
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-[linear-gradient(45deg,#1e2a4a_25%,transparent_25%,transparent_75%,#1e2a4a_75%)] bg-size-[60px_60px]" />
         </div>
 
         <div className="relative max-w-5xl mx-auto px-4 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-6">
-            <Zap className="w-4 h-4 text-yellow-400" />
-            <span className="text-white/90 text-sm font-medium">Livraison express disponible</span>
-          </div>
-          
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            Trouvez votre pièce en{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-              3 clics
-            </span>
+          <h2 className="text-4xl md:text-5xl font-black text-[#1e2a4a] mb-6">
+            Trouvez votre pièce en 3 clics
           </h2>
           
-          <p className="text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
+          <p className="text-xl text-[#1e2a4a]/70 mb-10 max-w-2xl mx-auto font-medium">
             Rejoignez 15,000+ professionnels et particuliers qui nous font confiance pour leurs pièces auto.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4">
             <Link 
               href="/produits" 
-              className="group relative px-8 py-4 bg-white text-blue-900 rounded-full font-bold text-lg hover:shadow-xl hover:shadow-white/20 transition-all duration-300 overflow-hidden"
+              className="group px-10 py-4 bg-[#1e2a4a] text-white rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-[#1e2a4a]/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center gap-2"
             >
-              <span className="relative z-10 flex items-center gap-2">
-                Explorer le catalogue
-                <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-              </span>
+              Explorer le catalogue
+              <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
             </Link>
             
             <a 
-              href="tel:+33123456789" 
-              className="group px-8 py-4 bg-white/10 text-white rounded-full font-bold text-lg border border-white/30 hover:bg-white/20 transition-all duration-300 backdrop-blur-sm flex items-center gap-3"
+              href="tel:+33612429880" 
+              className="group px-10 py-4 bg-white text-[#1e2a4a] rounded-full font-bold text-lg hover:shadow-xl transition-all duration-300 flex items-center gap-3"
             >
-              <div className="relative">
-                <Phone className="w-5 h-5" />
-                <div className="absolute inset-0 w-5 h-5 bg-blue-400 rounded-full animate-ping opacity-50" />
-              </div>
-              Appeler maintenant
+              <Phone className="w-5 h-5" />
+              06 12 42 98 80
             </a>
-          </div>
-
-          {/* Trust Badges */}
-          <div className="flex flex-wrap justify-center items-center gap-8 mt-12 pt-8 border-t border-white/10">
-            {[
-              { value: '4.9/5', label: 'Trustpilot' },
-              { value: '15k+', label: 'Clients' },
-              { value: '24h', label: 'Livraison' },
-            ].map((badge, idx) => (
-              <div key={idx} className="text-center">
-                <div className="text-2xl font-bold text-white">{badge.value}</div>
-                <div className="text-sm text-gray-400">{badge.label}</div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -853,14 +592,14 @@ function FeatureCard({ feature, index }: { feature: { icon: React.ElementType; t
   return (
     <div 
       ref={ref}
-      className={`bg-white rounded-2xl p-8 hover:shadow-xl transition group transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      className={`bg-white rounded-2xl p-8 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group border border-slate-100 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
       style={{ transitionDuration: '600ms', transitionDelay: `${index * 100}ms` }}
     >
-      <div className="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-        <feature.icon className="w-8 h-8 text-white" />
+      <div className="w-14 h-14 bg-[#1e2a4a] rounded-xl flex items-center justify-center mb-6 group-hover:bg-yellow-400 transition-colors duration-300">
+        <feature.icon className="w-7 h-7 text-yellow-400 group-hover:text-[#1e2a4a] transition-colors duration-300" />
       </div>
-      <h3 className="text-xl font-bold text-white mb-3">{feature.title}</h3>
-      <p className="text-slate-600">{feature.description}</p>
+      <h3 className="text-lg font-bold text-slate-900 mb-2">{feature.title}</h3>
+      <p className="text-slate-500 text-sm leading-relaxed">{feature.description}</p>
     </div>
   );
 }
@@ -873,17 +612,16 @@ function CategoryCard({ category, index }: { category: { name: string; icon: Rea
     <Link 
       ref={ref}
       href={`/produits?category=${category.name.toLowerCase()}`} 
-      className={`group relative overflow-hidden rounded-2xl bg-slate-800 p-8 hover:shadow-xl transition transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+      className={`group relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-8 hover:bg-white/10 hover:border-yellow-400/50 hover:-translate-y-1 transition-all duration-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
       style={{ transitionDuration: '600ms', transitionDelay: `${index * 100}ms` }}
     >
-      <div className={`absolute top-0 right-0 w-32 h-32 ${category.color} opacity-10 rounded-bl-full`} />
-      <div className={`w-16 h-16 ${category.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition`}>
-        <category.icon className="w-8 h-8 text-white" />
+      <div className="w-14 h-14 bg-yellow-400/10 border border-yellow-400/30 rounded-xl flex items-center justify-center mb-6 group-hover:bg-yellow-400 group-hover:border-yellow-400 transition-all duration-300">
+        <category.icon className="w-7 h-7 text-yellow-400 group-hover:text-[#1e2a4a] transition-colors duration-300" />
       </div>
-      <h3 className="text-2xl font-bold text-white mb-2">{category.name}</h3>
-      <p className="text-slate-600 mb-4">{category.description}</p>
-      <div className="flex items-center text-blue-600 font-medium">
-        Explorer <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition" />
+      <h3 className="text-xl font-bold text-white mb-2">{category.name}</h3>
+      <p className="text-slate-400 text-sm mb-4">{category.description}</p>
+      <div className="flex items-center text-yellow-400 font-bold text-sm group-hover:gap-3 transition-all">
+        Explorer <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
       </div>
     </Link>
   );
@@ -899,7 +637,7 @@ function ProductCard({ product, index }: { product: { name: string; price: strin
       className={`bg-white rounded-2xl overflow-hidden group hover:shadow-xl transition transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
       style={{ transitionDuration: '600ms', transitionDelay: `${index * 100}ms` }}
     >
-      <div className="relative h-48 bg-gradient-to-br from-slate-200 to-slate-100 flex items-center justify-center">
+      <div className="relative h-48 bg-linear-to-br from-slate-200 to-slate-100 flex items-center justify-center">
         <div className="text-6xl">{product.image}</div>
         <span className="absolute top-4 left-4 px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">-22%</span>
         <button className="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow opacity-0 group-hover:opacity-100 transition"><Heart className="w-5 h-5" /></button>

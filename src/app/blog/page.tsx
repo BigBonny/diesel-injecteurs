@@ -94,23 +94,23 @@ export default function BlogPage() {
   });
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-slate-50">
       <Navigation />
 
       {/* Hero */}
-      <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-b from-[#fbbf24] via-[#2d4a6f] to-slate-950">
+      <section className="relative pt-32 pb-20 overflow-hidden bg-[#1e2a4a]">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <span className="text-blue-400 font-semibold text-sm uppercase tracking-wider">Actualités & Conseils</span>
+            <span className="text-yellow-400 font-semibold text-sm uppercase tracking-wider">Actualités & Conseils</span>
             <h1 className="text-5xl md:text-6xl font-bold text-white mt-4">
               Notre{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+              <span className="text-yellow-400">
                 Blog
               </span>
             </h1>
-            <p className="text-xl text-slate-400 mt-6 max-w-2xl mx-auto">
+            <p className="text-xl text-slate-300 mt-6 max-w-2xl mx-auto">
               Découvrez nos conseils d&apos;experts sur les turbos, injecteurs et l&apos;entretien de votre moteur diesel.
             </p>
           </div>
@@ -123,7 +123,7 @@ export default function BlogPage() {
                 placeholder="Rechercher un article..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 bg-slate-900 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition"
+                className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:border-yellow-400 focus:outline-none transition"
               />
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
             </div>
@@ -137,8 +137,8 @@ export default function BlogPage() {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-6 py-2 rounded-full font-medium transition-all ${
                   selectedCategory === category
-                    ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white'
-                    : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'
+                    ? 'bg-yellow-400 text-[#1e2a4a]'
+                    : 'bg-white/10 text-white/80 hover:text-white border border-white/20'
                 }`}
               >
                 {category}
@@ -149,38 +149,38 @@ export default function BlogPage() {
       </section>
 
       {/* Blog Posts Grid */}
-      <section className="py-20">
+      <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map((post) => (
               <article 
                 key={post.id}
-                className="group bg-slate-900/50 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-800 hover:border-blue-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10"
+                className="group bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-yellow-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/10"
               >
                 {/* Image Placeholder */}
-                <div className="h-48 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 flex items-center justify-center relative overflow-hidden">
+                <div className="h-48 bg-gradient-to-br from-[#1e2a4a]/10 to-yellow-400/10 flex items-center justify-center relative overflow-hidden">
                   <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.05)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer" />
-                  <span className="text-6xl font-bold text-blue-500/20">{post.id}</span>
+                  <span className="text-6xl font-bold text-[#1e2a4a]/10">{post.id}</span>
                 </div>
 
                 <div className="p-6">
                   {/* Category Badge */}
-                  <span className="inline-block px-3 py-1 bg-blue-500/10 text-blue-400 text-xs font-medium rounded-full mb-4">
+                  <span className="inline-block px-3 py-1 bg-yellow-100 text-yellow-700 text-xs font-medium rounded-full mb-4">
                     {post.category}
                   </span>
 
                   {/* Title */}
-                  <h2 className="text-xl font-bold text-white mb-3 line-clamp-2 group-hover:text-blue-400 transition-colors">
+                  <h2 className="text-xl font-bold text-slate-900 mb-3 line-clamp-2 group-hover:text-yellow-600 transition-colors">
                     {post.title}
                   </h2>
 
                   {/* Excerpt */}
-                  <p className="text-slate-400 text-sm mb-4 line-clamp-3">
+                  <p className="text-slate-500 text-sm mb-4 line-clamp-3">
                     {post.excerpt}
                   </p>
 
                   {/* Meta */}
-                  <div className="flex items-center gap-4 text-sm text-slate-500 mb-4">
+                  <div className="flex items-center gap-4 text-sm text-slate-400 mb-4">
                     <div className="flex items-center gap-1">
                       <User className="w-4 h-4" />
                       <span>{post.author}</span>
@@ -192,7 +192,7 @@ export default function BlogPage() {
                   </div>
 
                   {/* Read More */}
-                  <button className="flex items-center gap-2 text-blue-400 font-medium group-hover:gap-3 transition-all">
+                  <button className="flex items-center gap-2 text-yellow-600 font-medium group-hover:gap-3 transition-all">
                     <span>Lire l&apos;article</span>
                     <ArrowUpRight className="w-4 h-4" />
                   </button>
@@ -204,10 +204,10 @@ export default function BlogPage() {
           {/* Empty State */}
           {filteredPosts.length === 0 && (
             <div className="text-center py-20">
-              <p className="text-slate-400 text-lg">Aucun article trouvé pour votre recherche.</p>
+              <p className="text-slate-500 text-lg">Aucun article trouvé pour votre recherche.</p>
               <button 
                 onClick={() => {setSearchQuery(''); setSelectedCategory('Tous');}}
-                className="mt-4 text-blue-400 hover:underline"
+                className="mt-4 text-yellow-600 hover:underline"
               >
                 Réinitialiser les filtres
               </button>
@@ -216,23 +216,23 @@ export default function BlogPage() {
 
           {/* Pagination */}
           <div className="flex justify-center items-center gap-2 mt-12">
-            <button className="px-4 py-2 text-slate-400 hover:text-white transition">
+            <button className="px-4 py-2 text-slate-500 hover:text-slate-900 transition">
               Précédent
             </button>
-            <button className="w-10 h-10 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-lg font-medium">
+            <button className="w-10 h-10 bg-yellow-400 text-[#1e2a4a] rounded-lg font-medium">
               1
             </button>
-            <button className="w-10 h-10 bg-slate-900 text-slate-400 hover:text-white rounded-lg font-medium transition">
+            <button className="w-10 h-10 bg-white text-slate-600 hover:text-slate-900 rounded-lg font-medium transition border border-slate-200">
               2
             </button>
-            <button className="w-10 h-10 bg-slate-900 text-slate-400 hover:text-white rounded-lg font-medium transition">
+            <button className="w-10 h-10 bg-white text-slate-600 hover:text-slate-900 rounded-lg font-medium transition border border-slate-200">
               3
             </button>
-            <span className="text-slate-500">...</span>
-            <button className="w-10 h-10 bg-slate-900 text-slate-400 hover:text-white rounded-lg font-medium transition">
+            <span className="text-slate-400">...</span>
+            <button className="w-10 h-10 bg-white text-slate-600 hover:text-slate-900 rounded-lg font-medium transition border border-slate-200">
               12
             </button>
-            <button className="px-4 py-2 text-slate-400 hover:text-white transition">
+            <button className="px-4 py-2 text-slate-500 hover:text-slate-900 transition">
               Prochain
             </button>
           </div>
@@ -240,26 +240,26 @@ export default function BlogPage() {
       </section>
 
       {/* Newsletter CTA */}
-      <section className="py-20 bg-slate-900/50">
+      <section className="py-20 bg-[#1e2a4a]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Restez informé</h2>
-          <p className="text-slate-400 mb-8">
+          <p className="text-slate-300 mb-8">
             Recevez nos derniers articles et conseils d&apos;entretien directement dans votre boîte mail.
           </p>
           <form className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
             <input
               type="email"
               placeholder="Votre adresse email"
-              className="flex-1 px-6 py-4 bg-slate-900 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition"
+              className="flex-1 px-6 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:border-yellow-400 focus:outline-none transition"
             />
             <button
               type="submit"
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition whitespace-nowrap"
+              className="px-8 py-4 bg-yellow-400 text-[#1e2a4a] rounded-xl font-semibold hover:bg-yellow-300 hover:shadow-lg hover:shadow-yellow-400/30 transition whitespace-nowrap"
             >
               S&apos;abonner
             </button>
           </form>
-          <p className="text-slate-500 text-sm mt-4">
+          <p className="text-slate-400 text-sm mt-4">
             Vous pouvez vous désinscrire à tout moment.
           </p>
         </div>

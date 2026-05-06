@@ -83,7 +83,7 @@ export default function CartPage() {
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-2 text-sm text-stone-500">
-            <Link href="/" className="hover:text-blue-600 transition">Accueil</Link>
+            <Link href="/" className="hover:text-yellow-600 transition">Accueil</Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-stone-900 font-medium">Panier</span>
           </div>
@@ -93,7 +93,7 @@ export default function CartPage() {
       {/* Main Content */}
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <h1 className="text-3xl font-bold text-stone-900 mb-8 flex items-center gap-3">
-          <ShoppingCart className="w-8 h-8 text-blue-600" />
+          <ShoppingCart className="w-8 h-8 text-yellow-500" />
           Votre Panier
           <span className="text-lg font-normal text-stone-500">({items.length} articles)</span>
         </h1>
@@ -107,7 +107,7 @@ export default function CartPage() {
             <p className="text-stone-500 mb-8">Découvrez nos produits et ajoutez-les à votre panier</p>
             <Link 
               href="/produits" 
-              className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-400 text-[#1e2a4a] rounded-full font-semibold hover:bg-yellow-300 transition"
             >
               Continuer les achats
               <ArrowRight className="w-5 h-5" />
@@ -171,14 +171,14 @@ export default function CartPage() {
                         <div className="flex items-center gap-3">
                           <button 
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="w-8 h-8 flex items-center justify-center border border-slate-300 bg-white rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-slate-900 font-bold"
+                            className="w-8 h-8 flex items-center justify-center border border-slate-300 bg-white rounded-lg hover:border-yellow-400 hover:text-yellow-600 transition text-slate-900 font-bold"
                           >
                             <Minus className="w-4 h-4" />
                           </button>
                           <span className="w-12 text-center font-bold text-slate-900">{item.quantity}</span>
                           <button 
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="w-8 h-8 flex items-center justify-center border border-slate-300 bg-white rounded-lg hover:border-blue-500 hover:text-blue-600 transition text-slate-900 font-bold"
+                            className="w-8 h-8 flex items-center justify-center border border-slate-300 bg-white rounded-lg hover:border-yellow-400 hover:text-yellow-600 transition text-slate-900 font-bold"
                           >
                             <Plus className="w-4 h-4" />
                           </button>
@@ -231,7 +231,7 @@ export default function CartPage() {
                     value={promoCode}
                     onChange={(e) => setPromoCode(e.target.value)}
                     placeholder="Entrez votre code (ex: ID10)"
-                    className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 focus:bg-white transition outline-none text-slate-900"
+                    className="flex-1 px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-yellow-400 focus:bg-white transition outline-none text-slate-900"
                   />
                   <button 
                     onClick={() => {
@@ -276,7 +276,7 @@ export default function CartPage() {
                       value={customerEmail}
                       onChange={(e) => setCustomerEmail(e.target.value)}
                       placeholder="votre@email.com"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 focus:bg-white transition outline-none text-slate-900"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-yellow-400 focus:bg-white transition outline-none text-slate-900"
                       required
                     />
                   </div>
@@ -287,7 +287,7 @@ export default function CartPage() {
                       value={customerName}
                       onChange={(e) => setCustomerName(e.target.value)}
                       placeholder="Jean Dupont"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 focus:bg-white transition outline-none text-slate-900"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:border-yellow-400 focus:bg-white transition outline-none text-slate-900"
                       required
                     />
                   </div>
@@ -335,7 +335,7 @@ export default function CartPage() {
                 <div className="border-t border-stone-200 pt-4 mb-6">
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-bold text-stone-900">Total</span>
-                    <span className="text-2xl font-bold text-blue-600">{finalTotal.toFixed(2)} €</span>
+                    <span className="text-2xl font-bold text-[#1e2a4a]">{finalTotal.toFixed(2)} €</span>
                   </div>
                   <p className="text-xs text-stone-500 mt-1">TTC • Taxes incluses</p>
                   {coreChargeTotal > 0 && (
@@ -348,7 +348,7 @@ export default function CartPage() {
                 <button
                   onClick={handleCheckout}
                   disabled={isProcessing}
-                  className="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-blue-600/30 transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 bg-yellow-400 text-[#1e2a4a] rounded-xl font-bold text-lg hover:bg-yellow-300 hover:shadow-lg hover:shadow-yellow-400/30 transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isProcessing ? (
                     <>

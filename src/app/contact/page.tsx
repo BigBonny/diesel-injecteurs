@@ -50,23 +50,23 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-slate-50">
       <Navigation />
       
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden bg-gradient-to-b from-[#fbbf24] via-[#2d4a6f] to-slate-950">
+      <section className="relative pt-32 pb-20 overflow-hidden bg-[#1e2a4a]">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-blue-400 font-semibold text-sm uppercase tracking-wider">Contactez-nous</span>
+            <span className="text-yellow-400 font-semibold text-sm uppercase tracking-wider">Contactez-nous</span>
             <h1 className="text-5xl md:text-6xl font-bold text-white mt-4">
               Nous sommes là pour{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+              <span className="text-yellow-400">
                 vous aider
               </span>
             </h1>
-            <p className="text-xl text-slate-400 mt-6 max-w-2xl mx-auto">
+            <p className="text-xl text-slate-300 mt-6 max-w-2xl mx-auto">
               Une question sur nos turbos ou injecteurs ? Notre équipe d&apos;experts est à votre disposition.
             </p>
           </div>
@@ -74,13 +74,13 @@ export default function ContactPage() {
           {/* Contact Cards */}
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
             {contactInfo.map((item, index) => (
-              <div key={index} className="group relative bg-slate-900/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-800 hover:border-blue-500/50 transition-all hover:shadow-lg hover:shadow-blue-500/10">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <item.icon className="w-6 h-6 text-white" />
+              <div key={index} className="group relative bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-yellow-400/50 transition-all hover:shadow-lg hover:shadow-yellow-400/10">
+                <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                  <item.icon className="w-6 h-6 text-[#1e2a4a]" />
                 </div>
                 <h3 className="text-slate-400 text-sm font-medium mb-1">{item.label}</h3>
                 {item.href ? (
-                  <a href={item.href} className="text-white text-lg font-semibold hover:text-blue-400 transition">
+                  <a href={item.href} className="text-white text-lg font-semibold hover:text-yellow-400 transition">
                     {item.value}
                   </a>
                 ) : (
@@ -93,40 +93,40 @@ export default function ContactPage() {
 
           {/* Contact Form */}
           <div className="max-w-2xl mx-auto">
-            <div className="bg-slate-900/50 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-slate-800">
-              <h2 className="text-3xl font-bold text-white mb-2">Envoyez-nous un message</h2>
-              <p className="text-slate-400 mb-8">Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
+            <div className="bg-white rounded-3xl p-8 md:p-12 border border-slate-200 shadow-xl">
+              <h2 className="text-3xl font-bold text-slate-900 mb-2">Envoyez-nous un message</h2>
+              <p className="text-slate-500 mb-8">Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
 
               {isSubmitted ? (
                 <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mb-4">
-                    <CheckCircle className="w-8 h-8 text-green-400" />
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                    <CheckCircle className="w-8 h-8 text-green-600" />
                   </div>
-                  <h3 className="text-2xl font-bold text-white mb-2">Message envoyé !</h3>
-                  <p className="text-slate-400">Nous vous répondrons dans les plus brefs délais.</p>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-2">Message envoyé !</h3>
+                  <p className="text-slate-500">Nous vous répondrons dans les plus brefs délais.</p>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-slate-400 mb-2">Nom complet</label>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Nom complet</label>
                       <input
                         type="text"
                         required
                         value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:border-yellow-400 focus:outline-none transition"
                         placeholder="Jean Dupont"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-400 mb-2">Email</label>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Email</label>
                       <input
                         type="email"
                         required
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:border-yellow-400 focus:outline-none transition"
                         placeholder="jean@exemple.fr"
                       />
                     </div>
@@ -134,22 +134,22 @@ export default function ContactPage() {
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-sm font-medium text-slate-400 mb-2">Téléphone</label>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Téléphone</label>
                       <input
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:border-yellow-400 focus:outline-none transition"
                         placeholder="+33 6 12 34 56 78"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-slate-400 mb-2">Sujet</label>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">Sujet</label>
                       <select
                         required
                         value={formData.subject}
                         onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                        className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white focus:border-blue-500 focus:outline-none transition"
+                        className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 focus:border-yellow-400 focus:outline-none transition"
                       >
                         <option value="">Choisir un sujet</option>
                         <option value="devis">Demande de devis</option>
@@ -161,20 +161,20 @@ export default function ContactPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-slate-400 mb-2">Message</label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Message</label>
                     <textarea
                       required
                       rows={5}
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none transition resize-none"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:border-yellow-400 focus:outline-none transition resize-none"
                       placeholder="Décrivez votre demande..."
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-500/30 transition hover:scale-[1.02]"
+                    className="w-full flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 text-[#1e2a4a] rounded-xl font-semibold hover:bg-yellow-300 hover:shadow-lg hover:shadow-yellow-400/30 transition hover:scale-[1.02]"
                   >
                     <Send className="w-5 h-5" />
                     Envoyer le message

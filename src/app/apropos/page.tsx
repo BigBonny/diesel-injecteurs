@@ -55,23 +55,23 @@ export default function AboutPage() {
       <Navigation />
 
       {/* Hero */}
-      <section className="relative py-24 bg-gradient-to-b from-[#fbbf24] via-[#2d4a6f] to-slate-900 overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
-        <div className="absolute top-20 right-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 left-20 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl" />
+      <section className="relative py-24 bg-[#1e2a4a] overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(251,191,36,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(251,191,36,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
+        <div className="absolute top-20 right-20 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-20 left-20 w-48 h-48 bg-yellow-500/10 rounded-full blur-3xl" />
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 rounded-full border border-blue-500/30 mb-6">
-            <Star className="w-4 h-4 text-blue-400" />
-            <span className="text-blue-200 text-sm font-medium">Depuis 2009</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-400/10 rounded-full border border-yellow-400/30 mb-6">
+            <Star className="w-4 h-4 text-yellow-400" />
+            <span className="text-yellow-200 text-sm font-medium">Depuis 2009</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
             Les experts du{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
+            <span className="text-yellow-400">
               turbo reconditionné
             </span>
           </h1>
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto">
             Solution fiable et rapide pour votre moteur diesel avec nos injecteurs Bosch, Delphi, Siemens et Denso. 
             Qualité garantie et performance optimale.
           </p>
@@ -84,7 +84,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, idx) => (
               <div key={idx} className="text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-1">{stat.value}</div>
+                <div className="text-4xl font-bold text-yellow-500 mb-1">{stat.value}</div>
                 <div className="text-slate-600">{stat.label}</div>
               </div>
             ))}
@@ -108,7 +108,7 @@ export default function AboutPage() {
                 sont testés dans notre laboratoire certifié avant expédition.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link href="/produits" className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition">
+                <Link href="/produits" className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 text-[#1e2a4a] rounded-xl font-semibold hover:bg-yellow-300 transition">
                   Voir nos produits
                   <ChevronRight className="w-5 h-5" />
                 </Link>
@@ -118,11 +118,11 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-3xl blur-2xl" />
+              <div className="absolute -inset-4 bg-gradient-to-r from-yellow-400/20 to-yellow-500/20 rounded-3xl blur-2xl" />
               <div className="relative bg-white rounded-2xl p-8 shadow-xl border border-slate-200">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center">
-                    <Wrench className="w-8 h-8 text-blue-600" />
+                  <div className="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center">
+                    <Wrench className="w-8 h-8 text-yellow-600" />
                   </div>
                   <div>
                     <div className="text-2xl font-bold text-slate-900">50 000+</div>
@@ -153,14 +153,14 @@ export default function AboutPage() {
       <section className="py-20 bg-slate-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">Nos valeurs</span>
+            <span className="text-yellow-500 font-semibold text-sm uppercase tracking-wider">Nos valeurs</span>
             <h2 className="text-4xl font-bold text-slate-900 mt-2">Pourquoi nous choisir ?</h2>
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, idx) => (
               <div key={idx} className="bg-white rounded-2xl p-8 hover:shadow-xl transition group">
-                <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
-                  <value.icon className="w-8 h-8 text-blue-600" />
+                <div className="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition">
+                  <value.icon className="w-8 h-8 text-yellow-600" />
                 </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-3">{value.title}</h3>
                 <p className="text-slate-600">{value.description}</p>
@@ -174,22 +174,22 @@ export default function AboutPage() {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-blue-600 font-semibold text-sm uppercase tracking-wider">Notre histoire</span>
+            <span className="text-yellow-500 font-semibold text-sm uppercase tracking-wider">Notre histoire</span>
             <h2 className="text-4xl font-bold text-slate-900 mt-2">15 ans d&apos;excellence</h2>
           </div>
           <div className="relative">
-            <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-blue-200 hidden md:block" />
+            <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-yellow-300 hidden md:block" />
             <div className="space-y-12">
               {milestones.map((milestone, idx) => (
                 <div key={idx} className={`flex items-center gap-8 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
                   <div className="flex-1 text-right md:text-right">
                     <div className={`bg-white rounded-xl p-6 shadow-md border border-slate-200 inline-block ${idx % 2 === 0 ? 'md:ml-auto' : 'md:mr-auto'}`}>
-                      <div className="text-2xl font-bold text-blue-600 mb-1">{milestone.year}</div>
+                      <div className="text-2xl font-bold text-yellow-500 mb-1">{milestone.year}</div>
                       <div className="text-lg font-semibold text-slate-900 mb-1">{milestone.title}</div>
                       <div className="text-slate-600">{milestone.desc}</div>
                     </div>
                   </div>
-                  <div className="w-4 h-4 bg-blue-600 rounded-full border-4 border-white shadow hidden md:block relative z-10" />
+                  <div className="w-4 h-4 bg-yellow-400 rounded-full border-4 border-white shadow hidden md:block relative z-10" />
                   <div className="flex-1" />
                 </div>
               ))}
@@ -199,12 +199,12 @@ export default function AboutPage() {
       </section>
 
       {/* Team/Expertise */}
-      <section className="py-20 bg-gradient-to-br from-slate-900 to-slate-800 text-white">
+      <section className="py-20 bg-[#1e2a4a] text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-4xl font-bold mb-6">
-                Une équipe d&apos;<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">experts passionnés</span>
+                Une équipe d&apos;<span className="text-yellow-400">experts passionnés</span>
               </h2>
               <p className="text-lg text-slate-400 mb-8">
                 Nos techniciens et ingénieurs cumulent plus de 100 ans d&apos;expérience combinée dans le diesel. 
@@ -212,11 +212,11 @@ export default function AboutPage() {
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                  <div className="text-3xl font-bold text-blue-400 mb-2">25+</div>
+                  <div className="text-3xl font-bold text-yellow-400 mb-2">25+</div>
                   <div className="text-slate-400">Experts techniques</div>
                 </div>
                 <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                  <div className="text-3xl font-bold text-cyan-400 mb-2">98%</div>
+                  <div className="text-3xl font-bold text-yellow-300 mb-2">98%</div>
                   <div className="text-slate-400">Taux de satisfaction</div>
                 </div>
               </div>
@@ -256,8 +256,8 @@ export default function AboutPage() {
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-slate-50 rounded-2xl p-8 text-center">
-              <div className="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <MapPin className="w-8 h-8 text-blue-600" />
+              <div className="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <MapPin className="w-8 h-8 text-yellow-600" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Notre Adresse</h3>
               <p className="text-slate-600">
@@ -266,8 +266,8 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="bg-slate-50 rounded-2xl p-8 text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Phone className="w-8 h-8 text-green-600" />
+              <div className="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Phone className="w-8 h-8 text-yellow-600" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Téléphone</h3>
               <p className="text-slate-600">
@@ -276,8 +276,8 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="bg-slate-50 rounded-2xl p-8 text-center">
-              <div className="w-16 h-16 bg-cyan-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Mail className="w-8 h-8 text-cyan-600" />
+              <div className="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <Mail className="w-8 h-8 text-yellow-600" />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Email</h3>
               <p className="text-slate-600">
