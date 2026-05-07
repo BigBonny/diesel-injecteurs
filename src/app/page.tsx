@@ -376,7 +376,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%220%200%2040%2040%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%234f46e5%22%20fill-opacity%3D%220.03%22%3E%3Cpath%20d%3D%22M0%200h40v40H0V0zm20%2020h20v20H20V20zM0%2020h20v20H0V20z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
           {/* Section Header */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-500/10 backdrop-blur-sm rounded-full border border-blue-500/30 mb-6">
@@ -418,7 +418,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white mb-1">Email</h3>
-                    <p className="text-xl font-bold text-cyan-400 mb-1">diesel.injecteurs@gmail.com</p>
+                    <p className="text-lg sm:text-xl font-bold text-cyan-400 mb-1 break-all">diesel.injecteurs@gmail.com</p>
                     <p className="text-sm text-gray-500">Réponse sous 2h</p>
                   </div>
                 </div>
@@ -446,9 +446,9 @@ export default function Home() {
 
             {/* Contact Form - Right Side */}
             <div className="lg:col-span-3">
-              <div className="relative bg-white/5 backdrop-blur-xl rounded-3xl p-8 md:p-10 border border-white/10 shadow-2xl">
+              <div className="relative bg-white/5 backdrop-blur-xl rounded-3xl p-5 sm:p-8 md:p-10 border border-white/10 shadow-2xl overflow-hidden">
                 {/* Glow Effect */}
-                <div className="absolute -inset-1 bg-linear-to-r from-blue-600/20 via-cyan-600/20 to-blue-600/20 rounded-3xl blur-xl opacity-50" />
+                <div className="absolute inset-0 bg-linear-to-r from-blue-600/20 via-cyan-600/20 to-blue-600/20 rounded-3xl blur-xl opacity-50" />
                 
                 <div className="relative">
                   <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
