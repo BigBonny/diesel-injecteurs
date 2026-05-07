@@ -56,7 +56,7 @@ export default function AboutPage() {
 
       {/* Hero */}
       <section className="relative py-24 bg-[#1e2a4a] overflow-hidden">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(251,191,36,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(251,191,36,0.03)_1px,transparent_1px)] bg-[size:40px_40px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(251,191,36,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(251,191,36,0.03)_1px,transparent_1px)] bg-size-[40px_40px]" />
         <div className="absolute top-20 right-20 w-64 h-64 bg-yellow-400/10 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-20 w-48 h-48 bg-yellow-500/10 rounded-full blur-3xl" />
         
@@ -118,7 +118,7 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="relative">
-              <div className="absolute -inset-4 bg-gradient-to-r from-yellow-400/20 to-yellow-500/20 rounded-3xl blur-2xl" />
+              <div className="absolute -inset-4 bg-linear-to-r from-yellow-400/20 to-yellow-500/20 rounded-3xl blur-2xl" />
               <div className="relative bg-white rounded-2xl p-8 shadow-xl border border-slate-200">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="w-16 h-16 bg-yellow-100 rounded-2xl flex items-center justify-center">
@@ -138,7 +138,7 @@ export default function AboutPage() {
                     'Pièces OEM et équivalentes'
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3">
-                      <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0" />
+                      <CheckCircle className="w-5 h-5 text-green-500 shrink-0" />
                       <span className="text-slate-700">{item}</span>
                     </div>
                   ))}

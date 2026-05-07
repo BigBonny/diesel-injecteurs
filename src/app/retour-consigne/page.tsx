@@ -1,6 +1,8 @@
 'use client';
 
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import ChatWidget from '@/components/ChatWidget';
 import { Package, Truck, RotateCcw, ShieldCheck, FileText, Phone, Clock, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
@@ -62,7 +64,7 @@ export default function RetourConsignePage() {
 
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden bg-[#1e2a4a]">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-size-[60px_60px]" />
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -193,6 +195,9 @@ export default function RetourConsignePage() {
           </div>
         </div>
       </section>
+
+      <Footer />
+      <ChatWidget />
     </div>
   );
 }

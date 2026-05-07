@@ -381,7 +381,7 @@ function ProductsContent() {
 
         <div className="flex gap-8">
           {/* Sidebar Filters - Desktop */}
-          <aside className={`${showFilters ? 'block' : 'hidden'} md:block w-full md:w-64 flex-shrink-0`}>
+          <aside className={`${showFilters ? 'block' : 'hidden'} md:block w-full md:w-64 shrink-0`}>
             <div className="bg-white rounded-xl p-6 space-y-6 sticky top-24 border border-slate-200">
               <div className="flex items-center justify-between md:hidden">
                 <h3 className="font-semibold text-gray-900">Filtres</h3>
@@ -501,15 +501,6 @@ function ProductsContent() {
               </div>
             ) : (
               <>
-                {/* Loading State */}
-                {loading && (
-                  <div className="flex flex-col items-center justify-center py-20">
-                    <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mb-4"></div>
-                    <p className="text-slate-600">Chargement des produits...</p>
-                    <p className="text-sm text-slate-500 mt-2">Premier chargement peut prendre quelques secondes</p>
-                  </div>
-                )}
-                
                 {/* No category selected */}
                 {!loading && !selectedCategory && (
                   <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -534,13 +525,6 @@ function ProductsContent() {
                   </div>
                 )}
                 
-                {/* Loading Progress Bar (background loading) */}
-                {!loading && allProducts.length > 0 && (
-                  <div className="mb-4 text-sm text-slate-600">
-                    {allProducts.length} produits chargés
-                  </div>
-                )}
-                
                 {/* Products Grid */}
                 {!loading && filteredProducts.length > 0 && (
                   <div className={viewMode === 'grid' ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
@@ -552,7 +536,7 @@ function ProductsContent() {
                         {/* Image - Link to detail */}
                         <Link 
                           href={getProductUrl(product)}
-                          className={`${viewMode === 'list' ? 'w-48 shrink-0' : ''} relative h-48 bg-gradient-to-br from-slate-200 to-slate-100 flex items-center justify-center overflow-hidden block`}
+                          className={`${viewMode === 'list' ? 'w-48 shrink-0' : ''} relative h-48 bg-linear-to-br from-slate-200 to-slate-100 flex items-center justify-center overflow-hidden`}
                         >
                           {getImageUrl(product) ? (
                             <img 
@@ -599,12 +583,6 @@ function ProductsContent() {
                   </div>
                 )}
                 
-                {/* Products count */}
-                {!loading && (
-                  <div className="mb-4 text-sm text-slate-600">
-                    {filteredProducts.length} produits trouvés
-                  </div>
-                )}
               </>
             )}
           </div>

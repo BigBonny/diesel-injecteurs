@@ -14,6 +14,7 @@ const NAV_ITEMS = [
   { name: 'Blog', href: '/blog' },
   { name: 'À propos', href: '/apropos' },
   { name: 'Contact', href: '/contact' },
+  { name: 'Retour consigne', href: '/retour-consigne' },
 ];
 
 const DROPDOWN_BRANDS: Record<string, string[]> = {

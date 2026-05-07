@@ -47,7 +47,7 @@ export default function Footer() {
       {/* Animated Background */}
       <div className="absolute inset-0">
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-900 via-slate-950 to-black" />
+        <div className="absolute inset-0 bg-linear-to-b from-slate-900 via-slate-950 to-black" />
         
         {/* Animated Grid */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%234f46e5%22%20fill-opacity%3D%220.02%22%3E%3Cpath%20d%3D%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')]" />
@@ -71,7 +71,7 @@ export default function Footer() {
                   key={idx} 
                   className="group flex items-center gap-3 hover:bg-white/5 rounded-xl p-3 transition-all duration-300"
                 >
-                  <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 bg-linear-to-br from-blue-500/20 to-cyan-500/20 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                     <badge.icon className="w-6 h-6 text-blue-400" />
                   </div>
                   <span className="text-sm font-medium text-gray-300">{badge.label}</span>
@@ -88,12 +88,12 @@ export default function Footer() {
             <div className="lg:col-span-4">
               {/* Logo */}
               <div className="flex items-center gap-3 mb-6">
-                <div className="relative w-12 h-12 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/30">
+                <div className="relative w-12 h-12 bg-linear-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/30">
                   <Wrench className="w-7 h-7 text-white" />
                   <div className="absolute inset-0 bg-white/20 rounded-xl animate-pulse" />
                 </div>
                 <div>
-                  <span className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                  <span className="text-2xl font-bold bg-linear-to-r from-white to-gray-300 bg-clip-text text-transparent">
                     Injection Diesel
                   </span>
                   <p className="text-xs text-gray-500">Premium Auto Parts</p>
@@ -203,7 +203,7 @@ export default function Footer() {
                   />
                   <button 
                     type="submit"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-linear-to-r from-blue-600 to-cyan-600 rounded-lg hover:shadow-lg hover:shadow-blue-500/30 transition-all"
                   >
                     <Send className="w-4 h-4 text-white" />
                   </button>

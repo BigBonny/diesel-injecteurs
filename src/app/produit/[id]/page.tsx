@@ -96,7 +96,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <Link href="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 transition">
           <ArrowLeft className="w-5 h-5" />
-          Retour à l'accueil
+          Retour à l&apos;accueil
         </Link>
 
         <div className="grid md:grid-cols-2 gap-12">
@@ -124,7 +124,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
             </div>
 
             <div className="flex gap-4">
-              <button className="flex-1 bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-600/30 transition flex items-center justify-center gap-2">
+              <button className="flex-1 bg-linear-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg hover:shadow-blue-600/30 transition flex items-center justify-center gap-2">
                 <ShoppingCart className="w-5 h-5" />
                 Ajouter au panier
               </button>

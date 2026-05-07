@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import ChatWidget from '@/components/ChatWidget';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -55,7 +57,7 @@ export default function ContactPage() {
       
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden bg-[#1e2a4a]">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-size-[60px_60px]" />
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -91,8 +93,12 @@ export default function ContactPage() {
             ))}
           </div>
 
-          {/* Contact Form */}
-          <div className="max-w-2xl mx-auto">
+        </div>
+      </section>
+
+      {/* Contact Form Section */}
+      <section className="py-20 bg-slate-50">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="bg-white rounded-3xl p-8 md:p-12 border border-slate-200 shadow-xl">
               <h2 className="text-3xl font-bold text-slate-900 mb-2">Envoyez-nous un message</h2>
               <p className="text-slate-500 mb-8">Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
@@ -182,9 +188,11 @@ export default function ContactPage() {
                 </form>
               )}
             </div>
-          </div>
         </div>
       </section>
+
+      <Footer />
+      <ChatWidget />
     </div>
   );
 }

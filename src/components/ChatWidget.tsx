@@ -115,7 +115,7 @@ export default function ChatWidget() {
         onClick={() => setIsOpen(!isOpen)}
         className="fixed bottom-6 right-6 z-50 group"
       >
-        <div className={`flex items-center gap-3 px-5 py-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 ${isOpen ? 'bg-gray-800' : 'bg-gradient-to-r from-blue-600 to-cyan-600 shadow-blue-600/30'}`}>
+        <div className={`flex items-center gap-3 px-5 py-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 ${isOpen ? 'bg-gray-800' : 'bg-linear-to-r from-blue-600 to-cyan-600 shadow-blue-600/30'}`}>
           {isOpen ? (
             <X className="w-6 h-6 text-white" />
           ) : (
@@ -134,7 +134,7 @@ export default function ChatWidget() {
       <div className={`fixed bottom-24 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] transition-all duration-300 ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
         <div className="bg-slate-900 rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
           {/* Header */}
-          <div className="bg-gradient-to-r from-blue-600 to-cyan-600 p-4">
+          <div className="bg-linear-to-r from-blue-600 to-cyan-600 p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
                 <Bot className="w-6 h-6 text-white" />
@@ -157,10 +157,10 @@ export default function ChatWidget() {
                 className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div className={`flex gap-2 max-w-[85%] ${message.sender === 'user' ? 'flex-row-reverse' : ''}`}>
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${
                     message.sender === 'user' 
                       ? 'bg-blue-600' 
-                      : 'bg-gradient-to-br from-blue-500 to-cyan-500'
+                      : 'bg-linear-to-br from-blue-500 to-cyan-500'
                   }`}>
                     {message.sender === 'user' ? (
                       <User className="w-4 h-4 text-white" />
@@ -189,7 +189,7 @@ export default function ChatWidget() {
             {isTyping && (
               <div className="flex justify-start">
                 <div className="flex gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-linear-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
                     <Wrench className="w-4 h-4 text-white" />
                   </div>
                   <div className="bg-white/10 rounded-2xl rounded-bl-md px-4 py-3 border border-white/10">
@@ -234,7 +234,7 @@ export default function ChatWidget() {
               <button
                 onClick={handleSend}
                 disabled={!inputValue.trim()}
-                className="p-3 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl hover:shadow-lg hover:shadow-blue-600/30 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="p-3 bg-linear-to-r from-blue-600 to-cyan-600 text-white rounded-xl hover:shadow-lg hover:shadow-blue-600/30 transition disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="w-5 h-5" />
               </button>

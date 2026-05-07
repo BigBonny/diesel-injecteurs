@@ -7,9 +7,9 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ChatWidget from '@/components/ChatWidget';
 import { 
-  ShoppingCart, Heart, Star, ChevronRight, Truck, Shield, 
+  ShoppingCart, Heart, ChevronRight, Truck, Shield, 
   Check, AlertCircle, Info, Minus, Plus,
-  Package, RotateCcw, Wrench
+  Package, RotateCcw
 } from 'lucide-react';
 import { useCart } from '@/app/CartContext';
 
@@ -20,6 +20,7 @@ export default function ProductDetailPage() {
   const productId = Number(Array.isArray(params.id) ? params.id[0].split('-')[0] : params.id?.split('-')[0]);
   const { addItem, items } = useCart();
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
@@ -52,7 +53,7 @@ export default function ProductDetailPage() {
     }
   }, [productId]);
 
-  const inCart = items.find(item => item.id === productId);
+  const _inCart = items.find(item => item.id === productId);
 
   if (loading) {
     return (
@@ -146,7 +147,7 @@ export default function ProductDetailPage() {
           <div className="grid lg:grid-cols-2 gap-12">
             {/* Image */}
             <div className="bg-white rounded-2xl p-8 border border-slate-200">
-              <div className="aspect-square bg-gradient-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center overflow-hidden">
+              <div className="aspect-square bg-linear-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center overflow-hidden">
                 {imageUrl ? (
                   <img src={imageUrl} alt={product.name} className="w-full h-full object-cover" />
                 ) : (
@@ -169,7 +170,7 @@ export default function ProductDetailPage() {
               {/* Core Charge Section - MANDATORY */}
               <div className={`rounded-xl p-6 mb-8 border-2 transition-all ${coreChargeAccepted ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-400'}`}>
                 <div className="flex items-start gap-4">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ${coreChargeAccepted ? 'bg-green-500' : 'bg-amber-500'}`}>
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${coreChargeAccepted ? 'bg-green-500' : 'bg-amber-500'}`}>
                     <RotateCcw className="w-6 h-6 text-white" />
                   </div>
                   <div className="flex-1">

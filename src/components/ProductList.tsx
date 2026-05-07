@@ -140,7 +140,7 @@ export default function ProductList({ limit = 6 }: { limit?: number }) {
                 {getProductPrice(product)}
               </span>
               
-              <button className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-xl hover:shadow-lg hover:shadow-blue-600/30 transition flex items-center gap-2">
+              <button className="bg-linear-to-r from-blue-600 to-cyan-600 text-white px-4 py-2 rounded-xl hover:shadow-lg hover:shadow-blue-600/30 transition flex items-center gap-2">
                 <ShoppingCart className="w-4 h-4" />
                 <span>Add</span>
               </button>

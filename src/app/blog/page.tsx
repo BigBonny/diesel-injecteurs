@@ -1,6 +1,8 @@
 'use client';
 
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import ChatWidget from '@/components/ChatWidget';
 import { Calendar, User, ArrowUpRight, Search } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -99,7 +101,7 @@ export default function BlogPage() {
 
       {/* Hero */}
       <section className="relative pt-32 pb-20 overflow-hidden bg-[#1e2a4a]">
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-[size:60px_60px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.03)_1px,transparent_1px)] bg-size-[60px_60px]" />
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
@@ -158,7 +160,7 @@ export default function BlogPage() {
                 className="group bg-white rounded-2xl overflow-hidden border border-slate-200 hover:border-yellow-400/50 transition-all duration-300 hover:shadow-lg hover:shadow-yellow-400/10"
               >
                 {/* Image Placeholder */}
-                <div className="h-48 bg-gradient-to-br from-[#1e2a4a]/10 to-yellow-400/10 flex items-center justify-center relative overflow-hidden">
+                <div className="h-48 bg-linear-to-br from-[#1e2a4a]/10 to-yellow-400/10 flex items-center justify-center relative overflow-hidden">
                   <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.05)_50%,transparent_75%)] bg-[length:250%_250%] animate-shimmer" />
                   <span className="text-6xl font-bold text-[#1e2a4a]/10">{post.id}</span>
                 </div>
@@ -264,6 +266,9 @@ export default function BlogPage() {
           </p>
         </div>
       </section>
+
+      <Footer />
+      <ChatWidget />
     </div>
   );
 }

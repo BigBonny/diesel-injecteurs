@@ -18,12 +18,7 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Dark mode disabled — site is light-themed */
 
 html {
   scroll-behavior: smooth;
@@ -101,14 +96,7 @@ body {
   }
 }
 
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
+/* shimmer defined above */
 
 @keyframes glow {
   0%, 100% {
@@ -314,7 +302,7 @@ section {
 }
 
 /* Focus Styles */
-input:focus, select:focus, button:focus {
+input:focus, select:focus, textarea:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.3);
+  box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.3);
 }
