@@ -44,27 +44,27 @@ export default function TurboHero() {
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         
         {/* Subtle Grid Background */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.02)_1px,transparent_1px)] bg-[size:80px_80px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.02)_1px,transparent_1px)] bg-size-[80px_80px]" />
 
-        {/* Turbo - Behind content, slides off left */}
+        {/* Turbo - Behind content, centered bottom on mobile, left on desktop */}
         <div 
-          className="absolute left-0 top-[60%] -translate-y-1/2 transition-all duration-1000 ease-out z-0"
+          className="absolute left-1/2 -translate-x-1/2 bottom-8 md:left-0 md:translate-x-0 md:bottom-auto md:top-[60%] md:-translate-y-1/2 transition-all duration-1000 ease-out z-0"
           style={{
-            transform: `translateX(${turboX}px) translateY(-40%)`,
+            transform: `translateX(${turboX}px)`,
             opacity: turboOpacity,
           }}
         >
           <img 
             src="/assets/turbo.png" 
             alt="" 
-            className="w-[500px] h-[500px] object-contain opacity-20"
+            className="w-[180px] h-[180px] md:w-[500px] md:h-[500px] object-contain opacity-10 md:opacity-20"
             aria-hidden="true"
           />
         </div>
 
-        {/* Injecteur - Behind content, slides off right */}
+        {/* Injecteur - Behind content, slides off right (hidden on mobile) */}
         <div 
-          className="absolute right-0 top-1/2 -translate-y-1/2 transition-all duration-1000 ease-out z-0"
+          className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 transition-all duration-1000 ease-out z-0"
           style={{
             transform: `translateX(${injecteurX}px) translateY(-50%)`,
             opacity: injecteurOpacity,
@@ -98,13 +98,13 @@ export default function TurboHero() {
               {/* Main Headline */}
               <h1 className="text-6xl md:text-7xl lg:text-8xl font-black text-slate-900 leading-[0.9] mb-6">
                 Turbos &
-                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-700 to-blue-800">
+                <span className="block text-transparent bg-clip-text bg-linear-to-r from-blue-600 via-blue-700 to-blue-800">
                   Injecteurs
                 </span>
               </h1>
 
               {/* Subheadline */}
-              <p className="text-lg md:text-xl lg:text-2xl text-slate-600 mb-10 mx-auto leading-relaxed whitespace-nowrap">
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-slate-600 mb-10 mx-auto leading-relaxed lg:whitespace-nowrap">
                 Pièces neuves et reconditionnées aux normes OEM. <span className="text-blue-600 font-semibold">Garantie 2 ans</span> incluse.
               </p>
 
@@ -148,24 +148,24 @@ export default function TurboHero() {
 
         {/* PHASE 2: Vehicle Finder + About Combined */}
         <div 
-          className="absolute inset-0 flex items-center z-10 transition-all duration-1000"
+          className="absolute inset-0 z-10 transition-all duration-1000 overflow-y-auto"
           style={{ 
             opacity: aboutOpacity,
             transform: `translateY(${(1 - aboutOpacity) * 50}px)`,
             pointerEvents: aboutOpacity < 0.3 ? 'none' : 'auto',
           }}
         >
-          <div className="w-full max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 md:pt-16 lg:pt-0 lg:min-h-screen lg:flex lg:items-center">
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center pb-8 lg:pb-0">
               
               {/* Left - Vehicle Finder Card */}
-              <div className="bg-white rounded-3xl p-10 shadow-2xl border border-slate-100">
+              <div className="bg-white rounded-2xl md:rounded-3xl p-6 md:p-10 shadow-2xl border border-slate-100">
                 <div className="flex items-center gap-4 mb-8">
-                  <div className="w-14 h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+                  <div className="w-14 h-14 bg-linear-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30">
                     <Car className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-slate-900">Trouver votre pièce</h3>
+                    <h3 className="text-xl md:text-2xl font-bold text-slate-900">Trouver votre pièce</h3>
                     <p className="text-slate-500">Sélectionnez votre véhicule</p>
                   </div>
                 </div>
@@ -196,7 +196,7 @@ export default function TurboHero() {
 
                   <Link 
                     href="/produits" 
-                    className="w-full py-5 bg-gradient-to-r from-yellow-400 to-yellow-500 text-slate-900 rounded-2xl font-bold text-lg hover:shadow-xl hover:shadow-yellow-500/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3"
+                    className="w-full py-5 bg-linear-to-r from-yellow-400 to-yellow-500 text-slate-900 rounded-2xl font-bold text-lg hover:shadow-xl hover:shadow-yellow-500/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-3"
                   >
                     <Search className="w-5 h-5" />
                     Rechercher par marque
@@ -210,32 +210,32 @@ export default function TurboHero() {
                   Qui sommes-nous
                 </span>
                 
-                <h2 className="text-5xl md:text-6xl font-black text-slate-900 leading-[0.95] mb-6">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-800">L&apos;EXPERTISE</span>
+                <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 leading-[0.95] mb-4 md:mb-6">
+                  <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-blue-800">L&apos;EXPERTISE</span>
                   <span className="block mt-2">DIESEL</span>
                 </h2>
                 
-                <p className="text-lg text-slate-600 mb-8 leading-relaxed">
+                <p className="text-base md:text-lg text-slate-600 mb-6 md:mb-8 leading-relaxed">
                   Diesel Injecteurs est votre spécialiste de l&apos;injection diesel en France. Injecteurs et turbos neufs et reconditionnés aux normes OEM constructeur. Chaque pièce est testée et certifiée conforme avant expédition.
                 </p>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-2 gap-4 mb-8">
-                  <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
-                    <div className="text-3xl font-black text-blue-600">4,000+</div>
-                    <div className="text-slate-500 text-sm font-medium">Turbos & injecteurs</div>
+                <div className="grid grid-cols-2 gap-3 md:gap-4 mb-6 md:mb-8">
+                  <div className="bg-slate-50 rounded-xl md:rounded-2xl p-3 md:p-5 border border-slate-100">
+                    <div className="text-2xl md:text-3xl font-black text-blue-600">4,000+</div>
+                    <div className="text-slate-500 text-xs md:text-sm font-medium">Turbos & injecteurs</div>
                   </div>
-                  <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
-                    <div className="text-3xl font-black text-yellow-500">48</div>
-                    <div className="text-slate-500 text-sm font-medium">Marques compatibles</div>
+                  <div className="bg-slate-50 rounded-xl md:rounded-2xl p-3 md:p-5 border border-slate-100">
+                    <div className="text-2xl md:text-3xl font-black text-yellow-500">48</div>
+                    <div className="text-slate-500 text-xs md:text-sm font-medium">Marques compatibles</div>
                   </div>
-                  <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
-                    <div className="text-3xl font-black text-blue-600">2<span className="text-xl">ans</span></div>
-                    <div className="text-slate-500 text-sm font-medium">Garantie pièces</div>
+                  <div className="bg-slate-50 rounded-xl md:rounded-2xl p-3 md:p-5 border border-slate-100">
+                    <div className="text-2xl md:text-3xl font-black text-blue-600">2<span className="text-lg md:text-xl">ans</span></div>
+                    <div className="text-slate-500 text-xs md:text-sm font-medium">Garantie pièces</div>
                   </div>
-                  <div className="bg-slate-50 rounded-2xl p-5 border border-slate-100">
-                    <div className="text-3xl font-black text-yellow-500">48<span className="text-xl">h</span></div>
-                    <div className="text-slate-500 text-sm font-medium">Livraison express</div>
+                  <div className="bg-slate-50 rounded-xl md:rounded-2xl p-3 md:p-5 border border-slate-100">
+                    <div className="text-2xl md:text-3xl font-black text-yellow-500">48<span className="text-lg md:text-xl">h</span></div>
+                    <div className="text-slate-500 text-xs md:text-sm font-medium">Livraison express</div>
                   </div>
                 </div>
 
@@ -260,7 +260,7 @@ export default function TurboHero() {
         >
           <div className="flex flex-col items-center gap-3">
             <span className="text-xs uppercase tracking-[0.4em] text-slate-400 font-medium">Scroll</span>
-            <div className="h-16 w-px bg-gradient-to-b from-blue-500 to-transparent" />
+            <div className="h-16 w-px bg-linear-to-b from-blue-500 to-transparent" />
           </div>
         </div>
       </div>
