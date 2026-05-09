@@ -85,9 +85,9 @@ function NavigationInner() {
             <div className="flex items-center justify-between">
               <Link href="/" className="shrink-0 mx-auto lg:mx-0">
                 <img 
-                  src="/images/newLogo.svg" 
+                  src="/assets/logo.jpg" 
                   alt="Injection Diesel Logo" 
-                  className="h-32 sm:h-36 md:h-44 w-auto -mt-8 sm:-mt-10 md:-mt-12"
+                  className="h-16 sm:h-20 w-auto"
                 />
               </Link>
 
@@ -267,7 +267,7 @@ function NavigationInner() {
           <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
             <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-center">
               <div className="bg-white rounded-lg px-2.5 py-1">
-                <img src="/images/newLogo.svg" alt="Injection Diesel Logo" className="h-8 w-auto" />
+                <img src="/assets/logo.jpg" alt="Injection Diesel Logo" className="h-8 w-auto" />
               </div>
             </Link>
             <button onClick={() => setIsMenuOpen(false)} className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition">
