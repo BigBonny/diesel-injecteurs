@@ -8,7 +8,7 @@ import TurboHero from '@/components/TurboHero';
 import { 
   Car, Wrench, Zap, Package, Truck, Shield, Clock, 
   ArrowRight, CheckCircle, Star, Phone, Mail, ChevronRight, 
-  ArrowUpRight, ShoppingCart, Heart
+  ArrowUpRight, ShoppingCart, Heart, Search, ChevronDown
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -121,7 +121,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen flex flex-col bg-slate-50 pb-16 md:pb-0">
       <Navigation />
 
       {/* Hero Section with Scroll-Triggered Turbo Animation */}
@@ -354,6 +354,103 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Brand Logos Marquee */}
+      <section className="py-14 bg-white border-y border-slate-100 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 mb-8 text-center">
+          <span className="text-slate-400 text-sm font-semibold uppercase tracking-[0.2em]">Marques disponibles sur notre stock</span>
+        </div>
+        <div className="relative flex overflow-hidden">
+          <div className="flex gap-12 animate-marquee whitespace-nowrap items-center">
+            {['Bosch', 'Delphi', 'Siemens/VDO', 'Denso', 'Garrett', 'BorgWarner', 'Continental', 'Pierburg', 'Mitsubishi', 'IHI', 'Holset', 'Valeo'].map((brand) => (
+              <span key={brand} className="text-2xl font-black text-slate-200 hover:text-slate-400 transition-colors px-4">{brand}</span>
+            ))}
+            {['Bosch', 'Delphi', 'Siemens/VDO', 'Denso', 'Garrett', 'BorgWarner', 'Continental', 'Pierburg', 'Mitsubishi', 'IHI', 'Holset', 'Valeo'].map((brand) => (
+              <span key={`dup-${brand}`} className="text-2xl font-black text-slate-200 hover:text-slate-400 transition-colors px-4" aria-hidden="true">{brand}</span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="py-24 bg-slate-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-yellow-500 font-bold text-sm uppercase tracking-[0.2em]">Simple et rapide</span>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3">
+              Comment ça <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-blue-800">marche ?</span>
+            </h2>
+            <p className="text-slate-500 mt-4 max-w-xl mx-auto">Recevez votre pièce en 3 étapes simples, livrée chez vous en 24-48h.</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6 relative">
+            {/* Connector line desktop */}
+            <div className="hidden md:block absolute top-14 left-[calc(16.66%+1rem)] right-[calc(16.66%+1rem)] h-0.5 bg-linear-to-r from-yellow-400 to-blue-500 z-0" />
+            {[
+              { step: '01', icon: Search, title: 'Trouvez votre pièce', desc: 'Recherchez par immatriculation, marque ou référence. Notre catalogue couvre 50 000+ références.' },
+              { step: '02', icon: ShoppingCart, title: 'Commandez en ligne', desc: 'Paiement sécurisé, 3x sans frais. Vous recevez une confirmation immédiate par email ou SMS.' },
+              { step: '03', icon: Package, title: 'Livraison express', desc: 'Expédié le jour même avant 14h. Emballé avec soin, suivi en temps réel. Livraison 24-48h.' },
+            ].map(({ step, icon: Icon, title, desc }) => (
+              <div key={step} className="relative bg-white rounded-2xl p-8 border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 z-10">
+                <div className="w-14 h-14 bg-[#1e2a4a] rounded-2xl flex items-center justify-center mb-5 shadow-lg shadow-[#1e2a4a]/20">
+                  <Icon className="w-7 h-7 text-yellow-400" />
+                </div>
+                <div className="absolute top-6 right-6 text-5xl font-black text-slate-100 leading-none select-none">{step}</div>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">{title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 text-center">
+            <Link href="/produits" className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-400 text-[#1e2a4a] rounded-full font-bold text-lg hover:bg-yellow-300 hover:shadow-xl hover:shadow-yellow-400/30 hover:-translate-y-0.5 transition-all duration-300">
+              Commencer ma recherche
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-24 bg-[#1e2a4a] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5 bg-[linear-gradient(45deg,#facc15_25%,transparent_25%,transparent_75%,#facc15_75%)] bg-size-[80px_80px]" />
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <span className="text-yellow-400 font-bold text-sm uppercase tracking-[0.2em]">Avis clients</span>
+            <h2 className="text-4xl md:text-5xl font-black text-white mt-3">Ce que disent <span className="text-yellow-400">nos clients</span></h2>
+            <div className="flex items-center justify-center gap-2 mt-4">
+              {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
+              <span className="text-white font-bold ml-2">4.9/5</span>
+              <span className="text-slate-400 text-sm">• 15 000+ avis</span>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { name: 'Mehdi L.', vehicle: 'Renault Clio 4', text: 'Je suis venu chercher un injecteur en urgence. Accueil super pro, la pièce était prête et testée. Montage sans souci. Je recommande vivement, service rapide et efficace.', stars: 5 },
+              { name: 'Antoine L.', vehicle: 'VW Touareg', text: 'Commande passée le lundi, reçue le mercredi. L\'injecteur fonctionne parfaitement. Bon rapport qualité-prix et consigne remboursée rapidement.', stars: 5 },
+              { name: 'Youssef B.', vehicle: 'BMW Série 3', text: 'Très bonne expérience. Le turbo est arrivé bien emballé, conforme à la description. Mon mécano l\'a monté sans problème. Ça tourne nickel depuis 3 mois.', stars: 5 },
+              { name: 'Stéphane R.', vehicle: 'Ford Transit', text: 'Turbo reconditionné impeccable. Livraison rapide, bien emballé, la pièce est conforme et fonctionne très bien. Je recommande ce site sans hésitation.', stars: 5 },
+              { name: 'Gabriel M.', vehicle: 'Audi A3', text: 'Je suis très satisfait de mon achat. La pièce est très bien reconditionnée, on dirait qu\'elle est neuve. Envoyée et reçue rapidement. Merci !', stars: 5 },
+              { name: 'Marco D.', vehicle: 'Iveco Daily', text: 'Deuxième commande, toujours aussi fiable. Injecteur Bosch pour mon Daily, prix imbattable par rapport au neuf. La consigne a été remboursée en 2 semaines.', stars: 5 },
+            ].map(({ name, vehicle, text, stars }, i) => (
+              <div key={i} className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-yellow-400/30 hover:bg-white/10 transition-all duration-300 flex flex-col gap-4">
+                <div className="flex gap-1">
+                  {[...Array(stars)].map((_, j) => <Star key={j} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
+                </div>
+                <p className="text-slate-300 text-sm leading-relaxed flex-1">&ldquo;{text}&rdquo;</p>
+                <div className="flex items-center gap-3 pt-2 border-t border-white/10">
+                  <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-[#1e2a4a] font-black text-sm">{name.charAt(0)}</div>
+                  <div>
+                    <div className="font-semibold text-white text-sm">{name}</div>
+                    <div className="text-slate-400 text-xs">{vehicle}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <FaqSection />
+
       {/* Contact - Stunning Industrial Design */}
       <section id="contact" className="relative py-24 overflow-hidden bg-slate-900">
         {/* Animated Background Elements */}
@@ -580,6 +677,18 @@ export default function Home() {
       </section>
 
       <Footer />
+
+      {/* Mobile Sticky Call CTA */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden">
+        <a
+          href="tel:+33612429880"
+          className="flex items-center justify-center gap-3 w-full py-4 bg-yellow-400 text-[#1e2a4a] font-black text-lg shadow-2xl"
+        >
+          <Phone className="w-5 h-5" />
+          Appeler maintenant — 06 12 42 98 80
+        </a>
+      </div>
+
       <ChatWidget />
     </div>
   );
@@ -657,6 +766,71 @@ function ProductCard({ product, index }: { product: { name: string; price: strin
         </button>
       </div>
     </div>
+  );
+}
+
+// FAQ Section Component
+function FaqSection() {
+  const [open, setOpen] = useState<number | null>(null);
+  const faqs = [
+    {
+      q: 'Quelle est la différence entre une pièce neuve et reconditionnée ?',
+      a: 'Une pièce reconditionnée (échange standard) est une pièce usagée remise à neuf selon les normes OEM constructeur. Elle est démontée, nettoyée, les composants usés remplacés, puis testée sur banc. Le résultat est identique à une pièce neuve pour 30 à 60% moins cher.',
+    },
+    {
+      q: 'Qu\'est-ce que la consigne et comment fonctionne-t-elle ?',
+      a: 'La consigne est un dépôt de garantie (généralement 80€) versé à la commande. Elle vous est intégralement remboursée dès réception de votre ancienne pièce défectueuse. Vous avez 30 jours pour nous la retourner via notre page Retour Consigne.',
+    },
+    {
+      q: 'Quels sont les délais de livraison ?',
+      a: 'Les commandes passées avant 14h sont expédiées le jour même. La livraison est assurée en 24 à 48h ouvrés en France métropolitaine via Chronopost ou DHL. Vous recevez un numéro de suivi par email.',
+    },
+    {
+      q: 'Comment trouver la bonne pièce pour mon véhicule ?',
+      a: 'Trois méthodes : (1) Saisir votre immatriculation dans notre moteur de recherche, (2) Rechercher par marque/modèle/motorisation dans notre catalogue, (3) Nous appeler directement au 06 12 42 98 80 — nos experts identifient la pièce en quelques minutes.',
+    },
+    {
+      q: 'Quelle garantie avez-vous sur vos pièces ?',
+      a: 'Toutes nos pièces sont garanties 2 ans, qu\'elles soient neuves ou reconditionnées. En cas de défaillance, nous remplaçons ou remboursons la pièce sans frais. La garantie couvre les défauts de fabrication et de reconditionnement.',
+    },
+    {
+      q: 'Puis-je payer en plusieurs fois ?',
+      a: 'Oui, nous proposons le paiement en 3x sans frais par carte bancaire pour toute commande à partir de 100€. Le paiement est 100% sécurisé (chiffrement SSL). Nous acceptons aussi les virements bancaires et PayPal.',
+    },
+  ];
+  return (
+    <section className="py-24 bg-white">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-14">
+          <span className="text-yellow-500 font-bold text-sm uppercase tracking-[0.2em]">Questions fréquentes</span>
+          <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3">On répond à vos <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-blue-800">questions</span></h2>
+        </div>
+        <div className="space-y-3">
+          {faqs.map((faq, i) => (
+            <div key={i} className="border border-slate-200 rounded-2xl overflow-hidden">
+              <button
+                onClick={() => setOpen(open === i ? null : i)}
+                className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left bg-white hover:bg-slate-50 transition-colors"
+              >
+                <span className="font-semibold text-slate-900 text-sm sm:text-base">{faq.q}</span>
+                <ChevronDown className={`w-5 h-5 text-slate-400 shrink-0 transition-transform duration-300 ${open === i ? 'rotate-180' : ''}`} />
+              </button>
+              {open === i && (
+                <div className="px-6 pb-5 text-slate-600 text-sm leading-relaxed border-t border-slate-100 pt-4">
+                  {faq.a}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="mt-10 text-center">
+          <p className="text-slate-500 text-sm">Vous avez d&apos;autres questions ?{' '}
+            <a href="tel:+33612429880" className="text-blue-600 font-semibold hover:underline">Appelez-nous</a>{' '}ou{' '}
+            <a href="/contact" className="text-blue-600 font-semibold hover:underline">écrivez-nous</a>.
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }
 
