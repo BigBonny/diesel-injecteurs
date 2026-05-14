@@ -5,11 +5,16 @@ import crypto from 'crypto';
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const useTest = searchParams.get('test') === 'true';
+    const forceTest = searchParams.get('mode') === 'test';
     
-    // Use provided credentials
-    const siteId = process.env.SOGECOMMERCE_PROD_SITE_ID || '56994465';
-    const hmacKey = process.env.SOGECOMMERCE_PROD_HMAC_KEY || '';
+    // Determine which credentials to use
+    const mode = forceTest ? 'TEST' : 'PRODUCTION';
+    const siteId = mode === 'TEST' 
+      ? (process.env.SOGECOMMERCE_TEST_SITE_ID || '56994465')
+      : (process.env.SOGECOMMERCE_PROD_SITE_ID || '56994465');
+    const hmacKey = mode === 'TEST'
+      ? (process.env.SOGECOMMERCE_TEST_HMAC_KEY || '')
+      : (process.env.SOGECOMMERCE_PROD_HMAC_KEY || '');
     
     if (!hmacKey) {
       return NextResponse.json({ error: 'No HMAC key configured' }, { status: 500 });
@@ -24,7 +29,7 @@ export async function GET(request: Request) {
     // Build exactly as CMI expects - only include vads_ fields
     const vadsFields: Record<string, string> = {
       vads_site_id: siteId,
-      vads_ctx_mode: 'PRODUCTION',
+      vads_ctx_mode: mode === 'TEST' ? 'TEST' : 'PRODUCTION',
       vads_trans_id: transId,
       vads_trans_date: transDate,
       vads_amount: '1000',
@@ -37,15 +42,13 @@ export async function GET(request: Request) {
       vads_validation_mode: '0',
     };
 
-    // Add optional fields if provided
-    if (useTest) {
-      vadsFields.vads_order_id = orderId;
-      vadsFields.vads_cust_email = 'test@example.com';
-      vadsFields.vads_cust_first_name = 'Test';
-      vadsFields.vads_cust_last_name = 'User';
-      vadsFields.vads_url_return = 'https://diesel-injecteurs.vercel.app/payment/success';
-      vadsFields.vads_url_cancel = 'https://diesel-injecteurs.vercel.app/payment/cancel';
-    }
+    // Add optional fields for testing
+    vadsFields.vads_order_id = orderId;
+    vadsFields.vads_cust_email = 'test@example.com';
+    vadsFields.vads_cust_first_name = 'Test';
+    vadsFields.vads_cust_last_name = 'User';
+    vadsFields.vads_url_return = 'https://diesel-injecteurs.vercel.app/payment/success';
+    vadsFields.vads_url_cancel = 'https://diesel-injecteurs.vercel.app/payment/cancel';
     
     // Get sorted keys
     const vadsKeys = Object.keys(vadsFields).sort((a, b) => a.localeCompare(b));
@@ -61,7 +64,9 @@ export async function GET(request: Request) {
     
     // Build payment URL - IMPORTANT: Don't use URLSearchParams, build manually
     // to control exact encoding
-    const baseUrl = 'https://sogecommerce.societegenerale.eu/vads-payment/';
+    const baseUrl = mode === 'TEST'
+      ? 'https://sogecommerce.societegenerale.eu/test/vads-payment/'
+      : 'https://sogecommerce.societegenerale.eu/vads-payment/';
     
     // Build query string manually (no encoding needed for most fields)
     const queryParts: string[] = [];
@@ -73,6 +78,7 @@ export async function GET(request: Request) {
     const paymentUrl = baseUrl + '?' + queryParts.join('&');
     
     return NextResponse.json({
+      mode,
       timestamp: now.toISOString(),
       transDate,
       transId,
@@ -81,7 +87,9 @@ export async function GET(request: Request) {
       signature,
       paymentUrl,
       testLink: paymentUrl,
-      note: 'Try this link. If it fails, check HMAC key in Sogecommerce back office.',
+      note: mode === 'TEST' 
+        ? 'TEST mode - this should work even if production is not activated'
+        : 'PRODUCTION mode - requires activated account',
     });
   } catch (error) {
     return NextResponse.json({ 
