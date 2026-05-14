@@ -133,14 +133,14 @@ export default function TurboHero() {
 
             {/* RIGHT: License Plate Search */}
             <div className={`transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-              <div className="bg-white rounded-2xl shadow-2xl shadow-black/20 p-6 lg:p-8">
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl shadow-black/20 p-6 lg:p-8">
                 <div className="flex items-center gap-3 mb-6">
                   <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
                     <Car className="w-5 h-5 text-[#0d1b3e]" />
                   </div>
                   <div>
-                    <h3 className="text-[#0d1b3e] font-bold text-lg">Sélectionner votre véhicule</h3>
-                    <p className="text-slate-500 text-sm">Saisissez votre plaque d&apos;immatriculation</p>
+                    <h3 className="text-white font-bold text-lg">Sélectionner votre véhicule</h3>
+                    <p className="text-slate-300 text-sm">Saisissez votre plaque d&apos;immatriculation</p>
                   </div>
                 </div>
 
@@ -151,19 +151,19 @@ export default function TurboHero() {
                     onChange={handlePlateChange}
                     placeholder="AA-123-AA"
                     maxLength={9}
-                    className="w-full px-4 py-4 bg-[#f1f5f9] border-2 border-[#e2e8f0] rounded-xl text-[#0d1b3e] placeholder-slate-400 focus:outline-none focus:border-yellow-400 font-mono text-xl tracking-wider text-center uppercase transition-all"
+                    className="w-full px-4 py-4 bg-[#0d1b3e]/80 border-2 border-white/30 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-yellow-400 font-mono text-xl tracking-wider text-center uppercase transition-all"
                   />
                 </div>
 
                 <div className="flex items-center gap-4 my-4">
-                  <div className="flex-1 h-px bg-slate-200" />
-                  <span className="text-slate-400 text-sm font-medium">OU</span>
-                  <div className="flex-1 h-px bg-slate-200" />
+                  <div className="flex-1 h-px bg-white/20" />
+                  <span className="text-slate-300 text-sm font-medium">OU</span>
+                  <div className="flex-1 h-px bg-white/20" />
                 </div>
 
                 <Link
                   href={plate ? `/produits?immatriculation=${encodeURIComponent(plate)}` : '/produits'}
-                  className="group w-full flex items-center justify-center gap-2 px-6 py-4 bg-[#0d1b3e] text-white font-bold rounded-xl hover:bg-[#1e3a7a] transition-all duration-300"
+                  className="group w-full flex items-center justify-center gap-2 px-6 py-4 bg-yellow-400 text-[#0d1b3e] font-bold rounded-xl hover:bg-yellow-300 transition-all duration-300"
                 >
                   Rechercher
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
