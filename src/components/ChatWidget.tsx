@@ -113,9 +113,9 @@ export default function ChatWidget() {
       {/* Chat Toggle Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-50 group"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 group"
       >
-        <div className={`flex items-center gap-3 px-5 py-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 ${isOpen ? 'bg-gray-800' : 'bg-linear-to-r from-blue-600 to-cyan-600 shadow-blue-600/30'}`}>
+        <div className={`flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-3 sm:py-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-105 ${isOpen ? 'bg-gray-800' : 'bg-linear-to-r from-blue-600 to-cyan-600 shadow-blue-600/30'}`}>
           {isOpen ? (
             <X className="w-6 h-6 text-white" />
           ) : (
@@ -124,14 +124,14 @@ export default function ChatWidget() {
                 <MessageCircle className="w-6 h-6 text-white" />
                 <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse" />
               </div>
-              <span className="font-semibold text-white">Chat</span>
+              <span className="font-semibold text-white hidden sm:inline">Chat</span>
             </>
           )}
         </div>
       </button>
 
       {/* Chat Window */}
-      <div className={`fixed bottom-24 right-6 z-50 w-96 max-w-[calc(100vw-3rem)] transition-all duration-300 ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
+      <div className={`fixed bottom-20 sm:bottom-24 right-4 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-96 max-w-[calc(100vw-3rem)] transition-all duration-300 ${isOpen ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
         <div className="bg-slate-900 rounded-2xl shadow-2xl border border-white/10 overflow-hidden">
           {/* Header */}
           <div className="bg-linear-to-r from-blue-600 to-cyan-600 p-4">
