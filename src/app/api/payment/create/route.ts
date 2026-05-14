@@ -47,6 +47,7 @@ export async function POST(request: Request) {
       returnURL: `${baseUrl}/payment/success?orderId=${orderId}`,
       cancelURL: `${baseUrl}/payment/cancel?orderId=${orderId}`,
       notificationURL: `${baseUrl}/api/payment/notification`,
+      cartItems: cartItems || [],
     });
 
     console.log('Payment URL generated successfully');

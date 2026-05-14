@@ -1,6 +1,13 @@
 // Sogecommerce (CMI) Payment Integration
 import crypto from 'crypto';
 
+export interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+}
+
 export interface SogecommercePaymentRequest {
   amount: number;
   currency: string;
@@ -10,6 +17,7 @@ export interface SogecommercePaymentRequest {
   returnURL: string;
   cancelURL: string;
   notificationURL: string;
+  cartItems?: CartItem[];
 }
 
 export interface SogecommercePaymentResponse {
@@ -154,6 +162,19 @@ export async function createSogecommercePayment(
     vads_tax_amount: '0',
     vads_totalamount_vat: '0',
   };
+
+  // Add product details if cart items exist
+  if (request.cartItems && request.cartItems.length > 0) {
+    request.cartItems.forEach((item, index) => {
+      paymentData[`vads_product_ref${index}`] = item.id.slice(0, 63);
+      paymentData[`vads_product_label${index}`] = item.name.slice(0, 255);
+      paymentData[`vads_product_qty${index}`] = item.quantity.toString();
+      paymentData[`vads_product_amount${index}`] = Math.round(item.price * 100).toString();
+      paymentData[`vads_product_type${index}`] = 'FOOD_AND_GROCERY';
+      paymentData[`vads_product_vat${index}`] = '0.0000';
+    });
+    paymentData.vads_nb_products = request.cartItems.length.toString();
+  }
 
   // Clean up undefined values but keep empty strings for required fields
   Object.keys(paymentData).forEach(key => {
