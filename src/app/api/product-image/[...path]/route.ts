@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'https://diesel-injecteurs.com/api';
+// Use server IP directly to avoid SSL and DNS issues
+const PRESTASHOP_API_URL = 'http://192.162.69.186/api';
 const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
 
 export async function GET(

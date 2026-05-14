@@ -6,9 +6,13 @@ interface ProductPageProps {
   params: Promise<{ id: string }>;
 }
 
+// Use server IP directly to avoid SSL and DNS issues
+const PRESTASHOP_API_URL = 'http://192.162.69.186/api';
+const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
+
 async function getProduct(id: string) {
   try {
-    const response = await fetch(`${process.env.PRESTASHOP_API_URL}/products/${id}?ws_key=${process.env.PRESTASHOP_API_KEY}&display=full`, {
+    const response = await fetch(`${PRESTASHOP_API_URL}/products/${id}?ws_key=${PRESTASHOP_API_KEY}&display=full`, {
       cache: 'no-store',
     });
 
