@@ -97,6 +97,7 @@ export async function createSogecommercePayment(
   const transId = generateTransactionId(request.orderId);
 
   // Build payment parameters for Sogecommerce hosted payment page
+  // Include ALL fields required for signature (empty strings for optional fields)
   const paymentData: Record<string, string> = {
     vads_site_id: siteId,
     vads_ctx_mode: isProd ? 'PRODUCTION' : 'TEST',
@@ -119,6 +120,37 @@ export async function createSogecommercePayment(
     vads_url_check: request.notificationURL,
     vads_url_refused: request.cancelURL,
     vads_url_error: request.cancelURL,
+    // Required empty fields for signature
+    vads_available_languages: '',
+    vads_contrib: 'NextJS_Integration_1.0.0',
+    vads_cust_address: '',
+    vads_cust_cell_phone: '',
+    vads_cust_city: '',
+    vads_cust_country: '',
+    vads_cust_id: '',
+    vads_cust_legal_name: '',
+    vads_cust_phone: '',
+    vads_cust_title: '',
+    vads_cust_zip: '',
+    vads_ext_info_module_id: '',
+    vads_language: 'fr',
+    vads_nb_products: '1',
+    vads_payment_cards: '',
+    vads_return_mode: 'GET',
+    vads_ship_to_city: '',
+    vads_ship_to_country: '',
+    vads_ship_to_first_name: '',
+    vads_ship_to_last_name: '',
+    vads_ship_to_legal_name: '',
+    vads_ship_to_phone_num: '',
+    vads_ship_to_street: '',
+    vads_ship_to_street2: '',
+    vads_ship_to_zip: '',
+    vads_shipping_amount: '0',
+    vads_shop_name: '',
+    vads_shop_url: '',
+    vads_tax_amount: '0',
+    vads_totalamount_vat: '0',
   };
 
   // Clean up undefined values but keep empty strings for required fields
