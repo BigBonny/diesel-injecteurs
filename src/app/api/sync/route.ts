@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
-const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'https://diesel-injecteurs.com/api';
 const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
+
+// Use server IP with Host header to bypass SSL and DNS issues
+const PRESTASHOP_API_HOST = 'diesel-injecteurs.com';
+const PRESTASHOP_API_URL = 'http://192.162.69.186/api';
 
 // Category ID mapping
 const CATEGORY_IDS: Record<string, string> = {
@@ -82,7 +85,10 @@ async function fetchAllProducts(): Promise<any[]> {
       console.log(`Fetching batch: offset=${offset}, limit=${BATCH_SIZE}, url=${apiUrl.substring(0, 100)}...`);
       
       const response = await fetch(apiUrl, { 
-        signal: AbortSignal.timeout(30000)
+        signal: AbortSignal.timeout(30000),
+        headers: {
+          'Host': PRESTASHOP_API_HOST
+        }
       });
 
       if (!response.ok) {
@@ -143,7 +149,12 @@ export async function POST() {
     const testUrl = `${PRESTASHOP_API_URL}/products?ws_key=${PRESTASHOP_API_KEY}&display=full&limit=0,1`;
     console.log('Test URL:', testUrl);
     
-    const testResponse = await fetch(testUrl, { signal: AbortSignal.timeout(10000) });
+    const testResponse = await fetch(testUrl, { 
+      signal: AbortSignal.timeout(10000),
+      headers: {
+        'Host': PRESTASHOP_API_HOST
+      }
+    });
     console.log('Test response status:', testResponse.status);
     
     if (!testResponse.ok) {
