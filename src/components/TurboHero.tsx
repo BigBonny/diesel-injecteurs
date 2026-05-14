@@ -1,16 +1,30 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, ArrowRight, Phone, Shield, Truck, Star, Zap } from 'lucide-react';
+import { Search, ArrowRight, Phone, Shield, Truck, Star, Zap, Car } from 'lucide-react';
 import Link from 'next/link';
 
 export default function TurboHero() {
   const [query, setQuery] = useState('');
+  const [plate, setPlate] = useState('');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Format French license plate (AA-123-AA)
+  const formatPlate = (value: string) => {
+    const cleaned = value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+    if (cleaned.length <= 2) return cleaned;
+    if (cleaned.length <= 5) return `${cleaned.slice(0, 2)}-${cleaned.slice(2)}`;
+    if (cleaned.length <= 7) return `${cleaned.slice(0, 2)}-${cleaned.slice(2, 5)}-${cleaned.slice(5)}`;
+    return `${cleaned.slice(0, 2)}-${cleaned.slice(2, 5)}-${cleaned.slice(5, 7)}`;
+  };
+
+  const handlePlateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPlate(formatPlate(e.target.value));
+  };
 
   return (
     <section className="relative min-h-screen bg-[#0d1b3e] overflow-hidden flex flex-col">
@@ -56,9 +70,37 @@ export default function TurboHero() {
             </h1>
 
             {/* Sub */}
-            <p className={`text-slate-300 text-lg sm:text-xl leading-relaxed mb-10 max-w-xl transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+            <p className={`text-slate-300 text-lg sm:text-xl leading-relaxed mb-8 max-w-xl transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
               Turbos & injecteurs neufs et reconditionnés OEM. <span className="text-yellow-400 font-semibold">Garantie 2 ans</span> · Livraison <span className="text-white font-semibold">24-48h</span> · Paiement 3x sans frais.
             </p>
+
+            {/* License Plate Search */}
+            <div className={`bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5 mb-8 transition-all duration-700 delay-[250ms] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+              <div className="flex items-center gap-2 mb-3">
+                <Car className="w-5 h-5 text-yellow-400" />
+                <span className="text-white font-semibold text-sm uppercase tracking-wide">Sélectionner votre véhicule</span>
+              </div>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex-1 relative">
+                  <input
+                    type="text"
+                    value={plate}
+                    onChange={handlePlateChange}
+                    placeholder="AA-123-AA"
+                    maxLength={9}
+                    className="w-full px-4 py-3 bg-[#0d1b3e] border-2 border-white/30 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-yellow-400 font-mono text-lg tracking-wider text-center uppercase transition-all"
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hidden sm:block">Plaque d&apos;immatriculation</span>
+                </div>
+                <Link
+                  href={plate ? `/produits?immatriculation=${encodeURIComponent(plate)}` : '/produits'}
+                  className="group flex items-center justify-center gap-2 px-6 py-3 bg-yellow-400 text-[#0d1b3e] font-bold rounded-lg hover:bg-yellow-300 hover:shadow-lg transition-all duration-300 whitespace-nowrap"
+                >
+                  Rechercher
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </div>
 
             {/* Search Bar */}
             <div className={`flex flex-col sm:flex-row gap-3 mb-8 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
