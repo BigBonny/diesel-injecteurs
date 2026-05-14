@@ -1,4 +1,4 @@
-// Sogecommerce Payment Integration
+// Sogecommerce (CMI) Payment Integration
 import crypto from 'crypto';
 
 export interface SogecommercePaymentRequest {
@@ -13,90 +13,160 @@ export interface SogecommercePaymentRequest {
 }
 
 export interface SogecommercePaymentResponse {
-  formToken: string;
+  formToken: string; // Actually the payment URL for hosted page
   publicKey: string;
 }
 
 export interface SogecommerceNotification {
-  kr_answer: string;
-  kr_hash: string;
+  vads_trans_status: string;
+  vads_trans_id: string;
+  vads_order_id: string;
+  vads_amount: string;
+  vads_cust_email?: string;
+  vads_cust_first_name?: string;
+  vads_cust_last_name?: string;
+  signature: string;
+  [key: string]: string | undefined;
+}
+
+function getCredentials() {
+  const mode = process.env.SOGECOMMERCE_MODE || 'TEST';
+  const isProd = mode === 'PRODUCTION';
+  
+  const siteId = isProd 
+    ? process.env.SOGECOMMERCE_PROD_SITE_ID 
+    : process.env.SOGECOMMERCE_TEST_SITE_ID;
+  const hmacKey = isProd 
+    ? process.env.SOGECOMMERCE_PROD_HMAC_KEY 
+    : process.env.SOGECOMMERCE_TEST_HMAC_KEY;
+  
+  if (!siteId || !hmacKey) {
+    throw new Error(`Missing Sogecommerce credentials for ${mode} mode`);
+  }
+  
+  return { mode, siteId, hmacKey, isProd };
+}
+
+function generateTransactionId(orderId: string): string {
+  // Transaction ID must be exactly 6 numeric characters, 0-padded
+  // Take last 6 chars and ensure they're numeric, or hash and take first 6
+  const numeric = orderId.replace(/\D/g, '');
+  if (numeric.length >= 6) {
+    return numeric.slice(-6);
+  }
+  // Pad with zeros if needed
+  return numeric.padStart(6, '0').slice(-6);
+}
+
+function generateSignature(paymentData: Record<string, string>, hmacKey: string): string {
+  // Build signature string: only vads_ parameters, sorted alphabetically, joined with +
+  const vadsKeys = Object.keys(paymentData)
+    .filter(key => key.startsWith('vads_'))
+    .sort((a, b) => a.localeCompare(b));
+  
+  const signatureString = vadsKeys.map(key => paymentData[key]).join('+') + '+' + hmacKey;
+  
+  console.log('Signature keys:', vadsKeys);
+  console.log('Signature string (before HMAC):', signatureString);
+  
+  // Calculate HMAC-SHA256 and encode as Base64
+  const hmac = crypto.createHmac('sha256', hmacKey);
+  hmac.update(signatureString);
+  const signature = hmac.digest('base64');
+  
+  console.log('Generated signature:', signature);
+  
+  return signature;
 }
 
 export async function createSogecommercePayment(
   request: SogecommercePaymentRequest
 ): Promise<SogecommercePaymentResponse> {
-  // Use production credentials from Sogecommerce Back Office
-  const siteId = '56994465';
-  const hmacKey = 'zFuFb9QpAMOJJVzv'; // Production key
+  const { mode, siteId, hmacKey, isProd } = getCredentials();
+  
+  console.log(`Creating Sogecommerce payment in ${mode} mode for order ${request.orderId}`);
+
+  // Generate transaction date in format:YYYYMMDDHHMMSS
+  const now = new Date();
+  const transDate = now.toISOString()
+    .replace(/[-:T.Z]/g, '')
+    .slice(0, 14);
+  
+  // Transaction ID must be unique per day and exactly 6 digits
+  const transId = generateTransactionId(request.orderId);
 
   // Build payment parameters for Sogecommerce hosted payment page
   const paymentData: Record<string, string> = {
     vads_site_id: siteId,
-    vads_ctx_mode: 'PRODUCTION',
-    vads_trans_id: request.orderId.slice(-6), // Last 6 chars of order ID
-    vads_trans_date: new Date().toISOString().replace(/[-:T.Z]/g, '').slice(0, 14),
-    vads_amount: Math.round(request.amount * 100).toString(), // Convert to cents
-    vads_currency: '978', // EUR currency code
+    vads_ctx_mode: isProd ? 'PRODUCTION' : 'TEST',
+    vads_trans_id: transId,
+    vads_trans_date: transDate,
+    vads_amount: Math.round(request.amount * 100).toString(), // Amount in cents
+    vads_currency: '978', // EUR
     vads_action_mode: 'INTERACTIVE',
     vads_page_action: 'PAYMENT',
     vads_version: 'V2',
     vads_payment_config: 'SINGLE',
     vads_capture_delay: '0',
     vads_validation_mode: '0',
-    vads_cust_email: request.customerEmail,
-    vads_cust_first_name: request.customerName.split(' ')[0] || request.customerName,
-    vads_cust_last_name: request.customerName.split(' ').slice(1).join(' ') || '',
+    vads_order_id: request.orderId.slice(0, 32), // Max 32 chars
+    vads_cust_email: request.customerEmail.slice(0, 127),
+    vads_cust_first_name: (request.customerName.split(' ')[0] || '').slice(0, 127),
+    vads_cust_last_name: request.customerName.split(' ').slice(1).join(' ').slice(0, 127),
     vads_url_return: request.returnURL,
     vads_url_cancel: request.cancelURL,
     vads_url_check: request.notificationURL,
     vads_url_refused: request.cancelURL,
+    vads_url_error: request.cancelURL,
   };
 
-  // Build signature string: only vads_ parameters, sorted by key name (ksort), joined with +
-  const vadsKeys = Object.keys(paymentData)
-    .filter(key => key.startsWith('vads_'))
-    .sort(); // Sort by key name (like PHP ksort)
-  const signatureString = vadsKeys.map(key => paymentData[key]).join('+') + '+' + hmacKey;
-  // Use base64 encoding for SHA-256 (as per PrestaShop module)
-  const signature = Buffer.from(crypto.createHmac('sha256', hmacKey).update(signatureString).digest()).toString('base64');
+  // Clean up any undefined/null values
+  Object.keys(paymentData).forEach(key => {
+    if (!paymentData[key]) delete paymentData[key];
+  });
 
-  // Add signature to payment data
+  // Generate signature
+  const signature = generateSignature(paymentData, hmacKey);
   paymentData.signature = signature;
 
-  console.log('Sogecommerce vads keys:', vadsKeys);
-  console.log('Sogecommerce signature string:', signatureString);
-  console.log('Sogecommerce signature:', signature);
-  console.log('Sogecommerce hmacKey:', hmacKey);
-
-  // Build the hosted payment page URL with query parameters
-  // Use the correct Sogecommerce production payment URL
-  const baseUrl = 'https://sogecommerce.societegenerale.eu/vads-payment/';
+  // Build the hosted payment page URL
+  const baseUrl = isProd 
+    ? 'https://sogecommerce.societegenerale.eu/vads-payment/'
+    : 'https://sogecommerce.societegenerale.eu/test/vads-payment/';
+    
   const queryParams = new URLSearchParams(paymentData).toString();
   const paymentUrl = `${baseUrl}?${queryParams}`;
 
-  console.log('Sogecommerce payment URL:', paymentUrl);
+  console.log('Payment URL length:', paymentUrl.length);
+  console.log('Payment URL (truncated):', paymentUrl.substring(0, 200) + '...');
 
-  // Return a formToken that is actually the payment URL
-  // The payment page will use this URL directly
   return {
     formToken: paymentUrl,
     publicKey: siteId,
   };
 }
 
-function generateHMACSignature(data: string, key: string): string {
-  return crypto.createHmac('sha256', key).update(data).digest('hex');
-}
-
-export function verifyNotification(
-  notification: SogecommerceNotification
-): boolean {
-  const mode = process.env.NEXT_PUBLIC_SOGECOMMERCE_MODE || 'test';
-  const hmacKey = mode === 'test' 
-    ? process.env.SOGECOMMERCE_TEST_HMAC_KEY || ''
-    : process.env.SOGECOMMERCE_PROD_HMAC_KEY || '';
-
-  // Verify HMAC signature
-  const expectedHash = generateHMACSignature(notification.kr_answer, hmacKey);
-  return notification.kr_hash === expectedHash;
+export function verifyNotification(notification: SogecommerceNotification): boolean {
+  try {
+    const { hmacKey } = getCredentials();
+    
+    // Extract all vads_ fields from notification
+    const vadsData: Record<string, string> = {};
+    Object.keys(notification).forEach(key => {
+      if (key.startsWith('vads_') && notification[key]) {
+        vadsData[key] = notification[key]!;
+      }
+    });
+    
+    // Generate expected signature
+    const expectedSignature = generateSignature(vadsData, hmacKey);
+    
+    console.log('Expected signature:', expectedSignature);
+    console.log('Received signature:', notification.signature);
+    
+    return expectedSignature === notification.signature;
+  } catch (error) {
+    console.error('Signature verification error:', error);
+    return false;
+  }
 }

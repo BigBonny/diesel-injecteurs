@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ChatWidget from '@/components/ChatWidget';
-import { CreditCard, Loader2 } from 'lucide-react';
+import { CreditCard, Loader2, ArrowRight } from 'lucide-react';
 
 function PaymentContent() {
   const searchParams = useSearchParams();
@@ -14,54 +14,42 @@ function PaymentContent() {
   const publicKey = searchParams.get('publicKey');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [paymentUrl, setPaymentUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!formToken || !publicKey) {
-      setError('Missing payment parameters');
+      setError('Paramètres de paiement manquants');
       setLoading(false);
       return;
     }
 
-    // Set public key as global variable before loading SDK
-    (window as any).krPublicKey = publicKey;
-    (window as any).krFormToken = formToken;
-
-    // Load Sogecommerce JavaScript SDK
-    const script = document.createElement('script');
-    script.src = 'https://static-sogecommerce.societegenerale.eu/static/js/krypton-client/V4.0/stable/kr-payment-form.min.js';
-    script.async = true;
-    script.onload = () => {
+    // The formToken is actually the hosted payment page URL from our API
+    // Validate it looks like a Sogecommerce URL
+    if (formToken.includes('sogecommerce.societegenerale.eu')) {
+      setPaymentUrl(formToken);
       setLoading(false);
-      // Initialize KR object after SDK loads
-      if ((window as any).KR) {
-        const KR = (window as any).KR;
-        KR.setFormToken(formToken);
-        KR.onSubmit(() => {
-          return true;
-        });
-      }
-    };
-    script.onerror = () => {
-      setError('Failed to load payment form');
+    } else {
+      setError('URL de paiement invalide');
       setLoading(false);
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
+    }
   }, [formToken, publicKey]);
+
+  const handleRedirect = () => {
+    if (paymentUrl) {
+      window.location.href = paymentUrl;
+    }
+  };
 
   if (error) {
     return (
       <div className="bg-white rounded-2xl p-8 border border-red-200">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">Payment Error</h1>
+        <h1 className="text-2xl font-bold text-red-600 mb-4">Erreur de paiement</h1>
         <p className="text-stone-600">{error}</p>
         <button
           onClick={() => router.push('/panier')}
-          className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl"
+          className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
         >
-          Return to Cart
+          Retour au panier
         </button>
       </div>
     );
@@ -74,23 +62,48 @@ function PaymentContent() {
           <CreditCard className="w-6 h-6 text-blue-600" />
         </div>
         <div>
-          <h1 className="text-2xl font-bold text-stone-900">Secure Payment</h1>
-          <p className="text-sm text-stone-500">Complete your payment securely</p>
+          <h1 className="text-2xl font-bold text-stone-900">Paiement sécurisé</h1>
+          <p className="text-sm text-stone-500">Vous allez être redirigé vers notre banque</p>
         </div>
       </div>
 
       {loading ? (
         <div className="flex flex-col items-center justify-center py-12">
           <Loader2 className="w-8 h-8 text-blue-600 animate-spin mb-4" />
-          <p className="text-stone-600">Loading payment form...</p>
+          <p className="text-stone-600">Préparation du paiement...</p>
         </div>
       ) : (
-        <div 
-          id="kr-payment-form" 
-          className="min-h-[400px]"
-          data-kr-public-key={publicKey}
-          data-kr-form-token={formToken}
-        />
+        <div className="py-8">
+          <div className="bg-slate-50 rounded-xl p-6 mb-6">
+            <h3 className="font-semibold text-slate-900 mb-2">Sécurité garantie</h3>
+            <ul className="text-sm text-slate-600 space-y-2">
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                Paiement 3D Secure par Société Générale
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                Vos données sont cryptées et sécurisées
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                Confirmation immédiate par email
+              </li>
+            </ul>
+          </div>
+          
+          <button
+            onClick={handleRedirect}
+            className="w-full flex items-center justify-center gap-3 px-8 py-4 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 hover:shadow-lg transition-all"
+          >
+            Procéder au paiement
+            <ArrowRight className="w-5 h-5" />
+          </button>
+          
+          <p className="text-center text-xs text-slate-400 mt-4">
+            Vous serez redirigé vers sogecommerce.societegenerale.eu
+          </p>
+        </div>
       )}
     </div>
   );
