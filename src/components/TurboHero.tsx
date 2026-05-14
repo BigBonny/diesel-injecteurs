@@ -13,7 +13,6 @@ export default function TurboHero() {
     setMounted(true);
   }, []);
 
-  // Format French license plate (AA-123-AA)
   const formatPlate = (value: string) => {
     const cleaned = value.toUpperCase().replace(/[^A-Z0-9]/g, '');
     if (cleaned.length <= 2) return cleaned;
@@ -31,14 +30,10 @@ export default function TurboHero() {
 
       {/* ── Background: giant turbo SVG + glows ── */}
       <div className="absolute inset-0 pointer-events-none select-none">
-        {/* Deep radial gradient */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_70%_50%,#1e3a7a55,transparent)]" />
-        {/* Yellow accent glow top-left */}
         <div className="absolute -top-40 -left-40 w-[600px] h-[600px] bg-yellow-400/10 rounded-full blur-[120px]" />
-        {/* Blue glow bottom-right */}
         <div className="absolute -bottom-20 right-0 w-[500px] h-[500px] bg-blue-600/15 rounded-full blur-[100px]" />
 
-        {/* Turbo SVG — full right side, massive */}
         <img
           src="/assets/turbo.svg"
           alt=""
@@ -47,127 +42,133 @@ export default function TurboHero() {
           style={{ filter: 'drop-shadow(0 0 60px #facc1540)' }}
         />
 
-        {/* Fine grid overlay */}
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-size-[60px_60px]" />
       </div>
 
       {/* ── HERO CONTENT ── */}
       <div className="relative z-10 flex-1 flex items-center">
         <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-20 lg:py-24">
-          <div className="max-w-2xl lg:max-w-3xl">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* LEFT: Text Content */}
+            <div className="max-w-2xl">
+              <div className={`inline-flex items-center gap-2.5 px-4 py-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full mb-8 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
+                <span className="text-yellow-400 font-semibold text-xs sm:text-sm tracking-widest uppercase">Spécialiste Injection Diesel</span>
+              </div>
 
-            {/* Badge */}
-            <div className={`inline-flex items-center gap-2.5 px-4 py-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full mb-8 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <span className="w-2 h-2 bg-yellow-400 rounded-full animate-pulse" />
-              <span className="text-yellow-400 font-semibold text-xs sm:text-sm tracking-widest uppercase">Spécialiste Injection Diesel</span>
+              <h1 className={`font-black leading-[0.92] mb-6 transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+                <span className="block text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl">Remplacez vos</span>
+                <span className="block text-yellow-400 text-5xl sm:text-6xl md:text-7xl lg:text-8xl">pièces diesel</span>
+                <span className="block text-white/60 text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-1">sans vous ruiner.</span>
+              </h1>
+
+              <p className={`text-slate-300 text-lg sm:text-xl leading-relaxed mb-8 max-w-xl transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+                Turbos & injecteurs neufs et reconditionnés OEM. <span className="text-yellow-400 font-semibold">Garantie 2 ans</span> · Livraison <span className="text-white font-semibold">24-48h</span> · Paiement 3x sans frais.
+              </p>
+
+              <div className={`flex flex-col sm:flex-row gap-3 mb-8 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+                <div className="flex-1 relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                  <input
+                    type="text"
+                    value={query}
+                    onChange={e => setQuery(e.target.value)}
+                    placeholder="Marque, modèle, référence… ex: Renault Clio 1.5 dCi"
+                    className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-yellow-400 focus:bg-white/15 transition-all text-sm sm:text-base"
+                  />
+                </div>
+                <Link
+                  href={`/produits${query ? `?search=${encodeURIComponent(query)}` : ''}`}
+                  className="group flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 text-[#0d1b3e] font-black text-base rounded-xl hover:bg-yellow-300 hover:shadow-2xl hover:shadow-yellow-400/30 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
+                >
+                  Trouver ma pièce
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+
+              <div className={`flex flex-wrap gap-2 mb-8 transition-all duration-700 delay-400 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+                <span className="text-slate-400 text-sm self-center mr-1">Populaire :</span>
+                {['Turbos Renault', 'Injecteurs Bosch', 'Kit CHRA Peugeot', 'Turbos BMW'].map(t => (
+                  <Link
+                    key={t}
+                    href={`/produits?search=${encodeURIComponent(t)}`}
+                    className="px-3 py-1.5 bg-white/8 border border-white/15 text-white/70 hover:text-yellow-400 hover:border-yellow-400/40 rounded-lg text-xs font-medium transition-all"
+                  >
+                    {t}
+                  </Link>
+                ))}
+              </div>
+
+              <div className={`flex flex-col sm:flex-row gap-4 mb-8 transition-all duration-700 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                <Link
+                  href="/produits"
+                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-[#0d1b3e] font-bold rounded-xl hover:bg-yellow-400 hover:shadow-2xl hover:shadow-yellow-400/20 transition-all duration-300"
+                >
+                  Voir les turbos
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+                <a
+                  href="tel:+33612429880"
+                  className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-transparent border-2 border-white/20 text-white font-bold rounded-xl hover:border-yellow-400 hover:text-yellow-400 transition-all duration-300"
+                >
+                  <Phone className="w-5 h-5" />
+                  06 12 42 98 80
+                </a>
+              </div>
+
+              <div className={`flex flex-wrap gap-x-8 gap-y-3 transition-all duration-700 delay-600 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+                {[
+                  { icon: Shield, text: 'Garantie 2 ans' },
+                  { icon: Truck, text: 'Livraison 24-48h' },
+                  { icon: Star, text: '4.9/5 · 15 000 avis' },
+                  { icon: Zap, text: 'Paiement 3× sans frais' },
+                ].map(({ icon: Icon, text }) => (
+                  <span key={text} className="flex items-center gap-2 text-slate-400 text-sm">
+                    <Icon className="w-4 h-4 text-yellow-400" />
+                    {text}
+                  </span>
+                ))}
+              </div>
             </div>
 
-            {/* Headline */}
-            <h1 className={`font-black leading-[0.92] mb-6 transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-              <span className="block text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl">Remplacez vos</span>
-              <span className="block text-yellow-400 text-5xl sm:text-6xl md:text-7xl lg:text-8xl">pièces diesel</span>
-              <span className="block text-white/60 text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-1">sans vous ruiner.</span>
-            </h1>
+            {/* RIGHT: License Plate Search */}
+            <div className={`transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+              <div className="bg-white rounded-2xl shadow-2xl shadow-black/20 p-6 lg:p-8">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
+                    <Car className="w-5 h-5 text-[#0d1b3e]" />
+                  </div>
+                  <div>
+                    <h3 className="text-[#0d1b3e] font-bold text-lg">Sélectionner votre véhicule</h3>
+                    <p className="text-slate-500 text-sm">Saisissez votre plaque d&apos;immatriculation</p>
+                  </div>
+                </div>
 
-            {/* Sub */}
-            <p className={`text-slate-300 text-lg sm:text-xl leading-relaxed mb-8 max-w-xl transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-              Turbos & injecteurs neufs et reconditionnés OEM. <span className="text-yellow-400 font-semibold">Garantie 2 ans</span> · Livraison <span className="text-white font-semibold">24-48h</span> · Paiement 3x sans frais.
-            </p>
-
-            {/* License Plate Search */}
-            <div className={`bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-5 mb-8 transition-all duration-700 delay-[250ms] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-              <div className="flex items-center gap-2 mb-3">
-                <Car className="w-5 h-5 text-yellow-400" />
-                <span className="text-white font-semibold text-sm uppercase tracking-wide">Sélectionner votre véhicule</span>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="flex-1 relative">
+                <div className="mb-4">
                   <input
                     type="text"
                     value={plate}
                     onChange={handlePlateChange}
                     placeholder="AA-123-AA"
                     maxLength={9}
-                    className="w-full px-4 py-3 bg-[#0d1b3e] border-2 border-white/30 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-yellow-400 font-mono text-lg tracking-wider text-center uppercase transition-all"
+                    className="w-full px-4 py-4 bg-[#f1f5f9] border-2 border-[#e2e8f0] rounded-xl text-[#0d1b3e] placeholder-slate-400 focus:outline-none focus:border-yellow-400 font-mono text-xl tracking-wider text-center uppercase transition-all"
                   />
-                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hidden sm:block">Plaque d&apos;immatriculation</span>
                 </div>
+
+                <div className="flex items-center gap-4 my-4">
+                  <div className="flex-1 h-px bg-slate-200" />
+                  <span className="text-slate-400 text-sm font-medium">OU</span>
+                  <div className="flex-1 h-px bg-slate-200" />
+                </div>
+
                 <Link
                   href={plate ? `/produits?immatriculation=${encodeURIComponent(plate)}` : '/produits'}
-                  className="group flex items-center justify-center gap-2 px-6 py-3 bg-yellow-400 text-[#0d1b3e] font-bold rounded-lg hover:bg-yellow-300 hover:shadow-lg transition-all duration-300 whitespace-nowrap"
+                  className="group w-full flex items-center justify-center gap-2 px-6 py-4 bg-[#0d1b3e] text-white font-bold rounded-xl hover:bg-[#1e3a7a] transition-all duration-300"
                 >
                   Rechercher
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
-            </div>
-
-            {/* Search Bar */}
-            <div className={`flex flex-col sm:flex-row gap-3 mb-8 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-              <div className="flex-1 relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                <input
-                  type="text"
-                  value={query}
-                  onChange={e => setQuery(e.target.value)}
-                  placeholder="Marque, modèle, référence… ex: Renault Clio 1.5 dCi"
-                  className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-yellow-400 focus:bg-white/15 transition-all text-sm sm:text-base"
-                />
-              </div>
-              <Link
-                href={`/produits${query ? `?search=${encodeURIComponent(query)}` : ''}`}
-                className="group flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 text-[#0d1b3e] font-black text-base rounded-xl hover:bg-yellow-300 hover:shadow-2xl hover:shadow-yellow-400/30 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
-              >
-                Trouver ma pièce
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-
-            {/* Quick Links */}
-            <div className={`flex flex-wrap gap-2 mb-12 transition-all duration-700 delay-[400ms] ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-              <span className="text-slate-400 text-sm self-center mr-1">Populaire :</span>
-              {['Turbos Renault', 'Injecteurs Bosch', 'Kit CHRA Peugeot', 'Turbos BMW'].map(t => (
-                <Link
-                  key={t}
-                  href={`/produits?search=${encodeURIComponent(t)}`}
-                  className="px-3 py-1.5 bg-white/8 border border-white/15 text-white/70 hover:text-yellow-400 hover:border-yellow-400/40 rounded-lg text-xs font-medium transition-all"
-                >
-                  {t}
-                </Link>
-              ))}
-            </div>
-
-            {/* CTA Buttons */}
-            <div className={`flex flex-col sm:flex-row gap-4 mb-16 transition-all duration-700 delay-[500ms] ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-              <Link
-                href="/produits"
-                className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-[#0d1b3e] font-bold rounded-xl hover:bg-yellow-400 hover:shadow-2xl hover:shadow-yellow-400/20 transition-all duration-300"
-              >
-                Voir les turbos
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-              <a
-                href="tel:+33612429880"
-                className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-transparent border-2 border-white/20 text-white font-bold rounded-xl hover:border-yellow-400 hover:text-yellow-400 transition-all duration-300"
-              >
-                <Phone className="w-5 h-5" />
-                06 12 42 98 80
-              </a>
-            </div>
-
-            {/* Trust strip */}
-            <div className={`flex flex-wrap gap-x-8 gap-y-3 transition-all duration-700 delay-[600ms] ${mounted ? 'opacity-100' : 'opacity-0'}`}>
-              {[
-                { icon: Shield, text: 'Garantie 2 ans' },
-                { icon: Truck, text: 'Livraison 24-48h' },
-                { icon: Star, text: '4.9/5 · 15 000 avis' },
-                { icon: Zap, text: 'Paiement 3× sans frais' },
-              ].map(({ icon: Icon, text }) => (
-                <span key={text} className="flex items-center gap-2 text-slate-400 text-sm">
-                  <Icon className="w-4 h-4 text-yellow-400" />
-                  {text}
-                </span>
-              ))}
             </div>
           </div>
         </div>
