@@ -44,7 +44,6 @@ export async function GET() {
       const hmac = crypto.createHmac('sha256', hmacKey);
       hmac.update(signatureString);
       signature = hmac.digest('base64');
-      signature = signature.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
     }
     
     return NextResponse.json({

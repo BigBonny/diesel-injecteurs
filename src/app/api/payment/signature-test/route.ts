@@ -57,24 +57,18 @@ export async function GET(request: Request) {
     // Build signature string
     const signatureString = vadsKeys.map(key => paymentData[key]).join('+') + '+' + hmacKey;
     
-    // Generate signatures
+    // Generate signature with standard Base64 (what CMI expects)
     const hmac = crypto.createHmac('sha256', hmacKey);
     hmac.update(signatureString);
-    const standardBase64 = hmac.digest('base64');
-    const urlSafeBase64 = standardBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+    const signature = hmac.digest('base64');
     
-    // Build full payment URL with both signature options
+    // Build full payment URL
     const baseUrl = isProd 
       ? 'https://sogecommerce.societegenerale.eu/vads-payment/'
       : 'https://sogecommerce.societegenerale.eu/test/vads-payment/';
     
-    // URL with standard Base64 signature
-    const standardData = { ...paymentData, signature: standardBase64 };
-    const standardUrl = baseUrl + '?' + new URLSearchParams(standardData).toString();
-    
-    // URL with URL-safe Base64 signature
-    const urlSafeData = { ...paymentData, signature: urlSafeBase64 };
-    const urlSafeUrl = baseUrl + '?' + new URLSearchParams(urlSafeData).toString();
+    const paymentDataWithSig = { ...paymentData, signature };
+    const paymentUrl = baseUrl + '?' + new URLSearchParams(paymentDataWithSig).toString();
     
     return NextResponse.json({
       mode,
@@ -90,18 +84,10 @@ export async function GET(request: Request) {
         vadsKeys,
         signatureStringPreview: signatureString.substring(0, 120) + '...',
         signatureStringLength: signatureString.length,
-        standardBase64,
-        urlSafeBase64,
+        signature,
       },
-      paymentUrls: {
-        standard: standardUrl.substring(0, 300) + '...',
-        urlSafe: urlSafeUrl.substring(0, 300) + '...',
-      },
-      testLinks: {
-        standard: standardUrl,
-        urlSafe: urlSafeUrl,
-      },
-      recommendation: 'Try both URLs. CMI usually expects standard Base64 for form posts.',
+      paymentUrlPreview: paymentUrl.substring(0, 300) + '...',
+      testLink: paymentUrl,
     });
   } catch (error) {
     return NextResponse.json({ 
