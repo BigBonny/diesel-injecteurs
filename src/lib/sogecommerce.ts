@@ -66,7 +66,7 @@ function generateSignature(paymentData: Record<string, string>, hmacKey: string)
     .filter(key => key.startsWith('vads_'))
     .sort((a, b) => a.localeCompare(b));
   
-  const signatureString = vadsKeys.map(key => paymentData[key]).join('+');
+  const signatureString = vadsKeys.map(key => paymentData[key]).join('+') + '+' + hmacKey;
   
   console.log('Signature keys:', vadsKeys);
   console.log('Signature string (before HMAC):', signatureString);
