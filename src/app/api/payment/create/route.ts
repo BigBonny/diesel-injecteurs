@@ -38,6 +38,8 @@ export async function POST(request: Request) {
       baseUrl 
     });
 
+    console.log('Creating payment with cart items:', cartItems);
+    
     const paymentResponse = await createSogecommercePayment({
       amount,
       currency,
@@ -49,6 +51,9 @@ export async function POST(request: Request) {
       notificationURL: `${baseUrl}/api/payment/notification`,
       cartItems: cartItems || [],
     });
+    
+    // Log the full payment URL for debugging
+    console.log('Full payment URL:', paymentResponse.formToken);
 
     console.log('Payment URL generated successfully');
 
