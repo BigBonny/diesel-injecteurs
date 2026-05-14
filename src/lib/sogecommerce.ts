@@ -124,10 +124,17 @@ export async function createSogecommercePayment(
     vads_url_error: request.cancelURL,
   };
 
-  // Clean up any undefined/null values
+  // Clean up undefined values but keep empty strings for required fields
   Object.keys(paymentData).forEach(key => {
-    if (!paymentData[key]) delete paymentData[key];
+    if (paymentData[key] === undefined || paymentData[key] === null) {
+      delete paymentData[key];
+    }
   });
+  
+  // Ensure vads_cust_last_name exists even if empty (CMI requires it in signature)
+  if (!paymentData.vads_cust_last_name) {
+    paymentData.vads_cust_last_name = '';
+  }
 
   // Generate signature
   const signature = generateSignature(paymentData, hmacKey);

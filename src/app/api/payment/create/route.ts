@@ -60,7 +60,6 @@ export async function POST(request: Request) {
       customer_name: customerName || 'Client',
       status: 'pending',
       payment_method: 'sogecommerce',
-      cart_items: cartItems || [],
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     });
