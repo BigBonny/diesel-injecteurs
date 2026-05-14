@@ -136,13 +136,37 @@ async function fetchAllProducts(): Promise<any[]> {
 export async function POST() {
   try {
     console.log('Starting product sync...');
+    console.log('API URL:', PRESTASHOP_API_URL);
+    console.log('API Key exists:', !!PRESTASHOP_API_KEY);
+    
+    // Test first API call
+    const testUrl = `${PRESTASHOP_API_URL}/products?ws_key=${PRESTASHOP_API_KEY}&display=full&limit=0,1`;
+    console.log('Test URL:', testUrl);
+    
+    const testResponse = await fetch(testUrl, { signal: AbortSignal.timeout(10000) });
+    console.log('Test response status:', testResponse.status);
+    
+    if (!testResponse.ok) {
+      const errorText = await testResponse.text();
+      return NextResponse.json({ 
+        error: 'API test failed', 
+        status: testResponse.status,
+        preview: errorText.substring(0, 500)
+      }, { status: 500 });
+    }
+    
+    const testText = await testResponse.text();
+    console.log('Test response preview:', testText.substring(0, 200));
     
     // Fetch all products from PrestaShop
     const products = await fetchAllProducts();
     console.log(`Fetched ${products.length} products from PrestaShop`);
 
     if (products.length === 0) {
-      return NextResponse.json({ error: 'No products fetched' }, { status: 500 });
+      return NextResponse.json({ 
+        error: 'No products fetched',
+        testResponse: testText.substring(0, 500)
+      }, { status: 500 });
     }
 
     // Insert products to Supabase in batches
