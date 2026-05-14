@@ -6,9 +6,9 @@ const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
 
 // Category ID mapping
 const CATEGORY_IDS: Record<string, string> = {
-  'turbos': '325',
-  'injecteurs': '2',
-  'kit-turbo-chra': '409'
+  'turbos': '4',
+  'injecteurs': '464',
+  'kit-turbo-chra': '1434'
 };
 
 function parseProductXml(productXml: string) {

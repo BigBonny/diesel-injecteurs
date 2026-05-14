@@ -9,9 +9,9 @@ const WEBHOOK_SECRET = process.env.PRESTASHOP_WEBHOOK_SECRET || '';
 
 // Category ID mapping
 const CATEGORY_IDS: Record<string, string> = {
-  '325': 'turbos',
-  '2': 'injecteurs',
-  '409': 'kit-turbo-chra'
+  '4': 'turbos',
+  '464': 'injecteurs',
+  '1434': 'kit-turbo-chra'
 };
 
 interface WebhookPayload {
