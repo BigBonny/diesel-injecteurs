@@ -23,7 +23,7 @@ export async function GET(
       const rewriteMatch = productText.match(/<link_rewrite>([^<]+)<\/link_rewrite>/);
       if (rewriteMatch) {
         const productName = rewriteMatch[1];
-        const imageUrl = `https://diesel-injecteurs.com/${imageId}/${productName}.jpg`;
+        const imageUrl = `http://192.162.69.186/${imageId}/${productName}.jpg`;
         
         const imageResponse = await fetch(imageUrl);
         if (imageResponse.ok) {
@@ -41,7 +41,7 @@ export async function GET(
     }
     
     // Fallback: try direct image ID path
-    const fallbackUrl = `https://diesel-injecteurs.com/${imageId}/${productId}.jpg`;
+    const fallbackUrl = `http://192.162.69.186/${imageId}/${productId}.jpg`;
     const fallbackResponse = await fetch(fallbackUrl);
     
     if (fallbackResponse.ok) {
