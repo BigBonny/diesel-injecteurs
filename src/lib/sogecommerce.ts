@@ -72,9 +72,13 @@ function generateSignature(paymentData: Record<string, string>, hmacKey: string)
   // Calculate HMAC-SHA256 and encode as Base64
   const hmac = crypto.createHmac('sha256', hmacKey);
   hmac.update(signatureString);
-  const signature = hmac.digest('base64');
+  let signature = hmac.digest('base64');
   
-  console.log('Generated signature:', signature);
+  // Convert to URL-safe Base64 (replace + with -, / with _, remove = padding)
+  // This is required for CMI/Sogecommerce
+  signature = signature.replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+  
+  console.log('Generated signature (URL-safe):', signature);
   
   return signature;
 }
