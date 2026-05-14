@@ -60,16 +60,18 @@ function generateTransactionId(orderId: string): string {
 
 function generateSignature(paymentData: Record<string, string>, hmacKey: string): string {
   // Build signature string: only vads_ parameters, sorted alphabetically, joined with +
+  // IMPORTANT: The signature string does NOT include the HMAC key!
+  // The HMAC key is used as the secret for HMAC calculation
   const vadsKeys = Object.keys(paymentData)
     .filter(key => key.startsWith('vads_'))
     .sort((a, b) => a.localeCompare(b));
   
-  const signatureString = vadsKeys.map(key => paymentData[key]).join('+') + '+' + hmacKey;
+  const signatureString = vadsKeys.map(key => paymentData[key]).join('+');
   
   console.log('Signature keys:', vadsKeys);
   console.log('Signature string (before HMAC):', signatureString);
   
-  // Calculate HMAC-SHA256 and encode as standard Base64
+  // Calculate HMAC-SHA256 using the HMAC key as the SECRET (not part of message)
   // CMI expects standard Base64 with +, /, and = padding
   const hmac = crypto.createHmac('sha256', hmacKey);
   hmac.update(signatureString);
