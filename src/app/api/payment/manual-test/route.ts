@@ -79,6 +79,9 @@ export async function GET(request: Request) {
     
     return NextResponse.json({
       mode,
+      fieldCount: vadsKeys.length,
+      hmacKeyPreview: hmacKey ? `${hmacKey.substring(0, 8)}...${hmacKey.substring(hmacKey.length - 8)}` : 'EMPTY',
+      hmacKeyLength: hmacKey.length,
       timestamp: now.toISOString(),
       transDate,
       transId,
