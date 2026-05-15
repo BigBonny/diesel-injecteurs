@@ -41,9 +41,13 @@ export async function GET(request: Request) {
     const compatibleRefPattern = /03L130277[A-Z0-9]*/g;
     const foundRefs = xmlText.match(compatibleRefPattern) || [];
     
-    // Look for product_features section
+    // Look for product_features section (full content, not truncated)
     const featuresMatch = xmlText.match(/<product_features>[\s\S]*?<\/product_features>/);
-    const featuresSection = featuresMatch ? featuresMatch[0].substring(0, 500) : 'No features found';
+    const featuresSection = featuresMatch ? featuresMatch[0] : 'No features found';
+    
+    // Also check for any text containing reference patterns
+    const allTextRefs = xmlText.match(/Ref\.\s+[A-Z0-9-]+/gi) || [];
+    const rawRefPatterns = xmlText.match(/[A-Z0-9]{5,20}/g) || [];
     
     // Look for associations section  
     const associationsMatch = xmlText.match(/<associations>[\s\S]*?<\/associations>/);
@@ -58,6 +62,8 @@ export async function GET(request: Request) {
       hasFeatures,
       hasAssociations,
       foundCompatibleRefs: foundRefs,
+      allTextRefs: allTextRefs.slice(0, 20),
+      rawRefPatterns: rawRefPatterns.slice(0, 30),
       descriptionPreview: description,
       featuresSection,
       associationsSection,
