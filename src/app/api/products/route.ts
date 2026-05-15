@@ -34,9 +34,12 @@ export async function GET(request: Request) {
     // Build Supabase query
     let query = supabase.from('products').select('*');
 
-    // Filter by search query if specified (search in name, reference, and supplier_reference)
+    // Filter by search query if specified
+    // Search in name, reference, supplier_reference, and compatible_references (JSONB)
     if (search) {
-      query = query.or(`name.ilike.%${search}%,reference.ilike.%${search}%,supplier_reference.ilike.%${search}%`);
+      // Use a more complex query that searches in all fields
+      // compatible_references is JSONB, so we need to check if search term is in the array
+      query = query.or(`name.ilike.%${search}%,reference.ilike.%${search}%,supplier_reference.ilike.%${search}%,compatible_references.cs.{"${search}"}`);
     }
 
     // Filter by category if specified (using name patterns)

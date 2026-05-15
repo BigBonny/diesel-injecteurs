@@ -229,7 +229,10 @@ function ProductsContent() {
           const nameMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
           const refMatch = product.reference ? product.reference.toLowerCase().includes(searchQuery.toLowerCase()) : false;
           const supplierRefMatch = (product as any).supplier_reference ? (product as any).supplier_reference.toLowerCase().includes(searchQuery.toLowerCase()) : false;
-          matchesSearch = nameMatch || refMatch || supplierRefMatch;
+          const compatibleRefsMatch = (product as any).compatible_references && Array.isArray((product as any).compatible_references) 
+            ? (product as any).compatible_references.some((ref: string) => ref.toLowerCase().includes(searchQuery.toLowerCase()))
+            : false;
+          matchesSearch = nameMatch || refMatch || supplierRefMatch || compatibleRefsMatch;
         }
       }
       

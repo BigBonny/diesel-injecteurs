@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS products (
   price DECIMAL(10, 2),
   reference TEXT,
   supplier_reference TEXT,
+  compatible_references JSONB DEFAULT '[]',
   link_rewrite TEXT,
   id_default_image BIGINT,
   id_category_default BIGINT,

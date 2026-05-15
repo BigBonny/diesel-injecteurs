@@ -54,6 +54,18 @@ function parseProductXml(productXml: string) {
   const id_default_image = extractValue('id_default_image');
   const id_category_default = extractValue('id_category_default');
 
+  // Extract all compatible references (Ref. XXX patterns) from the XML
+  const extractCompatibleRefs = () => {
+    const refMatches = productXml.matchAll(/Ref\.\s+([A-Z0-9\-]+)/gi);
+    const refs = [];
+    for (const match of refMatches) {
+      if (match[1] && !refs.includes(match[1])) {
+        refs.push(match[1]);
+      }
+    }
+    return refs;
+  };
+
   return {
     id: parseInt(extractValue('id') || '0'),
     name: extractLanguageValue('name') || extractValue('name') || '',
@@ -61,6 +73,7 @@ function parseProductXml(productXml: string) {
     price: parseFloat(extractValue('price') || '0') || null,
     reference: extractValue('reference') || null,
     supplier_reference: extractValue('supplier_reference') || null,
+    compatible_references: extractCompatibleRefs(),
     link_rewrite: extractLanguageValue('link_rewrite') || extractValue('link_rewrite') || null,
     id_default_image: id_default_image ? parseInt(id_default_image) : null,
     id_category_default: id_category_default ? parseInt(id_category_default) : null,
