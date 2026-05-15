@@ -134,6 +134,12 @@ async function fetchAllProducts(): Promise<any[]> {
   return Array.from(productMap.values());
 }
 
+// GET /api/sync - Easy browser sync (calls POST internally)
+export async function GET() {
+  console.log('GET request received, redirecting to POST handler...');
+  return POST();
+}
+
 // POST /api/sync - Sync products from PrestaShop to Supabase
 export async function POST() {
   try {
