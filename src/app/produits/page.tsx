@@ -234,15 +234,24 @@ function ProductsContent() {
       
       if (searchQuery !== '') {
         const searchLower = searchQuery.toLowerCase();
-        // Extract base pattern for fuzzy matching (e.g., "03L130270" -> "03L13027")
+        // Extract base pattern for fuzzy matching (e.g., "03L130270B" -> "03L13027")
         const basePattern = searchLower.length >= 8 ? searchLower.substring(0, 8) : searchLower;
+        // Extract suffix letter if present (e.g., "03L130270B" -> "b")
+        const suffixMatch = searchLower.match(/[a-z]$/);
+        const suffix = suffixMatch ? suffixMatch[0] : null;
         
         const nameMatch = product.name.toLowerCase().includes(searchLower);
         const refMatch = product.reference ? product.reference.toLowerCase().includes(searchLower) : false;
         const supplierRefMatch = (product as any).supplier_reference ? (product as any).supplier_reference.toLowerCase().includes(searchLower) : false;
-        // Use base pattern for fuzzy matching in compatible_references
+        // Use base pattern + suffix for fuzzy matching in compatible_references
         const compatibleRefsMatch = (product as any).compatible_references && Array.isArray((product as any).compatible_references) 
-          ? (product as any).compatible_references.some((ref: string) => ref.toLowerCase().includes(basePattern))
+          ? (product as any).compatible_references.some((ref: string) => {
+              const refLower = ref.toLowerCase();
+              // Must contain base pattern AND end with suffix if suffix was specified
+              const hasBase = refLower.includes(basePattern);
+              const hasSuffix = suffix ? refLower.endsWith(suffix) : true;
+              return hasBase && hasSuffix;
+            })
           : false;
         matchesSearch = nameMatch || refMatch || supplierRefMatch || compatibleRefsMatch;
       }
