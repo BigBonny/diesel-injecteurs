@@ -227,21 +227,20 @@ function ProductsContent() {
     const result = allProducts.filter(product => {
       const price = parseFloat(product.price) || 0;
       
-      // Skip client-side search filtering if API already handled it (via URL search param)
-      const urlSearch = searchParams.get('search');
+      // Apply client-side search filtering for all fields including compatible_references
+      // Server only searches name, reference, supplier_reference
+      // We need to filter by compatible_references client-side
       let matchesSearch = true;
       
-      if (!urlSearch) {
-        // Only apply client-side search if API didn't handle it
-        if (searchQuery !== '') {
-          const nameMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
-          const refMatch = product.reference ? product.reference.toLowerCase().includes(searchQuery.toLowerCase()) : false;
-          const supplierRefMatch = (product as any).supplier_reference ? (product as any).supplier_reference.toLowerCase().includes(searchQuery.toLowerCase()) : false;
-          const compatibleRefsMatch = (product as any).compatible_references && Array.isArray((product as any).compatible_references) 
-            ? (product as any).compatible_references.some((ref: string) => ref.toLowerCase().includes(searchQuery.toLowerCase()))
-            : false;
-          matchesSearch = nameMatch || refMatch || supplierRefMatch || compatibleRefsMatch;
-        }
+      if (searchQuery !== '') {
+        const searchLower = searchQuery.toLowerCase();
+        const nameMatch = product.name.toLowerCase().includes(searchLower);
+        const refMatch = product.reference ? product.reference.toLowerCase().includes(searchLower) : false;
+        const supplierRefMatch = (product as any).supplier_reference ? (product as any).supplier_reference.toLowerCase().includes(searchLower) : false;
+        const compatibleRefsMatch = (product as any).compatible_references && Array.isArray((product as any).compatible_references) 
+          ? (product as any).compatible_references.some((ref: string) => ref.toLowerCase().includes(searchLower))
+          : false;
+        matchesSearch = nameMatch || refMatch || supplierRefMatch || compatibleRefsMatch;
       }
       
       const matchesPrice = price >= priceRange.min && price <= priceRange.max;
