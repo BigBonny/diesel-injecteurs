@@ -8,6 +8,21 @@ const CATEGORY_PATTERNS: Record<string, string[]> = {
   'kit-turbo-chra': ['chra', 'kit chra', 'cartouche chra', 'kit turbo chra']
 };
 
+interface Product {
+  id: string | number;
+  name: string;
+  description: string;
+  price: string;
+  reference: string | null;
+  supplier_reference: string | null;
+  compatible_references: string[] | null;
+  link_rewrite: string | null;
+  id_default_image: string | null;
+  id_category_default: string | null;
+  category_name: string | null;
+  images: Array<{ id: string }>;
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -31,48 +46,53 @@ export async function GET(request: Request) {
       return NextResponse.json({ products: [data] });
     }
 
-    // Build Supabase query
-    let query = supabase.from('products').select('*');
+    let products: Product[] = [];
 
-    // Filter by search query if specified
-    // Search in name, reference, supplier_reference
     if (search) {
-      // Escape special characters for safe SQL usage
+      // When searching, we need to search in multiple places and merge results
       const escapedSearch = search.replace(/[%_]/g, '\\$&');
+
+      // Search 1: Regular text fields (name, reference, supplier_reference)
+      const { data: textSearchResults } = await supabase
+        .from('products')
+        .select('*')
+        .or(`name.ilike.%${escapedSearch}%,reference.ilike.%${escapedSearch}%,supplier_reference.ilike.%${escapedSearch}%`);
+
+      // Search 2: Compatible references using RPC function
+      const { data: compatibleRefsResults } = await supabase
+        .rpc('search_compatible_references', { search_term: search });
+
+      // Merge results and remove duplicates by id
+      const productMap = new Map<string | number, Product>();
       
-      // Use ilike for text fields
-      query = query.or(`name.ilike.%${escapedSearch}%,reference.ilike.%${escapedSearch}%,supplier_reference.ilike.%${escapedSearch}%`);
+      (textSearchResults || []).forEach((p: Product) => productMap.set(p.id, p));
+      (compatibleRefsResults || []).forEach((p: Product) => productMap.set(p.id, p));
       
-      // Note: compatible_references JSONB search requires raw SQL or RPC function
-      // For now, we rely on client-side filtering for compatible references
+      products = Array.from(productMap.values());
+    } else {
+      // No search - just fetch all products
+      const { data } = await supabase.from('products').select('*');
+      products = data || [];
     }
 
-    // Filter by category if specified (using name patterns)
+    // Apply category filter
     if (category && category !== 'Tous') {
       const patterns = CATEGORY_PATTERNS[category];
       if (patterns && patterns.length > 0) {
-        // Build OR condition for category patterns
-        const patternFilters = patterns.map(p => `name.ilike.%${p}%`);
-        query = query.or(patternFilters.join(','));
+        products = products.filter(p => 
+          patterns.some(pat => p.name.toLowerCase().includes(pat.toLowerCase()))
+        );
       }
     }
 
-    // Filter by brand if specified (using ILIKE for case-insensitive search)
+    // Apply brand filter
     if (brand && brand !== 'Toutes') {
-      query = query.ilike('name', `%${brand}%`);
-    }
-
-    const { data, error } = await query;
-
-    if (error) {
-      console.error('Supabase error:', error);
-      return NextResponse.json(
-        { error: 'Failed to fetch products', products: [] },
-        { status: 500 }
+      products = products.filter(p => 
+        p.name.toLowerCase().includes(brand.toLowerCase())
       );
     }
 
-    return NextResponse.json({ products: data || [] });
+    return NextResponse.json({ products });
   } catch (error) {
     console.error('Error fetching products:', error);
     return NextResponse.json(
