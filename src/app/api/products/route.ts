@@ -37,9 +37,15 @@ export async function GET(request: Request) {
     // Filter by search query if specified
     // Search in name, reference, supplier_reference, and compatible_references (JSONB)
     if (search) {
-      // Use a more complex query that searches in all fields
-      // compatible_references is JSONB, so we need to check if search term is in the array
-      query = query.or(`name.ilike.%${search}%,reference.ilike.%${search}%,supplier_reference.ilike.%${search}%,compatible_references.cs.{"${search}"}`);
+      // Escape special characters for safe SQL usage
+      const escapedSearch = search.replace(/[%_]/g, '\\$&');
+      
+      // Use ilike for text fields
+      query = query.or(`name.ilike.%${escapedSearch}%,reference.ilike.%${escapedSearch}%,supplier_reference.ilike.%${escapedSearch}%`);
+      
+      // Also filter for compatible_references using JSONB text search
+      // This checks if the JSONB array contains the search term (case-insensitive)
+      query = query.or(`compatible_references::text.ilike.%${escapedSearch}%`);
     }
 
     // Filter by category if specified (using name patterns)
