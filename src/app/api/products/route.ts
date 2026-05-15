@@ -34,9 +34,9 @@ export async function GET(request: Request) {
     // Build Supabase query
     let query = supabase.from('products').select('*');
 
-    // Filter by search query if specified
+    // Filter by search query if specified (search in name, reference, and supplier_reference)
     if (search) {
-      query = query.or(`name.ilike.%${search}%,reference.ilike.%${search}%`);
+      query = query.or(`name.ilike.%${search}%,reference.ilike.%${search}%,supplier_reference.ilike.%${search}%`);
     }
 
     // Filter by category if specified (using name patterns)

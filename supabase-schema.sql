@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS products (
   description TEXT,
   price DECIMAL(10, 2),
   reference TEXT,
+  supplier_reference TEXT,
   link_rewrite TEXT,
   id_default_image BIGINT,
   id_category_default BIGINT,
@@ -40,6 +41,12 @@ CREATE INDEX IF NOT EXISTS idx_products_category ON products(id_category_default
 
 -- Create index for name search (brand filtering)
 CREATE INDEX IF NOT EXISTS idx_products_name ON products USING gin(to_tsvector('french', name));
+
+-- Create index for reference search
+CREATE INDEX IF NOT EXISTS idx_products_reference ON products USING gin(to_tsvector('french', reference));
+
+-- Create index for supplier_reference search (compatible references)
+CREATE INDEX IF NOT EXISTS idx_products_supplier_ref ON products USING gin(to_tsvector('french', supplier_reference));
 
 -- Enable Row Level Security (but allow all for now)
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;

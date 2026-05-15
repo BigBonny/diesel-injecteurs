@@ -228,7 +228,8 @@ function ProductsContent() {
         if (searchQuery !== '') {
           const nameMatch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
           const refMatch = product.reference ? product.reference.toLowerCase().includes(searchQuery.toLowerCase()) : false;
-          matchesSearch = nameMatch || refMatch;
+          const supplierRefMatch = (product as any).supplier_reference ? (product as any).supplier_reference.toLowerCase().includes(searchQuery.toLowerCase()) : false;
+          matchesSearch = nameMatch || refMatch || supplierRefMatch;
         }
       }
       

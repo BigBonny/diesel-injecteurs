@@ -60,6 +60,7 @@ function parseProductXml(productXml: string) {
     description: extractLanguageValue('description') || extractValue('description') || null,
     price: parseFloat(extractValue('price') || '0') || null,
     reference: extractValue('reference') || null,
+    supplier_reference: extractValue('supplier_reference') || null,
     link_rewrite: extractLanguageValue('link_rewrite') || extractValue('link_rewrite') || null,
     id_default_image: id_default_image ? parseInt(id_default_image) : null,
     id_category_default: id_category_default ? parseInt(id_category_default) : null,
