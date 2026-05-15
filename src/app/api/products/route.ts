@@ -35,7 +35,7 @@ export async function GET(request: Request) {
     let query = supabase.from('products').select('*');
 
     // Filter by search query if specified
-    // Search in name, reference, supplier_reference, and compatible_references (JSONB)
+    // Search in name, reference, supplier_reference
     if (search) {
       // Escape special characters for safe SQL usage
       const escapedSearch = search.replace(/[%_]/g, '\\$&');
@@ -43,8 +43,8 @@ export async function GET(request: Request) {
       // Use ilike for text fields
       query = query.or(`name.ilike.%${escapedSearch}%,reference.ilike.%${escapedSearch}%,supplier_reference.ilike.%${escapedSearch}%`);
       
-      // Also filter for compatible_references - search if the JSONB text contains the search term
-      query = query.filter('compatible_references', 'ilike', `%${escapedSearch}%`);
+      // Note: compatible_references JSONB search requires raw SQL or RPC function
+      // For now, we rely on client-side filtering for compatible references
     }
 
     // Filter by category if specified (using name patterns)
