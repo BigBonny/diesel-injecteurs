@@ -32,8 +32,8 @@ export async function GET() {
       count03L130270: data?.length || 0,
       totalProductsWithRefs: count,
       productsWith03L130277: with277 || [],
-      error: error?.message,
-      countError: countError?.message
+      error: error ? (error as any).message : null,
+      countError: countError ? (countError as any).message : null
     });
   } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
