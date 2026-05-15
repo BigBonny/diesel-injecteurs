@@ -57,7 +57,7 @@ function parseProductXml(productXml: string) {
   // Extract all compatible references (Ref. XXX patterns) from the XML
   const extractCompatibleRefs = () => {
     const refMatches = productXml.matchAll(/Ref\.\s+([A-Z0-9\-]+)/gi);
-    const refs = [];
+    const refs: string[] = [];
     for (const match of refMatches) {
       if (match[1] && !refs.includes(match[1])) {
         refs.push(match[1]);
