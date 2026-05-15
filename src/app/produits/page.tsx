@@ -234,11 +234,15 @@ function ProductsContent() {
       
       if (searchQuery !== '') {
         const searchLower = searchQuery.toLowerCase();
+        // Extract base pattern for fuzzy matching (e.g., "03L130270" -> "03L13027")
+        const basePattern = searchLower.length >= 8 ? searchLower.substring(0, 8) : searchLower;
+        
         const nameMatch = product.name.toLowerCase().includes(searchLower);
         const refMatch = product.reference ? product.reference.toLowerCase().includes(searchLower) : false;
         const supplierRefMatch = (product as any).supplier_reference ? (product as any).supplier_reference.toLowerCase().includes(searchLower) : false;
+        // Use base pattern for fuzzy matching in compatible_references
         const compatibleRefsMatch = (product as any).compatible_references && Array.isArray((product as any).compatible_references) 
-          ? (product as any).compatible_references.some((ref: string) => ref.toLowerCase().includes(searchLower))
+          ? (product as any).compatible_references.some((ref: string) => ref.toLowerCase().includes(basePattern))
           : false;
         matchesSearch = nameMatch || refMatch || supplierRefMatch || compatibleRefsMatch;
       }
