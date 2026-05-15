@@ -43,9 +43,8 @@ export async function GET(request: Request) {
       // Use ilike for text fields
       query = query.or(`name.ilike.%${escapedSearch}%,reference.ilike.%${escapedSearch}%,supplier_reference.ilike.%${escapedSearch}%`);
       
-      // Also filter for compatible_references using JSONB text search
-      // This checks if the JSONB array contains the search term (case-insensitive)
-      query = query.or(`compatible_references::text.ilike.%${escapedSearch}%`);
+      // Also filter for compatible_references - search if the JSONB text contains the search term
+      query = query.filter('compatible_references', 'ilike', `%${escapedSearch}%`);
     }
 
     // Filter by category if specified (using name patterns)
