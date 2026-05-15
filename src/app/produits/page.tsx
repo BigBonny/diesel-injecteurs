@@ -43,6 +43,14 @@ function ProductsContent() {
   const selectedCategory = searchParams.get('category') || 'Tous';
   const selectedBrand = searchParams.get('brand') || 'Toutes';
 
+  // Sync searchQuery with URL params when they change (e.g., from navbar search)
+  useEffect(() => {
+    const urlSearch = searchParams.get('search') || '';
+    if (urlSearch !== searchQuery) {
+      setSearchQuery(urlSearch);
+    }
+  }, [searchParams]);
+
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
