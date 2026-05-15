@@ -32,6 +32,23 @@ export async function GET(request: Request) {
     const hasFeatures = xmlText.includes('<product_features>');
     const hasAssociations = xmlText.includes('<associations>');
     
+    // Look for custom fields that might contain compatible references
+    // Check description or meta fields
+    const descriptionMatch = xmlText.match(/<description>\s*<!\[CDATA\[\s*([\s\S]*?)\s*\]\]>\s*<\/description>/);
+    const description = descriptionMatch ? descriptionMatch[1].substring(0, 200) : '';
+    
+    // Check for any field containing "03L130277" pattern
+    const compatibleRefPattern = /03L130277[A-Z0-9]*/g;
+    const foundRefs = xmlText.match(compatibleRefPattern) || [];
+    
+    // Look for product_features section
+    const featuresMatch = xmlText.match(/<product_features>[\s\S]*?<\/product_features>/);
+    const featuresSection = featuresMatch ? featuresMatch[0].substring(0, 500) : 'No features found';
+    
+    // Look for associations section  
+    const associationsMatch = xmlText.match(/<associations>[\s\S]*?<\/associations>/);
+    const associationsSection = associationsMatch ? associationsMatch[0].substring(0, 1000) : 'No associations found';
+    
     return NextResponse.json({
       id,
       reference,
@@ -40,7 +57,11 @@ export async function GET(request: Request) {
       upc,
       hasFeatures,
       hasAssociations,
-      preview: xmlText.substring(0, 500)
+      foundCompatibleRefs: foundRefs,
+      descriptionPreview: description,
+      featuresSection,
+      associationsSection,
+      fullXmlLength: xmlText.length
     });
   } catch (error) {
     return NextResponse.json({ error: (error as Error).message }, { status: 500 });
