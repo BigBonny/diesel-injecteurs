@@ -49,26 +49,12 @@ export async function GET(request: Request) {
     let products: Product[] = [];
 
     if (search) {
-      // When searching, we need to search in multiple places and merge results
-      const escapedSearch = search.replace(/[%_]/g, '\\$&');
+      // Use fuzzy search function that matches base reference patterns
+      // e.g., searching "03L130270" will match "03L130277B" (same base "03L13027")
+      const { data: searchResults } = await supabase
+        .rpc('search_by_reference_base', { search_term: search });
 
-      // Search 1: Regular text fields (name, reference, supplier_reference)
-      const { data: textSearchResults } = await supabase
-        .from('products')
-        .select('*')
-        .or(`name.ilike.%${escapedSearch}%,reference.ilike.%${escapedSearch}%,supplier_reference.ilike.%${escapedSearch}%`);
-
-      // Search 2: Compatible references using RPC function
-      const { data: compatibleRefsResults } = await supabase
-        .rpc('search_compatible_references', { search_term: search });
-
-      // Merge results and remove duplicates by id
-      const productMap = new Map<string | number, Product>();
-      
-      (textSearchResults || []).forEach((p: Product) => productMap.set(p.id, p));
-      (compatibleRefsResults || []).forEach((p: Product) => productMap.set(p.id, p));
-      
-      products = Array.from(productMap.values());
+      products = searchResults || [];
     } else {
       // No search - just fetch all products
       const { data } = await supabase.from('products').select('*');
