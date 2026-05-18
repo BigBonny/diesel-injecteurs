@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { verifyNotification } from '@/lib/sogecommerce';
+import { verifyNotification } from '@/lib/afonepaiement';
 import { supabase } from '@/lib/supabase';
 import { sendPaymentNotificationEmail } from '@/lib/notifications';
 
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
     console.log('Order ID:', notification.vads_order_id);
 
     // Verify signature (skip for TEST mode)
-    const mode = process.env.SOGECOMMERCE_MODE || 'TEST';
+    const mode = process.env.AFONE_MODE || 'TEST';
     if (mode === 'PRODUCTION') {
       const isValid = verifyNotification(notification as CmiNotification);
       if (!isValid) {
@@ -154,10 +154,10 @@ export async function POST(request: Request) {
                 <id_customer>1</id_customer>
                 <id_lang>1</id_lang>
                 <current_state>2</current_state>
-                <payment><![CDATA[Sogecommerce / CMI]]></payment>
+                <payment><![CDATA[Afone Paiement]]></payment>
                 <total_paid>${amount.toFixed(2)}</total_paid>
                 <total_paid_real>${amount.toFixed(2)}</total_paid_real>
-                <module><![CDATA[sogecommerce]]></module>
+                <module><![CDATA[afone]]></module>
                 <total_products>${amount.toFixed(2)}</total_products>
                 <total_products_wt>${amount.toFixed(2)}</total_products_wt>
                 <conversion_rate>1.000000</conversion_rate>

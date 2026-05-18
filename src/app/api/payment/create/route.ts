@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createSogecommercePayment } from '@/lib/sogecommerce';
+import { createAfonePayment } from '@/lib/afonepaiement';
 import { supabase } from '@/lib/supabase';
 
 export async function POST(request: Request) {
@@ -17,20 +17,20 @@ export async function POST(request: Request) {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
     
     // Check credentials are configured
-    const mode = process.env.SOGECOMMERCE_MODE || 'TEST';
+    const mode = process.env.AFONE_MODE || 'TEST';
     const siteId = mode === 'PRODUCTION' 
-      ? process.env.SOGECOMMERCE_PROD_SITE_ID 
-      : process.env.SOGECOMMERCE_TEST_SITE_ID;
+      ? process.env.AFONE_PROD_SITE_ID 
+      : process.env.AFONE_TEST_SITE_ID;
     
     if (!siteId) {
-      console.error('Sogecommerce credentials not configured');
+      console.error('Afone Paiement credentials not configured');
       return NextResponse.json(
         { error: 'Payment provider not configured' },
         { status: 500 }
       );
     }
 
-    console.log('Creating payment:', { 
+    console.log('Creating Afone payment:', { 
       amount, 
       orderId, 
       customerEmail,
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
 
     console.log('Creating payment with cart items:', cartItems);
     
-    const paymentResponse = await createSogecommercePayment({
+    const paymentResponse = await createAfonePayment({
       amount,
       currency,
       orderId,
@@ -65,7 +65,7 @@ export async function POST(request: Request) {
       customer_email: customerEmail,
       customer_name: customerName || 'Client',
       status: 'pending',
-      payment_method: 'sogecommerce',
+      payment_method: 'afone',
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     });
