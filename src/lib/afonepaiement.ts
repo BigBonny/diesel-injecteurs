@@ -175,10 +175,10 @@ export async function createAfonePayment(
   const signature = generateSignature(paymentData, hmacKey);
   paymentData.signature = signature;
 
-  // ComNpay URLs (Afone Paiement platform)
+  // CMI/Sogecommerce URLs (Afone uses standard CMI platform)
   const baseUrl = isProd 
-    ? 'https://secure.comnpay.com/vads-payment/'
-    : 'https://homologation.comnpay.com/vads-payment/';
+    ? 'https://sogecommerce.societegenerale.eu/vads-payment/'
+    : 'https://sogecommerce.societegenerale.eu/test/vads-payment/';
     
   const queryParams = new URLSearchParams(paymentData).toString();
   const paymentUrl = `${baseUrl}?${queryParams}`;
