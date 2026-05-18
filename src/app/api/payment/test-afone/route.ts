@@ -71,9 +71,8 @@ export async function POST(request: Request) {
       return {
         config: config.name,
         siteId: config.siteId,
-        vadsKeys,
-        signaturePreview: signature.substring(0, 30),
-        urlPreview: paymentUrl.substring(0, 200),
+        fullUrl: paymentUrl,
+        testInstructions: 'Copy this URL to browser and test. If all give Erreur 02, Afone account is not activated.',
       };
     });
     
