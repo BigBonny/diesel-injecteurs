@@ -19,6 +19,7 @@ export async function POST(request: Request) {
     const transId = numeric.length >= 6 ? numeric.slice(-6) : numeric.padStart(6, '0').slice(-6);
 
     const paymentData: Record<string, string> = {
+      // Core required fields
       vads_site_id: siteId,
       vads_ctx_mode: 'PRODUCTION',
       vads_trans_id: transId,
@@ -29,20 +30,24 @@ export async function POST(request: Request) {
       vads_page_action: 'PAYMENT',
       vads_version: 'V2',
       vads_payment_config: 'SINGLE',
-      vads_capture_delay: '0',
-      vads_validation_mode: '',
-      vads_order_id: orderId.slice(0, 32),
-      vads_cust_email: customerEmail.slice(0, 127),
-      vads_cust_first_name: (customerName.split(' ')[0] || '').slice(0, 127),
-      vads_cust_last_name: customerName.split(' ').slice(1).join(' ').slice(0, 127),
+      vads_return_mode: 'GET',
+      vads_language: 'fr',
+      // URLs
       vads_url_return: `${returnBase}/payment/success?orderId=${orderId}`,
       vads_url_cancel: `${returnBase}/payment/cancel?orderId=${orderId}`,
       vads_url_check: `${returnBase}/api/payment/notification`,
       vads_url_refused: `${returnBase}/payment/cancel?orderId=${orderId}`,
       vads_url_error: `${returnBase}/payment/cancel?orderId=${orderId}`,
-      vads_contrib: 'Afone_NextJS_1.0',
-      vads_language: 'fr',
-      vads_return_mode: 'GET',
+      // Customer info
+      vads_cust_email: customerEmail.slice(0, 127),
+      vads_cust_first_name: (customerName.split(' ')[0] || '').slice(0, 127),
+      vads_cust_last_name: customerName.split(' ').slice(1).join(' ').slice(0, 127),
+      // Order info
+      vads_order_id: orderId.slice(0, 32),
+      vads_nb_products: '1',
+      // Optional
+      vads_validation_mode: '0',
+      vads_capture_delay: '0',
     };
 
     // Add cart items

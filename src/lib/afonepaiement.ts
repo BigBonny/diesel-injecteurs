@@ -97,6 +97,7 @@ export async function createAfonePayment(
   const transId = generateTransactionId(request.orderId);
 
   const paymentData: Record<string, string> = {
+    // Core required fields only
     vads_site_id: siteId,
     vads_ctx_mode: isProd ? 'PRODUCTION' : 'TEST',
     vads_trans_id: transId,
@@ -107,47 +108,24 @@ export async function createAfonePayment(
     vads_page_action: 'PAYMENT',
     vads_version: 'V2',
     vads_payment_config: 'SINGLE',
-    vads_capture_delay: '0',
-    vads_validation_mode: '0',
-    vads_order_id: request.orderId.slice(0, 32),
-    vads_cust_email: request.customerEmail.slice(0, 127),
-    vads_cust_first_name: (request.customerName.split(' ')[0] || '').slice(0, 127),
-    vads_cust_last_name: request.customerName.split(' ').slice(1).join(' ').slice(0, 127),
+    vads_return_mode: 'GET',
+    vads_language: 'fr',
+    // URLs
     vads_url_return: request.returnURL,
     vads_url_cancel: request.cancelURL,
     vads_url_check: request.notificationURL,
     vads_url_refused: request.cancelURL,
     vads_url_error: request.cancelURL,
-    vads_available_languages: '',
-    vads_contrib: 'NextJS_Afone_1.0.0',
-    vads_cust_address: '',
-    vads_cust_cell_phone: '',
-    vads_cust_city: '',
-    vads_cust_country: '',
-    vads_cust_id: '',
-    vads_cust_legal_name: '',
-    vads_cust_phone: '',
-    vads_cust_title: '',
-    vads_cust_zip: '',
-    vads_ext_info_module_id: '',
-    vads_language: 'fr',
+    // Customer info
+    vads_cust_email: request.customerEmail.slice(0, 127),
+    vads_cust_first_name: (request.customerName.split(' ')[0] || '').slice(0, 127),
+    vads_cust_last_name: request.customerName.split(' ').slice(1).join(' ').slice(0, 127),
+    // Order info
+    vads_order_id: request.orderId.slice(0, 32),
     vads_nb_products: '1',
-    vads_payment_cards: '',
-    vads_return_mode: 'GET',
-    vads_ship_to_city: '',
-    vads_ship_to_country: '',
-    vads_ship_to_first_name: '',
-    vads_ship_to_last_name: '',
-    vads_ship_to_legal_name: '',
-    vads_ship_to_phone_num: '',
-    vads_ship_to_street: '',
-    vads_ship_to_street2: '',
-    vads_ship_to_zip: '',
-    vads_shipping_amount: '0',
-    vads_shop_name: '',
-    vads_shop_url: '',
-    vads_tax_amount: '0',
-    vads_totalamount_vat: '0',
+    // Optional - validation
+    vads_validation_mode: '0',
+    vads_capture_delay: '0',
   };
 
   if (request.cartItems && request.cartItems.length > 0) {
@@ -160,16 +138,6 @@ export async function createAfonePayment(
       paymentData[`vads_product_vat${index}`] = '0.0000';
     });
     paymentData.vads_nb_products = request.cartItems.length.toString();
-  }
-
-  Object.keys(paymentData).forEach(key => {
-    if (paymentData[key] === undefined || paymentData[key] === null) {
-      delete paymentData[key];
-    }
-  });
-  
-  if (!paymentData.vads_cust_last_name) {
-    paymentData.vads_cust_last_name = '';
   }
 
   const signature = generateSignature(paymentData, hmacKey);
