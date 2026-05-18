@@ -46,7 +46,7 @@ export default function CartPage() {
     try {
       const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       
-      const response = await fetch('/api/payment/create', {
+      const response = await fetch('/api/payment/create-form', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -62,11 +62,21 @@ export default function CartPage() {
         throw new Error('Failed to create payment');
       }
 
-      const data = await response.json();
+      // Get HTML form and render it
+      const html = await response.text();
       
-      // Redirect directly to Sogecommerce payment page
-      clearCart();
-      window.location.href = data.formToken;
+      // Create a new window/tab with the form
+      const paymentWindow = window.open('', '_blank');
+      if (paymentWindow) {
+        paymentWindow.document.write(html);
+        paymentWindow.document.close();
+        clearCart();
+      } else {
+        // Fallback: render form in current page
+        document.open();
+        document.write(html);
+        document.close();
+      }
     } catch (error) {
       console.error('Payment error:', error);
       alert('Une erreur est survenue lors de la création du paiement');
