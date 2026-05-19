@@ -46,6 +46,14 @@ export default function CartPage() {
     try {
       const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
       
+      // Get cart items to send with order
+      const cartItemsToSend = items.map(item => ({
+        id: item.id,
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity,
+      }));
+
       const response = await fetch('/api/payment/create-form', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -55,6 +63,7 @@ export default function CartPage() {
           orderId,
           customerEmail,
           customerName,
+          cartItems: cartItemsToSend,
         }),
       });
 
