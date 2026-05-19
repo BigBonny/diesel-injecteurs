@@ -167,11 +167,48 @@ export async function POST(request: Request) {
         if (!orderData) {
           console.error('No order data available for PrestaShop order creation');
         } else if (PRESTASHOP_API_URL && PRESTASHOP_API_KEY) {
-          console.log('PrestaShop API configured, creating order...');
-          // Create a proper order in PrestaShop
-          // For simplicity, we'll create a minimal order - in production, expand this
-          const shippingCost = 0; // Adjust if you have shipping
-          const discountAmount = 0; // Adjust if you have discounts
+          console.log('PrestaShop API configured, creating cart first...');
+          
+          // Step 1: Create a cart first
+          const cartXml = `
+            <prestashop>
+              <cart>
+                <id_currency>1</id_currency>
+                <id_lang>1</id_lang>
+                <id_customer>1</id_customer>
+              </cart>
+            </prestashop>
+          `;
+          
+          const cartResponse = await fetch(
+            `${PRESTASHOP_API_URL}/carts?ws_key=${PRESTASHOP_API_KEY}`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/xml' },
+              body: cartXml,
+            }
+          );
+          
+          if (!cartResponse.ok) {
+            const cartError = await cartResponse.text();
+            console.error('Failed to create cart:', cartResponse.status, cartError);
+            throw new Error('Cart creation failed');
+          }
+          
+          const cartResponseText = await cartResponse.text();
+          const cartIdMatch = cartResponseText.match(/<id>(?:<!\[CDATA\[)?(\d+)(?:\]\]>)?<\/id>/);
+          const cartId = cartIdMatch ? cartIdMatch[1] : null;
+          
+          if (!cartId) {
+            console.error('Could not extract cart ID from response:', cartResponseText.substring(0, 200));
+            throw new Error('Cart ID not found');
+          }
+          
+          console.log('Cart created with ID:', cartId);
+          
+          // Step 2: Create order using the new cart
+          const shippingCost = 0;
+          const discountAmount = 0;
           const productTotal = amount - shippingCost + discountAmount;
           
           const prestashopOrderXml = `
@@ -180,7 +217,7 @@ export async function POST(request: Request) {
                 <id_address_delivery>5</id_address_delivery>
                 <id_address_invoice>5</id_address_invoice>
                 <id_carrier>1</id_carrier>
-                <id_cart>1</id_cart>
+                <id_cart>${cartId}</id_cart>
                 <id_currency>1</id_currency>
                 <id_customer>1</id_customer>
                 <id_lang>1</id_lang>
