@@ -158,10 +158,16 @@ export async function POST(request: Request) {
 
     // Create order in PrestaShop back office if payment is successful
     if (finalStatus === 'paid') {
+      console.log('Attempting PrestaShop order creation...');
+      console.log('PRESTASHOP_API_URL:', PRESTASHOP_API_URL);
+      console.log('PRESTASHOP_API_KEY exists:', !!PRESTASHOP_API_KEY);
+      console.log('orderData exists:', !!orderData);
+      
       try {
         if (!orderData) {
           console.error('No order data available for PrestaShop order creation');
         } else if (PRESTASHOP_API_URL && PRESTASHOP_API_KEY) {
+          console.log('PrestaShop API configured, creating order...');
           // Create a proper order in PrestaShop
           // For simplicity, we'll create a minimal order - in production, expand this
           const shippingCost = 0; // Adjust if you have shipping
@@ -207,8 +213,11 @@ export async function POST(request: Request) {
             }
           );
 
+          console.log('PrestaShop API response status:', response.status);
+          
           if (response.ok) {
             const responseText = await response.text();
+            console.log('PrestaShop order created successfully:', responseText.substring(0, 200));
             const idMatch = responseText.match(/<id>(?:<!\[CDATA\[)?(\d+)(?:\]\]>)?<\/id>/);
             const prestashopOrderId = idMatch ? idMatch[1] : null;
 
@@ -227,6 +236,7 @@ export async function POST(request: Request) {
           }
         } else {
           console.log('PrestaShop API not configured, skipping order creation');
+          console.log('URL exists:', !!PRESTASHOP_API_URL, 'Key exists:', !!PRESTASHOP_API_KEY);
         }
       } catch (prestashopError) {
         console.error('Error creating PrestaShop order:', prestashopError);
