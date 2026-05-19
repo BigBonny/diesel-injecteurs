@@ -17,31 +17,19 @@ export async function POST(request: Request) {
       : (process.env.SOGECOMMERCE_TEST_HMAC_KEY || 'Fm2MhXURHIFtmSx7dUgUEK21en6opBYUGE3qSO0w2jXif');
     const returnBase = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-injecteurs.vercel.app';
 
-    // Save order to Supabase BEFORE payment
-    // Store cart items as JSON in a field that exists, or skip if no column
-    const orderData: any = {
-      id: orderId,
-      customer_email: customerEmail,
-      customer_name: customerName,
-      amount: amount,
-      currency: currency || 'EUR',
-      status: 'pending',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-    };
-    
-    // Try to add cart_items if the column exists
-    if (cartItems && cartItems.length > 0) {
-      try {
-        orderData.cart_items = cartItems;
-      } catch {
-        // Column might not exist, ignore
-      }
-    }
-    
+    // Save order to Supabase BEFORE payment (cart_items column doesn't exist yet)
     const { error: orderError } = await supabase
       .from('orders')
-      .insert(orderData);
+      .insert({
+        id: orderId,
+        customer_email: customerEmail,
+        customer_name: customerName,
+        amount: amount,
+        currency: currency || 'EUR',
+        status: 'pending',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
     
     if (orderError) {
       console.error('Error creating order in Supabase:', orderError);
@@ -66,7 +54,7 @@ export async function POST(request: Request) {
       vads_page_action: 'PAYMENT',
       vads_version: 'V2',
       vads_payment_config: 'SINGLE',
-      vads_return_mode: 'POST',
+      vads_return_mode: 'GET',
       vads_language: 'fr',
       vads_url_return: `${returnBase}/payment/success?orderId=${orderId}`,
       vads_url_cancel: `${returnBase}/payment/cancel?orderId=${orderId}`,
