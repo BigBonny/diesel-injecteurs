@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { verifyNotification } from '@/lib/afonepaiement';
+import crypto from 'crypto';
 import { supabase } from '@/lib/supabase';
 import { sendPaymentNotificationEmail } from '@/lib/notifications';
 
@@ -65,14 +65,34 @@ export async function POST(request: Request) {
     console.log('Order ID:', notification.vads_order_id);
 
     // Verify signature (skip for TEST mode)
-    const mode = process.env.AFONE_MODE || 'TEST';
-    if (mode === 'PRODUCTION') {
-      const isValid = verifyNotification(notification as CmiNotification);
-      if (!isValid) {
-        console.error('Invalid signature for notification');
-        // Still accept the notification but log warning
-        console.warn('Proceeding with notification despite signature mismatch');
-      }
+    const mode = process.env.SOGECOMMERCE_MODE || 'TEST';
+    const isProd = mode === 'PRODUCTION';
+    
+    // Get correct HMAC key
+    const hmacKey = isProd
+      ? (process.env.SOGECOMMERCE_PROD_HMAC_KEY || 'c7yvgXLJnsAABgrb')
+      : (process.env.SOGECOMMERCE_TEST_HMAC_KEY || 'Fm2MhXURHIFtmSx7dUgUEK21en6opBYUGE3qSO0w2jXif');
+    
+    // Verify signature
+    const vadsKeys = Object.keys(notification)
+      .filter(key => key.startsWith('vads_'))
+      .sort((a, b) => a.localeCompare(b));
+    
+    const signatureString = vadsKeys.map(key => notification[key] || '').join('+') + '+' + hmacKey;
+    
+    // crypto already imported at top
+    const hmac = crypto.createHmac('sha256', hmacKey);
+    hmac.update(signatureString);
+    const expectedSignature = hmac.digest('base64');
+    
+    console.log('Expected signature:', expectedSignature);
+    console.log('Received signature:', notification.signature);
+    
+    if (expectedSignature !== notification.signature) {
+      console.error('Invalid signature for notification');
+      console.warn('Proceeding with notification despite signature mismatch');
+    } else {
+      console.log('Signature verified successfully');
     }
 
     // Extract order details from vads_ fields

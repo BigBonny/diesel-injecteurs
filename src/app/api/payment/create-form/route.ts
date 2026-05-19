@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
+import { supabase } from '@/lib/supabase';
 
 export async function POST(request: Request) {
   try {
@@ -15,6 +16,28 @@ export async function POST(request: Request) {
       ? (process.env.SOGECOMMERCE_PROD_HMAC_KEY || 'c7yvgXLJnsAABgrb')
       : (process.env.SOGECOMMERCE_TEST_HMAC_KEY || 'Fm2MhXURHIFtmSx7dUgUEK21en6opBYUGE3qSO0w2jXif');
     const returnBase = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-injecteurs.vercel.app';
+
+    // Save order to Supabase BEFORE payment
+    const { error: orderError } = await supabase
+      .from('orders')
+      .insert({
+        id: orderId,
+        customer_email: customerEmail,
+        customer_name: customerName,
+        amount: amount,
+        currency: currency || 'EUR',
+        status: 'pending',
+        cart_items: cartItems || [],
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+    
+    if (orderError) {
+      console.error('Error creating order in Supabase:', orderError);
+      // Continue anyway - order might already exist
+    } else {
+      console.log('Order created in Supabase:', orderId);
+    }
 
     const now = new Date();
     const transDate = now.toISOString().replace(/[-:T.Z]/g, '').slice(0, 14);
