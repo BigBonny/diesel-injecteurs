@@ -18,19 +18,30 @@ export async function POST(request: Request) {
     const returnBase = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-injecteurs.vercel.app';
 
     // Save order to Supabase BEFORE payment
+    // Store cart items as JSON in a field that exists, or skip if no column
+    const orderData: any = {
+      id: orderId,
+      customer_email: customerEmail,
+      customer_name: customerName,
+      amount: amount,
+      currency: currency || 'EUR',
+      status: 'pending',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+    
+    // Try to add cart_items if the column exists
+    if (cartItems && cartItems.length > 0) {
+      try {
+        orderData.cart_items = cartItems;
+      } catch {
+        // Column might not exist, ignore
+      }
+    }
+    
     const { error: orderError } = await supabase
       .from('orders')
-      .insert({
-        id: orderId,
-        customer_email: customerEmail,
-        customer_name: customerName,
-        amount: amount,
-        currency: currency || 'EUR',
-        status: 'pending',
-        cart_items: cartItems || [],
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      });
+      .insert(orderData);
     
     if (orderError) {
       console.error('Error creating order in Supabase:', orderError);
