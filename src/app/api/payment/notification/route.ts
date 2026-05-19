@@ -182,7 +182,7 @@ export async function POST(request: Request) {
                 <total_products>${amount.toFixed(2)}</total_products>
                 <total_products_wt>${amount.toFixed(2)}</total_products_wt>
                 <conversion_rate>1.000000</conversion_rate>
-                <secure_key><![CDATA[${orderId}]]></secure_key>
+                <secure_key><![CDATA[${crypto.createHash('md5').update(orderId).digest('hex')}]]></secure_key>
                 <reference><![CDATA[${orderId}]]></reference>
               </order>
             </prestashop>
