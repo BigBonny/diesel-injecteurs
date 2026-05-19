@@ -169,15 +169,16 @@ export async function POST(request: Request) {
               <order>
                 <id_address_delivery>5</id_address_delivery>
                 <id_address_invoice>5</id_address_invoice>
+                <id_carrier>1</id_carrier>
                 <id_cart>1</id_cart>
                 <id_currency>1</id_currency>
                 <id_customer>1</id_customer>
                 <id_lang>1</id_lang>
                 <current_state>2</current_state>
-                <payment><![CDATA[Afone Paiement]]></payment>
+                <payment><![CDATA[Sogecommerce]]></payment>
                 <total_paid>${amount.toFixed(2)}</total_paid>
                 <total_paid_real>${amount.toFixed(2)}</total_paid_real>
-                <module><![CDATA[afone]]></module>
+                <module><![CDATA[sogecommerce]]></module>
                 <total_products>${amount.toFixed(2)}</total_products>
                 <total_products_wt>${amount.toFixed(2)}</total_products_wt>
                 <conversion_rate>1.000000</conversion_rate>
