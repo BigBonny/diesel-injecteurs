@@ -3,8 +3,8 @@ import crypto from 'crypto';
 import { supabase } from '@/lib/supabase';
 import { sendPaymentNotificationEmail } from '@/lib/notifications';
 
-const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL;
-const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY;
+const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'https://diesel-injecteurs.com/api';
+const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
 
 interface CmiNotification {
   vads_trans_status: string;
