@@ -6,8 +6,14 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { amount, currency, orderId, customerEmail, customerName, cartItems } = body;
 
-    const siteId = 'VAD-393-138';
-    const hmacKey = 'lM7iC1bY0gWv9ZxdQ15H';
+    // Use Sogecommerce credentials
+    const isProd = process.env.SOGECOMMERCE_MODE === 'PRODUCTION';
+    const siteId = isProd 
+      ? (process.env.SOGECOMMERCE_PROD_SITE_ID || '56994465')
+      : (process.env.SOGECOMMERCE_TEST_SITE_ID || '56994465');
+    const hmacKey = isProd
+      ? (process.env.SOGECOMMERCE_PROD_HMAC_KEY || '6l4u2cukKbAC5RsnqW7vJcqG0H9fqHmIIbLsxfVFTveI4')
+      : (process.env.SOGECOMMERCE_TEST_HMAC_KEY || 'Fm2MhXURHIFtmSx7dUgUEK21en6opBYUGE3qSO0w2jXif');
     const returnBase = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-injecteurs.vercel.app';
 
     const now = new Date();
@@ -17,7 +23,7 @@ export async function POST(request: Request) {
 
     const paymentData: Record<string, string> = {
       vads_site_id: siteId,
-      vads_ctx_mode: 'PRODUCTION',
+      vads_ctx_mode: isProd ? 'PRODUCTION' : 'TEST',
       vads_trans_id: transId,
       vads_trans_date: transDate,
       vads_amount: Math.round(amount * 100).toString(),

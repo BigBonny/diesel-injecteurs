@@ -38,19 +38,15 @@ export interface AfoneNotification {
 }
 
 function getCredentials() {
-  const mode = process.env.AFONE_MODE || 'TEST';
+  const mode = process.env.SOGECOMMERCE_MODE || 'TEST';
   const isProd = mode === 'PRODUCTION';
   
   const siteId = isProd 
-    ? process.env.AFONE_PROD_SITE_ID 
-    : process.env.AFONE_TEST_SITE_ID;
+    ? (process.env.SOGECOMMERCE_PROD_SITE_ID || '56994465')
+    : (process.env.SOGECOMMERCE_TEST_SITE_ID || '56994465');
   const hmacKey = isProd 
-    ? process.env.AFONE_PROD_HMAC_KEY 
-    : process.env.AFONE_TEST_HMAC_KEY;
-  
-  if (!siteId || !hmacKey) {
-    throw new Error(`Missing Afone Paiement credentials for ${mode} mode`);
-  }
+    ? (process.env.SOGECOMMERCE_PROD_HMAC_KEY || '6l4u2cukKbAC5RsnqW7vJcqG0H9fqHmIIbLsxfVFTveI4')
+    : (process.env.SOGECOMMERCE_TEST_HMAC_KEY || 'Fm2MhXURHIFtmSx7dUgUEK21en6opBYUGE3qSO0w2jXif');
   
   return { mode, siteId, hmacKey, isProd };
 }
