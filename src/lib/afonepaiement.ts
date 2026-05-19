@@ -45,7 +45,7 @@ function getCredentials() {
     ? (process.env.SOGECOMMERCE_PROD_SITE_ID || '56994465')
     : (process.env.SOGECOMMERCE_TEST_SITE_ID || '56994465');
   const hmacKey = isProd 
-    ? (process.env.SOGECOMMERCE_PROD_HMAC_KEY || '6l4u2cukKbAC5RsnqW7vJcqG0H9fqHmIIbLsxfVFTveI4')
+    ? (process.env.SOGECOMMERCE_PROD_HMAC_KEY || 'c7yvgXLJnsAABgrb')
     : (process.env.SOGECOMMERCE_TEST_HMAC_KEY || 'Fm2MhXURHIFtmSx7dUgUEK21en6opBYUGE3qSO0w2jXif');
   
   return { mode, siteId, hmacKey, isProd };

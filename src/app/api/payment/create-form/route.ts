@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       ? (process.env.SOGECOMMERCE_PROD_SITE_ID || '56994465')
       : (process.env.SOGECOMMERCE_TEST_SITE_ID || '56994465');
     const hmacKey = isProd
-      ? (process.env.SOGECOMMERCE_PROD_HMAC_KEY || '6l4u2cukKbAC5RsnqW7vJcqG0H9fqHmIIbLsxfVFTveI4')
+      ? (process.env.SOGECOMMERCE_PROD_HMAC_KEY || 'c7yvgXLJnsAABgrb')
       : (process.env.SOGECOMMERCE_TEST_HMAC_KEY || 'Fm2MhXURHIFtmSx7dUgUEK21en6opBYUGE3qSO0w2jXif');
     const returnBase = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-injecteurs.vercel.app';
 
