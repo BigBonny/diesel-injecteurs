@@ -164,6 +164,10 @@ export async function POST(request: Request) {
         } else if (PRESTASHOP_API_URL && PRESTASHOP_API_KEY) {
           // Create a proper order in PrestaShop
           // For simplicity, we'll create a minimal order - in production, expand this
+          const shippingCost = 0; // Adjust if you have shipping
+          const discountAmount = 0; // Adjust if you have discounts
+          const productTotal = amount - shippingCost + discountAmount;
+          
           const prestashopOrderXml = `
             <prestashop>
               <order>
@@ -179,11 +183,17 @@ export async function POST(request: Request) {
                 <total_paid>${amount.toFixed(2)}</total_paid>
                 <total_paid_real>${amount.toFixed(2)}</total_paid_real>
                 <module><![CDATA[sogecommerce]]></module>
-                <total_products>${amount.toFixed(2)}</total_products>
-                <total_products_wt>${amount.toFixed(2)}</total_products_wt>
+                <total_products>${productTotal.toFixed(2)}</total_products>
+                <total_products_wt>${productTotal.toFixed(2)}</total_products_wt>
+                <total_shipping>${shippingCost.toFixed(2)}</total_shipping>
+                <total_shipping_tax_incl>${shippingCost.toFixed(2)}</total_shipping_tax_incl>
+                <total_discounts>${discountAmount.toFixed(2)}</total_discounts>
+                <total_discounts_tax_incl>${discountAmount.toFixed(2)}</total_discounts_tax_incl>
                 <conversion_rate>1.000000</conversion_rate>
                 <secure_key><![CDATA[${crypto.createHash('md5').update(orderId).digest('hex')}]]></secure_key>
                 <reference><![CDATA[${orderId}]]></reference>
+                <total_paid_tax_incl>${amount.toFixed(2)}</total_paid_tax_incl>
+                <total_paid_tax_excl>${amount.toFixed(2)}</total_paid_tax_excl>
               </order>
             </prestashop>
           `;
