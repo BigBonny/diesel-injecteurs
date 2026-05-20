@@ -167,18 +167,71 @@ export async function POST(request: Request) {
         if (!orderData) {
           console.error('No order data available for PrestaShop order creation');
         } else if (PRESTASHOP_API_URL && PRESTASHOP_API_KEY) {
-          console.log('PrestaShop API configured, creating cart first...');
+          console.log('PrestaShop API configured, creating customer first...');
           
-          // Step 1: Create a cart first
-          const cartXml = `
-            <prestashop>
-              <cart>
-                <id_currency>1</id_currency>
-                <id_lang>1</id_lang>
-                <id_customer>2</id_customer>
-              </cart>
-            </prestashop>
-          `;
+          // Extract customer info from order/notification
+          const custEmail = orderData.customer_email || customerEmail || 'guest@diesel-injecteurs.com';
+          const custFullName = orderData.customer_name || notification.vads_cust_name || 'Client';
+          const custFirstName = (notification.vads_cust_first_name || custFullName.split(' ')[0] || 'Client').slice(0, 32);
+          const custLastName = (notification.vads_cust_last_name || custFullName.split(' ').slice(1).join(' ') || custFullName).slice(0, 32) || 'Client';
+
+          // Step 1: Check if customer with this email already exists
+          let psCustomerId = '2'; // fallback to demo customer
+          let psAddressId = '1977'; // fallback address
+
+          try {
+            const searchResp = await fetch(
+              `${PRESTASHOP_API_URL}/customers?ws_key=${PRESTASHOP_API_KEY}&display=[id,email]&filter[email]=[${encodeURIComponent(custEmail)}]`,
+              { signal: AbortSignal.timeout(8000) }
+            );
+            if (searchResp.ok) {
+              const searchXml = await searchResp.text();
+              const existingId = searchXml.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1];
+              if (existingId) {
+                psCustomerId = existingId;
+                console.log('Found existing customer ID:', psCustomerId);
+              }
+            }
+          } catch { /* ignore search errors */ }
+
+          // Step 2: Create new customer if not found
+          if (psCustomerId === '2') {
+            const custXml = `<prestashop><customer><firstname>${custFirstName}</firstname><lastname>${custLastName}</lastname><email>${custEmail}</email><passwd>${crypto.createHash('md5').update(orderId + Date.now()).digest('hex')}</passwd><active>1</active><is_guest>1</is_guest><id_default_group>3</id_default_group></customer></prestashop>`;
+            const custResp = await fetch(
+              `${PRESTASHOP_API_URL}/customers?ws_key=${PRESTASHOP_API_KEY}`,
+              { method: 'POST', headers: { 'Content-Type': 'application/xml' }, body: custXml, signal: AbortSignal.timeout(8000) }
+            );
+            if (custResp.ok) {
+              const custXmlResp = await custResp.text();
+              const newCustId = custXmlResp.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1];
+              if (newCustId) {
+                psCustomerId = newCustId;
+                console.log('Created new customer ID:', psCustomerId);
+              }
+            } else {
+              console.error('Failed to create customer:', await custResp.text());
+            }
+          }
+
+          // Step 3: Create address for this customer
+          const addrXml = `<prestashop><address><id_customer>${psCustomerId}</id_customer><id_country>8</id_country><alias>commande</alias><lastname>${custLastName}</lastname><firstname>${custFirstName}</firstname><address1>Non renseignée</address1><city>Non renseignée</city><postcode>00000</postcode></address></prestashop>`;
+          const addrResp = await fetch(
+            `${PRESTASHOP_API_URL}/addresses?ws_key=${PRESTASHOP_API_KEY}`,
+            { method: 'POST', headers: { 'Content-Type': 'application/xml' }, body: addrXml, signal: AbortSignal.timeout(8000) }
+          );
+          if (addrResp.ok) {
+            const addrXmlResp = await addrResp.text();
+            const newAddrId = addrXmlResp.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1];
+            if (newAddrId) {
+              psAddressId = newAddrId;
+              console.log('Created address ID:', psAddressId);
+            }
+          } else {
+            console.error('Failed to create address:', await addrResp.text());
+          }
+
+          // Step 4: Create cart for this customer
+          const cartXml = `<prestashop><cart><id_currency>1</id_currency><id_lang>1</id_lang><id_customer>${psCustomerId}</id_customer></cart></prestashop>`;
           
           const cartResponse = await fetch(
             `${PRESTASHOP_API_URL}/carts?ws_key=${PRESTASHOP_API_KEY}`,
@@ -196,7 +249,7 @@ export async function POST(request: Request) {
           }
           
           const cartResponseText = await cartResponse.text();
-          const cartIdMatch = cartResponseText.match(/<id>(?:<!\[CDATA\[)?(\d+)(?:\]\]>)?<\/id>/);
+          const cartIdMatch = cartResponseText.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/);
           const cartId = cartIdMatch ? cartIdMatch[1] : null;
           
           if (!cartId) {
@@ -206,7 +259,7 @@ export async function POST(request: Request) {
           
           console.log('Cart created with ID:', cartId);
           
-          // Step 2: Create order using the new cart
+          // Step 5: Create order using the new cart
           const shippingCost = 0;
           const discountAmount = 0;
           const productTotal = amount - shippingCost + discountAmount;
@@ -214,12 +267,12 @@ export async function POST(request: Request) {
           const prestashopOrderXml = `
             <prestashop>
               <order>
-                <id_address_delivery>1977</id_address_delivery>
-                <id_address_invoice>1977</id_address_invoice>
+                <id_address_delivery>${psAddressId}</id_address_delivery>
+                <id_address_invoice>${psAddressId}</id_address_invoice>
                 <id_carrier>11</id_carrier>
                 <id_cart>${cartId}</id_cart>
                 <id_currency>1</id_currency>
-                <id_customer>2</id_customer>
+                <id_customer>${psCustomerId}</id_customer>
                 <id_lang>1</id_lang>
                 <current_state>2</current_state>
                 <payment><![CDATA[Sogecommerce]]></payment>
