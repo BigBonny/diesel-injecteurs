@@ -156,181 +156,61 @@ export async function POST(request: Request) {
       orderData?.cart_items
     );
 
-    // Create order in PrestaShop back office if payment is successful
-    if (finalStatus === 'paid') {
-      console.log('Attempting PrestaShop order creation...');
-      console.log('PRESTASHOP_API_URL:', PRESTASHOP_API_URL);
-      console.log('PRESTASHOP_API_KEY exists:', !!PRESTASHOP_API_KEY);
-      console.log('orderData exists:', !!orderData);
-      
+    // Update PrestaShop order status (order was already created at checkout)
+    // Status map: paid=2, cancelled=6, refused=8, failed=8
+    const psStatusMap: Record<string, number> = {
+      paid: 2,
+      cancelled: 6,
+      refused: 8,
+      failed: 8,
+      expired: 6,
+    };
+    const psNewState = psStatusMap[finalStatus];
+
+    if (psNewState && orderData?.prestashop_order_id && PRESTASHOP_API_URL && PRESTASHOP_API_KEY) {
       try {
-        if (!orderData) {
-          console.error('No order data available for PrestaShop order creation');
-        } else if (PRESTASHOP_API_URL && PRESTASHOP_API_KEY) {
-          console.log('PrestaShop API configured, creating customer first...');
-          
-          // Extract customer info from order/notification
-          const custEmail = orderData.customer_email || customerEmail || 'guest@diesel-injecteurs.com';
-          const custFullName = orderData.customer_name || notification.vads_cust_name || 'Client';
-          const custFirstName = (notification.vads_cust_first_name || custFullName.split(' ')[0] || 'Client').slice(0, 32);
-          const custLastName = (notification.vads_cust_last_name || custFullName.split(' ').slice(1).join(' ') || custFullName).slice(0, 32) || 'Client';
+        const psOrderId = orderData.prestashop_order_id;
+        console.log(`Updating PS order ${psOrderId} to state ${psNewState}...`);
 
-          // Step 1: Check if customer with this email already exists
-          let psCustomerId = '2'; // fallback to demo customer
-          let psAddressId = '1977'; // fallback address
+        // Fetch current order XML first (PUT requires full object)
+        const getResp = await fetch(
+          `${PRESTASHOP_API_URL}/orders/${psOrderId}?ws_key=${PRESTASHOP_API_KEY}`,
+          { signal: AbortSignal.timeout(8000) }
+        );
 
-          try {
-            const searchResp = await fetch(
-              `${PRESTASHOP_API_URL}/customers?ws_key=${PRESTASHOP_API_KEY}&display=[id,email]&filter[email]=[${encodeURIComponent(custEmail)}]`,
-              { signal: AbortSignal.timeout(8000) }
+        if (getResp.ok) {
+          let orderXml = await getResp.text();
+          // Replace current_state value
+          orderXml = orderXml.replace(
+            /<current_state>.*?<\/current_state>/,
+            `<current_state>${psNewState}</current_state>`
+          );
+          // Also update total_paid_real on payment success
+          if (finalStatus === 'paid') {
+            orderXml = orderXml.replace(
+              /<total_paid_real>.*?<\/total_paid_real>/,
+              `<total_paid_real>${amount.toFixed(2)}</total_paid_real>`
             );
-            if (searchResp.ok) {
-              const searchXml = await searchResp.text();
-              const existingId = searchXml.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1];
-              if (existingId) {
-                psCustomerId = existingId;
-                console.log('Found existing customer ID:', psCustomerId);
-              }
-            }
-          } catch { /* ignore search errors */ }
-
-          // Step 2: Create new customer if not found
-          if (psCustomerId === '2') {
-            const custXml = `<prestashop><customer><firstname>${custFirstName}</firstname><lastname>${custLastName}</lastname><email>${custEmail}</email><passwd>${crypto.createHash('md5').update(orderId + Date.now()).digest('hex')}</passwd><active>1</active><is_guest>1</is_guest><id_default_group>3</id_default_group></customer></prestashop>`;
-            const custResp = await fetch(
-              `${PRESTASHOP_API_URL}/customers?ws_key=${PRESTASHOP_API_KEY}`,
-              { method: 'POST', headers: { 'Content-Type': 'application/xml' }, body: custXml, signal: AbortSignal.timeout(8000) }
-            );
-            if (custResp.ok) {
-              const custXmlResp = await custResp.text();
-              const newCustId = custXmlResp.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1];
-              if (newCustId) {
-                psCustomerId = newCustId;
-                console.log('Created new customer ID:', psCustomerId);
-              }
-            } else {
-              console.error('Failed to create customer:', await custResp.text());
-            }
           }
 
-          // Step 3: Create address for this customer
-          const addrXml = `<prestashop><address><id_customer>${psCustomerId}</id_customer><id_country>8</id_country><alias>commande</alias><lastname>${custLastName}</lastname><firstname>${custFirstName}</firstname><address1>Non renseignée</address1><city>Non renseignée</city><postcode>00000</postcode></address></prestashop>`;
-          const addrResp = await fetch(
-            `${PRESTASHOP_API_URL}/addresses?ws_key=${PRESTASHOP_API_KEY}`,
-            { method: 'POST', headers: { 'Content-Type': 'application/xml' }, body: addrXml, signal: AbortSignal.timeout(8000) }
+          const putResp = await fetch(
+            `${PRESTASHOP_API_URL}/orders/${psOrderId}?ws_key=${PRESTASHOP_API_KEY}`,
+            { method: 'PUT', headers: { 'Content-Type': 'application/xml' }, body: orderXml, signal: AbortSignal.timeout(8000) }
           );
-          if (addrResp.ok) {
-            const addrXmlResp = await addrResp.text();
-            const newAddrId = addrXmlResp.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1];
-            if (newAddrId) {
-              psAddressId = newAddrId;
-              console.log('Created address ID:', psAddressId);
-            }
+
+          if (putResp.ok) {
+            console.log(`PS order ${psOrderId} updated to state ${psNewState}`);
           } else {
-            console.error('Failed to create address:', await addrResp.text());
-          }
-
-          // Step 4: Create cart for this customer
-          const cartXml = `<prestashop><cart><id_currency>1</id_currency><id_lang>1</id_lang><id_customer>${psCustomerId}</id_customer></cart></prestashop>`;
-          
-          const cartResponse = await fetch(
-            `${PRESTASHOP_API_URL}/carts?ws_key=${PRESTASHOP_API_KEY}`,
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/xml' },
-              body: cartXml,
-            }
-          );
-          
-          if (!cartResponse.ok) {
-            const cartError = await cartResponse.text();
-            console.error('Failed to create cart:', cartResponse.status, cartError);
-            throw new Error('Cart creation failed');
-          }
-          
-          const cartResponseText = await cartResponse.text();
-          const cartIdMatch = cartResponseText.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/);
-          const cartId = cartIdMatch ? cartIdMatch[1] : null;
-          
-          if (!cartId) {
-            console.error('Could not extract cart ID from response:', cartResponseText.substring(0, 200));
-            throw new Error('Cart ID not found');
-          }
-          
-          console.log('Cart created with ID:', cartId);
-          
-          // Step 5: Create order using the new cart
-          const shippingCost = 0;
-          const discountAmount = 0;
-          const productTotal = amount - shippingCost + discountAmount;
-          
-          const prestashopOrderXml = `
-            <prestashop>
-              <order>
-                <id_address_delivery>${psAddressId}</id_address_delivery>
-                <id_address_invoice>${psAddressId}</id_address_invoice>
-                <id_carrier>11</id_carrier>
-                <id_cart>${cartId}</id_cart>
-                <id_currency>1</id_currency>
-                <id_customer>${psCustomerId}</id_customer>
-                <id_lang>1</id_lang>
-                <current_state>2</current_state>
-                <payment><![CDATA[Sogecommerce]]></payment>
-                <total_paid>${amount.toFixed(2)}</total_paid>
-                <total_paid_real>${amount.toFixed(2)}</total_paid_real>
-                <module><![CDATA[sogecommerce]]></module>
-                <total_products>${productTotal.toFixed(2)}</total_products>
-                <total_products_wt>${productTotal.toFixed(2)}</total_products_wt>
-                <total_shipping>${shippingCost.toFixed(2)}</total_shipping>
-                <total_shipping_tax_incl>${shippingCost.toFixed(2)}</total_shipping_tax_incl>
-                <total_discounts>${discountAmount.toFixed(2)}</total_discounts>
-                <total_discounts_tax_incl>${discountAmount.toFixed(2)}</total_discounts_tax_incl>
-                <conversion_rate>1.000000</conversion_rate>
-                <secure_key><![CDATA[${crypto.createHash('md5').update(orderId).digest('hex')}]]></secure_key>
-                <reference><![CDATA[${orderId}]]></reference>
-                <total_paid_tax_incl>${amount.toFixed(2)}</total_paid_tax_incl>
-                <total_paid_tax_excl>${amount.toFixed(2)}</total_paid_tax_excl>
-              </order>
-            </prestashop>
-          `;
-
-          const response = await fetch(
-            `${PRESTASHOP_API_URL}/orders?ws_key=${PRESTASHOP_API_KEY}`,
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/xml' },
-              body: prestashopOrderXml,
-            }
-          );
-
-          console.log('PrestaShop API response status:', response.status);
-          
-          if (response.ok) {
-            const responseText = await response.text();
-            console.log('PrestaShop order created successfully:', responseText.substring(0, 200));
-            const idMatch = responseText.match(/<id>(?:<!\[CDATA\[)?(\d+)(?:\]\]>)?<\/id>/);
-            const prestashopOrderId = idMatch ? idMatch[1] : null;
-
-            if (prestashopOrderId) {
-              // Update Supabase order with PrestaShop ID
-              await supabase
-                .from('orders')
-                .update({ prestashop_order_id: parseInt(prestashopOrderId) })
-                .eq('id', orderId);
-              
-              console.log('Order created in PrestaShop:', prestashopOrderId);
-            }
-          } else {
-            const errorText = await response.text();
-            console.error('Failed to create order in PrestaShop:', response.status, errorText);
+            console.error('Failed to update PS order:', putResp.status, await putResp.text());
           }
         } else {
-          console.log('PrestaShop API not configured, skipping order creation');
-          console.log('URL exists:', !!PRESTASHOP_API_URL, 'Key exists:', !!PRESTASHOP_API_KEY);
+          console.error('Failed to fetch PS order for update:', getResp.status);
         }
-      } catch (prestashopError) {
-        console.error('Error creating PrestaShop order:', prestashopError);
+      } catch (psError) {
+        console.error('Error updating PrestaShop order status:', psError);
       }
+    } else if (psNewState) {
+      console.log('PS order update skipped - no prestashop_order_id or API not configured');
     }
 
     // Return success to acknowledge receipt
