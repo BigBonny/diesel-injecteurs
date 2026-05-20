@@ -11,7 +11,7 @@ async function createPrestashopOrder(orderId: string, amount: number, customerEm
     const lastName = (customerName.split(' ').slice(1).join(' ') || customerName).slice(0, 32) || 'Client';
 
     // Check if customer already exists
-    let psCustomerId = '2';
+    let psCustomerId: string | null = null;
     let psAddressId = '1977';
 
     try {
@@ -27,7 +27,7 @@ async function createPrestashopOrder(orderId: string, amount: number, customerEm
     } catch { /* ignore */ }
 
     // Create customer if not found
-    if (psCustomerId === '2') {
+    if (!psCustomerId) {
       const custResp = await fetch(
         `${PRESTASHOP_API_URL}/customers?ws_key=${PRESTASHOP_API_KEY}`,
         { method: 'POST', headers: { 'Content-Type': 'application/xml' }, signal: AbortSignal.timeout(8000),
@@ -35,7 +35,11 @@ async function createPrestashopOrder(orderId: string, amount: number, customerEm
       );
       if (custResp.ok) {
         const xml = await custResp.text();
-        psCustomerId = xml.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1] || '2';
+        psCustomerId = xml.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1] || null;
+      }
+      if (!psCustomerId) {
+        console.error('Failed to create PS customer, cannot create PS order');
+        return null;
       }
     }
 
