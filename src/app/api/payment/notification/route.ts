@@ -175,7 +175,7 @@ export async function POST(request: Request) {
               <cart>
                 <id_currency>1</id_currency>
                 <id_lang>1</id_lang>
-                <id_customer>1</id_customer>
+                <id_customer>2</id_customer>
               </cart>
             </prestashop>
           `;
@@ -214,12 +214,12 @@ export async function POST(request: Request) {
           const prestashopOrderXml = `
             <prestashop>
               <order>
-                <id_address_delivery>5</id_address_delivery>
-                <id_address_invoice>5</id_address_invoice>
-                <id_carrier>1</id_carrier>
+                <id_address_delivery>1977</id_address_delivery>
+                <id_address_invoice>1977</id_address_invoice>
+                <id_carrier>11</id_carrier>
                 <id_cart>${cartId}</id_cart>
                 <id_currency>1</id_currency>
-                <id_customer>1</id_customer>
+                <id_customer>2</id_customer>
                 <id_lang>1</id_lang>
                 <current_state>2</current_state>
                 <payment><![CDATA[Sogecommerce]]></payment>
