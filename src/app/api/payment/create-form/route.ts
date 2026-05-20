@@ -60,20 +60,28 @@ async function createPrestashopOrder(orderId: string, amount: number, customerEm
       { method: 'POST', headers: { 'Content-Type': 'application/xml' }, signal: AbortSignal.timeout(8000),
         body: `<prestashop><cart><id_currency>1</id_currency><id_lang>1</id_lang><id_customer>${psCustomerId}</id_customer></cart></prestashop>` }
     );
-    if (!cartResp.ok) return null;
+    if (!cartResp.ok) {
+      console.error('PS cart creation failed:', cartResp.status, await cartResp.text());
+      return null;
+    }
     const cartXml = await cartResp.text();
     const cartId = cartXml.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1];
-    if (!cartId) return null;
+    if (!cartId) {
+      console.error('PS cart ID not found in response:', cartXml.substring(0, 300));
+      return null;
+    }
+    console.log('PS cart created:', cartId);
 
     // Create order with status 14 = En attente de paiement
     const productTotal = amount;
+    const orderBody = `<prestashop><order><id_address_delivery>${psAddressId}</id_address_delivery><id_address_invoice>${psAddressId}</id_address_invoice><id_carrier>11</id_carrier><id_cart>${cartId}</id_cart><id_currency>1</id_currency><id_customer>${psCustomerId}</id_customer><id_lang>1</id_lang><current_state>14</current_state><payment>Sogecommerce</payment><total_paid>${amount.toFixed(2)}</total_paid><total_paid_real>0.00</total_paid_real><module>sogecommerce</module><total_products>${productTotal.toFixed(2)}</total_products><total_products_wt>${productTotal.toFixed(2)}</total_products_wt><total_shipping>0.00</total_shipping><total_shipping_tax_incl>0.00</total_shipping_tax_incl><total_discounts>0.00</total_discounts><total_discounts_tax_incl>0.00</total_discounts_tax_incl><conversion_rate>1.000000</conversion_rate><secure_key>${crypto.createHash('md5').update(orderId).digest('hex')}</secure_key><reference>${orderId.slice(0, 32)}</reference><total_paid_tax_incl>${amount.toFixed(2)}</total_paid_tax_incl><total_paid_tax_excl>${amount.toFixed(2)}</total_paid_tax_excl></order></prestashop>`;
+    console.log('PS order XML (first 300):', orderBody.substring(0, 300));
     const orderResp = await fetch(
       `${PRESTASHOP_API_URL}/orders?ws_key=${PRESTASHOP_API_KEY}`,
-      { method: 'POST', headers: { 'Content-Type': 'application/xml' }, signal: AbortSignal.timeout(8000),
-        body: `<prestashop><order><id_address_delivery>${psAddressId}</id_address_delivery><id_address_invoice>${psAddressId}</id_address_invoice><id_carrier>11</id_carrier><id_cart>${cartId}</id_cart><id_currency>1</id_currency><id_customer>${psCustomerId}</id_customer><id_lang>1</id_lang><current_state>14</current_state><payment>Sogecommerce</payment><total_paid>${amount.toFixed(2)}</total_paid><total_paid_real>0.00</total_paid_real><module>sogecommerce</module><total_products>${productTotal.toFixed(2)}</total_products><total_products_wt>${productTotal.toFixed(2)}</total_products_wt><total_shipping>0.00</total_shipping><total_shipping_tax_incl>0.00</total_shipping_tax_incl><total_discounts>0.00</total_discounts><total_discounts_tax_incl>0.00</total_discounts_tax_incl><conversion_rate>1.000000</conversion_rate><secure_key>${crypto.createHash('md5').update(orderId).digest('hex')}</secure_key><reference>${orderId.slice(0, 32)}</reference><total_paid_tax_incl>${amount.toFixed(2)}</total_paid_tax_incl><total_paid_tax_excl>${amount.toFixed(2)}</total_paid_tax_excl></order></prestashop>` }
+      { method: 'POST', headers: { 'Content-Type': 'application/xml' }, signal: AbortSignal.timeout(8000), body: orderBody }
     );
     if (!orderResp.ok) {
-      console.error('PS order creation failed:', await orderResp.text());
+      console.error('PS order creation failed - status:', orderResp.status, 'body:', await orderResp.text());
       return null;
     }
     const orderXml = await orderResp.text();
