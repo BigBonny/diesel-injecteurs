@@ -5,9 +5,14 @@
  * Secured with a secret token
  */
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 define('_PS_ROOT_DIR_', dirname(__FILE__));
+define('USE_CACHE_FALLBACK', true);
+define('_PS_IN_TEST_', true);
+
 require_once(_PS_ROOT_DIR_ . '/config/config.inc.php');
-require_once(_PS_ROOT_DIR_ . '/init.php');
 
 // Security: require secret token
 $secret = 'DIESEL_ORDER_SECRET_2024';
