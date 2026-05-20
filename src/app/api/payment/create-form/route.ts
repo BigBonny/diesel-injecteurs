@@ -2,92 +2,47 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { supabase } from '@/lib/supabase';
 
-const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'http://192.162.69.186/api';
-const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
+const PS_SCRIPT_URL = process.env.PS_SCRIPT_URL || 'http://192.162.69.186/create_ps_order.php';
+const PS_SCRIPT_SECRET = process.env.PS_SCRIPT_SECRET || 'DIESEL_ORDER_SECRET_2024';
 
 async function createPrestashopOrder(orderId: string, amount: number, customerEmail: string, customerName: string): Promise<string | null> {
   try {
     const firstName = (customerName.split(' ')[0] || 'Client').slice(0, 32);
     const lastName = (customerName.split(' ').slice(1).join(' ') || customerName).slice(0, 32) || 'Client';
 
-    // Check if customer already exists
-    let psCustomerId: string | null = null;
-    let psAddressId = '1977';
+    const body = new URLSearchParams({
+      token:      PS_SCRIPT_SECRET,
+      action:     'create',
+      email:      customerEmail,
+      first_name: firstName,
+      last_name:  lastName,
+      amount:     amount.toFixed(2),
+      reference:  orderId,
+    });
 
-    try {
-      const searchResp = await fetch(
-        `${PRESTASHOP_API_URL}/customers?ws_key=${PRESTASHOP_API_KEY}&display=[id,email]&filter[email]=[${encodeURIComponent(customerEmail)}]`,
-        { signal: AbortSignal.timeout(8000) }
-      );
-      if (searchResp.ok) {
-        const xml = await searchResp.text();
-        const existingId = xml.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1];
-        if (existingId) psCustomerId = existingId;
-      }
-    } catch { /* ignore */ }
+    const resp = await fetch(PS_SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: body.toString(),
+      signal: AbortSignal.timeout(15000),
+    });
 
-    // Create customer if not found
-    if (!psCustomerId) {
-      const custResp = await fetch(
-        `${PRESTASHOP_API_URL}/customers?ws_key=${PRESTASHOP_API_KEY}`,
-        { method: 'POST', headers: { 'Content-Type': 'application/xml' }, signal: AbortSignal.timeout(8000),
-          body: `<prestashop><customer><firstname>${firstName}</firstname><lastname>${lastName}</lastname><email>${customerEmail}</email><passwd>${crypto.createHash('md5').update(orderId).digest('hex')}</passwd><active>1</active><is_guest>1</is_guest><id_default_group>3</id_default_group></customer></prestashop>` }
-      );
-      if (custResp.ok) {
-        const xml = await custResp.text();
-        psCustomerId = xml.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1] || null;
-      }
-      if (!psCustomerId) {
-        console.error('Failed to create PS customer, cannot create PS order');
-        return null;
-      }
-    }
+    const text = await resp.text();
+    console.log('PS script response:', resp.status, text.substring(0, 300));
 
-    // Create address
-    const addrResp = await fetch(
-      `${PRESTASHOP_API_URL}/addresses?ws_key=${PRESTASHOP_API_KEY}`,
-      { method: 'POST', headers: { 'Content-Type': 'application/xml' }, signal: AbortSignal.timeout(8000),
-        body: `<prestashop><address><id_customer>${psCustomerId}</id_customer><id_country>8</id_country><alias>commande</alias><lastname>${lastName}</lastname><firstname>${firstName}</firstname><address1>Non renseignée</address1><city>Non renseignée</city><postcode>00000</postcode></address></prestashop>` }
-    );
-    if (addrResp.ok) {
-      const xml = await addrResp.text();
-      psAddressId = xml.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1] || '1977';
-    }
-
-    // Create cart
-    const cartResp = await fetch(
-      `${PRESTASHOP_API_URL}/carts?ws_key=${PRESTASHOP_API_KEY}`,
-      { method: 'POST', headers: { 'Content-Type': 'application/xml' }, signal: AbortSignal.timeout(8000),
-        body: `<prestashop><cart><id_currency>1</id_currency><id_lang>1</id_lang><id_customer>${psCustomerId}</id_customer></cart></prestashop>` }
-    );
-    if (!cartResp.ok) {
-      console.error('PS cart creation failed:', cartResp.status, await cartResp.text());
+    if (!resp.ok) {
+      console.error('PS script failed - status:', resp.status);
       return null;
     }
-    const cartXml = await cartResp.text();
-    const cartId = cartXml.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1];
-    if (!cartId) {
-      console.error('PS cart ID not found in response:', cartXml.substring(0, 300));
-      return null;
-    }
-    console.log('PS cart created:', cartId);
 
-    // Create order with status 14 = En attente de paiement
-    const productTotal = amount;
-    const orderBody = `<prestashop><order><id_address_delivery>${psAddressId}</id_address_delivery><id_address_invoice>${psAddressId}</id_address_invoice><id_carrier>11</id_carrier><id_cart>${cartId}</id_cart><id_currency>1</id_currency><id_customer>${psCustomerId}</id_customer><id_lang>1</id_lang><current_state>14</current_state><payment>Sogecommerce</payment><total_paid>${amount.toFixed(2)}</total_paid><total_paid_real>0.00</total_paid_real><module>sogecommerce</module><total_products>${productTotal.toFixed(2)}</total_products><total_products_wt>${productTotal.toFixed(2)}</total_products_wt><total_shipping>0.00</total_shipping><total_shipping_tax_incl>0.00</total_shipping_tax_incl><total_discounts>0.00</total_discounts><total_discounts_tax_incl>0.00</total_discounts_tax_incl><conversion_rate>1.000000</conversion_rate><secure_key>${crypto.createHash('md5').update(orderId).digest('hex')}</secure_key><reference>${orderId.slice(0, 32)}</reference><total_paid_tax_incl>${amount.toFixed(2)}</total_paid_tax_incl><total_paid_tax_excl>${amount.toFixed(2)}</total_paid_tax_excl></order></prestashop>`;
-    console.log('PS order XML (first 300):', orderBody.substring(0, 300));
-    const orderResp = await fetch(
-      `${PRESTASHOP_API_URL}/orders?ws_key=${PRESTASHOP_API_KEY}`,
-      { method: 'POST', headers: { 'Content-Type': 'application/xml' }, signal: AbortSignal.timeout(8000), body: orderBody }
-    );
-    if (!orderResp.ok) {
-      console.error('PS order creation failed - status:', orderResp.status, 'body:', await orderResp.text());
+    const data = JSON.parse(text);
+    if (data.error) {
+      console.error('PS script error:', data.error);
       return null;
     }
-    const orderXml = await orderResp.text();
-    const psOrderId = orderXml.match(/<id><!\[CDATA\[(\d+)\]\]><\/id>/)?.[1] || null;
-    console.log('PS order created with ID:', psOrderId);
-    return psOrderId;
+
+    console.log('PS order created with ID:', data.order_id);
+    return String(data.order_id);
   } catch (e) {
     console.error('PS order creation error:', e);
     return null;

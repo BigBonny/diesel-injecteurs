@@ -3,8 +3,8 @@ import crypto from 'crypto';
 import { supabase } from '@/lib/supabase';
 import { sendPaymentNotificationEmail } from '@/lib/notifications';
 
-const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'https://diesel-injecteurs.com/api';
-const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
+const PS_SCRIPT_URL = process.env.PS_SCRIPT_URL || 'http://192.162.69.186/create_ps_order.php';
+const PS_SCRIPT_SECRET = process.env.PS_SCRIPT_SECRET || 'DIESEL_ORDER_SECRET_2024';
 
 interface CmiNotification {
   vads_trans_status: string;
@@ -167,50 +167,33 @@ export async function POST(request: Request) {
     };
     const psNewState = psStatusMap[finalStatus];
 
-    if (psNewState && orderData?.prestashop_order_id && PRESTASHOP_API_URL && PRESTASHOP_API_KEY) {
+    if (psNewState && orderData?.prestashop_order_id) {
       try {
         const psOrderId = orderData.prestashop_order_id;
-        console.log(`Updating PS order ${psOrderId} to state ${psNewState}...`);
+        console.log(`Updating PS order ${psOrderId} to state ${psNewState} via script...`);
 
-        // Fetch current order XML first (PUT requires full object)
-        const getResp = await fetch(
-          `${PRESTASHOP_API_URL}/orders/${psOrderId}?ws_key=${PRESTASHOP_API_KEY}`,
-          { signal: AbortSignal.timeout(8000) }
-        );
+        const body = new URLSearchParams({
+          token:    PS_SCRIPT_SECRET,
+          action:   'update_status',
+          order_id: String(psOrderId),
+          state:    String(psNewState),
+          amount:   amount.toFixed(2),
+        });
 
-        if (getResp.ok) {
-          let orderXml = await getResp.text();
-          // Replace current_state value
-          orderXml = orderXml.replace(
-            /<current_state>.*?<\/current_state>/,
-            `<current_state>${psNewState}</current_state>`
-          );
-          // Also update total_paid_real on payment success
-          if (finalStatus === 'paid') {
-            orderXml = orderXml.replace(
-              /<total_paid_real>.*?<\/total_paid_real>/,
-              `<total_paid_real>${amount.toFixed(2)}</total_paid_real>`
-            );
-          }
+        const resp = await fetch(PS_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString(),
+          signal: AbortSignal.timeout(10000),
+        });
 
-          const putResp = await fetch(
-            `${PRESTASHOP_API_URL}/orders/${psOrderId}?ws_key=${PRESTASHOP_API_KEY}`,
-            { method: 'PUT', headers: { 'Content-Type': 'application/xml' }, body: orderXml, signal: AbortSignal.timeout(8000) }
-          );
-
-          if (putResp.ok) {
-            console.log(`PS order ${psOrderId} updated to state ${psNewState}`);
-          } else {
-            console.error('Failed to update PS order:', putResp.status, await putResp.text());
-          }
-        } else {
-          console.error('Failed to fetch PS order for update:', getResp.status);
-        }
+        const text = await resp.text();
+        console.log('PS status update response:', resp.status, text.substring(0, 200));
       } catch (psError) {
         console.error('Error updating PrestaShop order status:', psError);
       }
     } else if (psNewState) {
-      console.log('PS order update skipped - no prestashop_order_id or API not configured');
+      console.log('PS order update skipped - no prestashop_order_id');
     }
 
     // Return success to acknowledge receipt
