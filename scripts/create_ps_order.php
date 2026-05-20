@@ -106,7 +106,9 @@ if ($action === 'create') {
     $order->conversion_rate     = 1;
     $order->secure_key          = md5($reference);
     $order->reference           = substr($reference, 0, 32);
-    $order->valid               = 0;
+    $order->valid               = 1;
+    $order->id_shop             = 1;
+    $order->id_shop_group       = 1;
     $order->date_add            = date('Y-m-d H:i:s');
     $order->date_upd            = date('Y-m-d H:i:s');
 
