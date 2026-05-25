@@ -1,17 +1,39 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, ArrowRight, Phone, Shield, Truck, Star, Zap, Car } from 'lucide-react';
+import { Search, ArrowRight, Phone, Shield, Truck, Star, Zap } from 'lucide-react';
 import Link from 'next/link';
+
+const BRANDS = ['Renault', 'Peugeot', 'Citroën', 'Volkswagen', 'BMW', 'Mercedes', 'Audi', 'Ford', 'Opel', 'Toyota', 'Fiat'];
+const MODELS: Record<string, string[]> = {
+  Renault: ['Clio', 'Mégane', 'Scenic', 'Laguna', 'Espace', 'Trafic', 'Master'],
+  Peugeot: ['206', '207', '208', '307', '308', '407', '508', 'Partner', 'Expert'],
+  Citroën: ['C3', 'C4', 'C5', 'Berlingo', 'Jumpy', 'Dispatch'],
+  Volkswagen: ['Golf', 'Passat', 'Polo', 'Tiguan', 'Transporter', 'Caddy'],
+  BMW: ['Série 1', 'Série 2', 'Série 3', 'Série 5', 'X1', 'X3', 'X5'],
+  Mercedes: ['Classe A', 'Classe C', 'Classe E', 'Sprinter', 'Vito'],
+  Audi: ['A3', 'A4', 'A6', 'Q3', 'Q5', 'Q7'],
+  Ford: ['Fiesta', 'Focus', 'Mondeo', 'Transit', 'C-Max'],
+  Opel: ['Astra', 'Corsa', 'Zafira', 'Vivaro', 'Movano'],
+  Toyota: ['Yaris', 'Corolla', 'Avensis', 'HiLux', 'ProAce'],
+  Fiat: ['Punto', 'Bravo', 'Ducato', 'Scudo'],
+};
+const ENGINES: Record<string, string[]> = {
+  default: ['1.5 dCi', '1.6 TDI', '1.9 TDI', '2.0 HDi', '2.2 HDi', '2.0 TDI', '3.0 TDI', '1.4 HDi', '2.5 TDi'],
+};
+const PIECES = ['Turbo', 'Injecteur', 'Kit CHRA', 'Pompe injection', 'Vanne EGR'];
 
 export default function TurboHero() {
   const [query, setQuery] = useState('');
   const [plate, setPlate] = useState('');
   const [mounted, setMounted] = useState(false);
+  const [activeTab, setActiveTab] = useState<'plaque' | 'vehicule'>('plaque');
+  const [brand, setBrand] = useState('');
+  const [model, setModel] = useState('');
+  const [engine, setEngine] = useState('');
+  const [piece, setPiece] = useState('');
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => { setMounted(true); }, []); // intentional mount animation trigger
 
   const formatPlate = (value: string) => {
     const cleaned = value.toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -23,6 +45,11 @@ export default function TurboHero() {
 
   const handlePlateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlate(formatPlate(e.target.value));
+  };
+
+  const vehiculeSearchUrl = () => {
+    const parts = [brand, model, engine, piece].filter(Boolean).join(' ');
+    return parts ? `/produits?search=${encodeURIComponent(parts)}` : '/produits';
   };
 
   return (
@@ -131,43 +158,93 @@ export default function TurboHero() {
               </div>
             </div>
 
-            {/* RIGHT: License Plate Search */}
+            {/* RIGHT: Two-tab search bar */}
             <div className={`transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-2xl shadow-black/20 p-6 lg:p-8">
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
-                    <Car className="w-5 h-5 text-[#0d1b3e]" />
-                  </div>
-                  <div>
-                    <h3 className="text-white font-bold text-lg">Sélectionner votre véhicule</h3>
-                    <p className="text-slate-300 text-sm">Saisissez votre plaque d&apos;immatriculation</p>
-                  </div>
-                </div>
-
-                <div className="mb-4">
-                  <input
-                    type="text"
-                    value={plate}
-                    onChange={handlePlateChange}
-                    placeholder="AA-123-AA"
-                    maxLength={9}
-                    className="w-full px-4 py-4 bg-[#0d1b3e]/80 border-2 border-white/30 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-yellow-400 font-mono text-xl tracking-wider text-center uppercase transition-all"
-                  />
-                </div>
-
-                <div className="flex items-center gap-4 my-4">
-                  <div className="flex-1 h-px bg-white/20" />
-                  <span className="text-slate-300 text-sm font-medium">OU</span>
-                  <div className="flex-1 h-px bg-white/20" />
-                </div>
-
-                <Link
-                  href={plate ? `/produits?immatriculation=${encodeURIComponent(plate)}` : '/produits'}
-                  className="group w-full flex items-center justify-center gap-2 px-6 py-4 bg-yellow-400 text-[#0d1b3e] font-bold rounded-xl hover:bg-yellow-300 transition-all duration-300"
+              {/* Tab header */}
+              <div className="flex rounded-t-xl overflow-hidden shadow-lg">
+                <button
+                  onClick={() => setActiveTab('plaque')}
+                  className={`flex-1 py-3 px-4 text-sm font-black uppercase tracking-wider transition-all ${activeTab === 'plaque' ? 'bg-orange-500 text-white' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}
                 >
-                  Rechercher
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                  Votre plaque
+                </button>
+                <button
+                  onClick={() => setActiveTab('vehicule')}
+                  className={`flex-1 py-3 px-4 text-sm font-black uppercase tracking-wider transition-all ${activeTab === 'vehicule' ? 'bg-[#1e2a4a] text-white border-b-2 border-orange-500' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}
+                >
+                  Recherche par véhicule
+                </button>
+              </div>
+
+              {/* Tab content */}
+              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-b-xl shadow-2xl shadow-black/20">
+                {activeTab === 'plaque' ? (
+                  <div className="flex items-center gap-0">
+                    {/* EU plate badge */}
+                    <div className="flex items-center gap-2 bg-blue-700 px-4 py-4 rounded-bl-xl shrink-0">
+                      <div className="flex flex-col items-center">
+                        <span className="text-yellow-300 text-[10px]">★ ★ ★</span>
+                        <span className="text-white font-black text-sm leading-none">F</span>
+                      </div>
+                    </div>
+                    <input
+                      type="text"
+                      value={plate}
+                      onChange={handlePlateChange}
+                      placeholder="AA-123-AA"
+                      maxLength={9}
+                      className="flex-1 px-4 py-4 bg-white text-slate-700 placeholder-slate-400 font-mono text-xl tracking-widest uppercase focus:outline-none"
+                    />
+                    <Link
+                      href={plate ? `/produits?immatriculation=${encodeURIComponent(plate)}` : '/produits'}
+                      className="flex items-center justify-center px-5 py-4 bg-orange-500 hover:bg-orange-400 text-white rounded-br-xl transition-all"
+                    >
+                      <Search className="w-5 h-5" />
+                    </Link>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-0 flex-wrap sm:flex-nowrap">
+                    <select
+                      value={brand}
+                      onChange={e => { setBrand(e.target.value); setModel(''); }}
+                      className="flex-1 min-w-0 px-3 py-4 bg-white text-slate-700 text-sm font-semibold focus:outline-none border-r border-slate-200 cursor-pointer appearance-none"
+                    >
+                      <option value="">MARQUE</option>
+                      {BRANDS.map(b => <option key={b} value={b}>{b}</option>)}
+                    </select>
+                    <select
+                      value={model}
+                      onChange={e => setModel(e.target.value)}
+                      disabled={!brand}
+                      className="flex-1 min-w-0 px-3 py-4 bg-white text-slate-700 text-sm font-semibold focus:outline-none border-r border-slate-200 cursor-pointer appearance-none disabled:opacity-40"
+                    >
+                      <option value="">MODÈLE</option>
+                      {(MODELS[brand] || []).map(m => <option key={m} value={m}>{m}</option>)}
+                    </select>
+                    <select
+                      value={engine}
+                      onChange={e => setEngine(e.target.value)}
+                      className="flex-1 min-w-0 px-3 py-4 bg-white text-slate-700 text-sm font-semibold focus:outline-none border-r border-slate-200 cursor-pointer appearance-none"
+                    >
+                      <option value="">MOTORISATION</option>
+                      {ENGINES.default.map(eng => <option key={eng} value={eng}>{eng}</option>)}
+                    </select>
+                    <select
+                      value={piece}
+                      onChange={e => setPiece(e.target.value)}
+                      className="flex-1 min-w-0 px-3 py-4 bg-white text-slate-700 text-sm font-semibold focus:outline-none border-r border-slate-200 cursor-pointer appearance-none"
+                    >
+                      <option value="">PIÈCES</option>
+                      {PIECES.map(p => <option key={p} value={p}>{p}</option>)}
+                    </select>
+                    <Link
+                      href={vehiculeSearchUrl()}
+                      className="flex items-center justify-center px-5 py-4 bg-orange-500 hover:bg-orange-400 text-white rounded-br-xl transition-all shrink-0"
+                    >
+                      <Search className="w-5 h-5" />
+                    </Link>
+                  </div>
+                )}
               </div>
             </div>
           </div>
