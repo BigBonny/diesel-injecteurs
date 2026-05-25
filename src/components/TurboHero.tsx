@@ -178,7 +178,7 @@ export default function TurboHero() {
                       : 'bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/80'
                   }`}
                 >
-                  🚗 Votre plaque
+                  Votre plaque
                 </button>
                 <div className="w-px bg-white/10" />
                 <button
@@ -189,7 +189,7 @@ export default function TurboHero() {
                       : 'bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/80'
                   }`}
                 >
-                  🔍 Par véhicule
+                  Par véhicule
                 </button>
               </div>
 
@@ -224,15 +224,15 @@ export default function TurboHero() {
                     {[
                       { value: brand, onChange: (v: string) => { setBrand(v); setModel(''); }, placeholder: 'Marque', options: BRANDS },
                       { value: model, onChange: (v: string) => setModel(v), placeholder: 'Modèle', options: MODELS[brand] || [], disabled: !brand },
-                      { value: engine, onChange: (v: string) => setEngine(v), placeholder: 'Motorisation', options: ENGINES.default },
-                      { value: piece, onChange: (v: string) => setPiece(v), placeholder: 'Pièces', options: PIECES },
+                      { value: engine, onChange: (v: string) => setEngine(v), placeholder: 'Moteur', options: ENGINES.default },
+                      { value: piece, onChange: (v: string) => setPiece(v), placeholder: 'Pièce', options: PIECES },
                     ].map((sel, i) => (
-                      <div key={i} className="flex-1 min-w-[80px] relative border-r border-white/10 last:border-r-0">
+                      <div key={i} className="flex-1 min-w-0 relative border-r border-white/10 last:border-r-0">
                         <select
                           value={sel.value}
                           onChange={e => sel.onChange(e.target.value)}
                           disabled={sel.disabled}
-                          className="w-full h-full px-4 py-4 bg-white/95 text-[#1e2a4a] text-xs font-bold uppercase tracking-wide focus:outline-none focus:bg-white cursor-pointer appearance-none disabled:opacity-30 transition-colors"
+                          className="w-full h-full pl-3 pr-6 py-4 bg-white/95 text-[#1e2a4a] text-xs font-bold uppercase focus:outline-none focus:bg-white cursor-pointer appearance-none disabled:opacity-30 transition-colors truncate"
                         >
                           <option value="">{sel.placeholder}</option>
                           {sel.options.map(o => <option key={o} value={o}>{o}</option>)}
