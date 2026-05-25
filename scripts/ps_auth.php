@@ -36,22 +36,13 @@ if ($action === 'login') {
         die(json_encode(['error' => 'Compte désactivé']));
     }
 
-    // Verify password using PrestaShop's own method
-    $authenticated = false;
-    if (method_exists('Customer', 'getByEmail')) {
-        // PS 1.7+: use CryptBlowfish or md5
-        $authenticated = Validate::isPasswd($password) && $customer->passwd === Tools::encrypt($password);
-        if (!$authenticated) {
-            // Try md5 fallback
-            $authenticated = ($customer->passwd === md5(_COOKIE_KEY_ . $password));
-        }
-        if (!$authenticated) {
-            // Try pure md5
-            $authenticated = ($customer->passwd === md5($password));
-        }
-        if (!$authenticated && class_exists('Password')) {
-            $authenticated = Password::verifyPassword($customer->passwd, $password);
-        }
+    // Verify password - PS8 uses bcrypt via password_hash
+    $authenticated = password_verify($password, $customer->passwd);
+    if (!$authenticated) {
+        $authenticated = ($customer->passwd === md5(_COOKIE_KEY_ . $password));
+    }
+    if (!$authenticated) {
+        $authenticated = ($customer->passwd === md5($password));
     }
 
     if (!$authenticated) {
@@ -95,7 +86,7 @@ if ($action === 'login') {
     $customer->firstname        = $firstname;
     $customer->lastname         = $lastname;
     $customer->email            = $email;
-    $customer->passwd           = Tools::encrypt($password);
+    $customer->passwd           = password_hash($password, PASSWORD_BCRYPT);
     $customer->id_lang          = 1;
     $customer->active           = 1;
     $customer->is_guest         = 0;
