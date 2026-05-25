@@ -160,32 +160,49 @@ export default function TurboHero() {
 
             {/* RIGHT: Two-tab search bar */}
             <div className={`transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+
+              {/* Label above */}
+              <p className="text-yellow-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
+                <span className="w-6 h-px bg-yellow-400/60" />
+                Trouvez votre pièce rapidement
+                <span className="w-6 h-px bg-yellow-400/60" />
+              </p>
+
               {/* Tab header */}
-              <div className="flex rounded-t-xl overflow-hidden shadow-lg">
+              <div className="flex rounded-t-2xl overflow-hidden border border-white/10">
                 <button
                   onClick={() => setActiveTab('plaque')}
-                  className={`flex-1 py-3 px-4 text-sm font-black uppercase tracking-wider transition-all ${activeTab === 'plaque' ? 'bg-orange-500 text-white' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}
+                  className={`flex-1 py-3.5 px-5 text-xs font-black uppercase tracking-widest transition-all duration-200 ${
+                    activeTab === 'plaque'
+                      ? 'bg-yellow-400 text-[#0d1b3e]'
+                      : 'bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/80'
+                  }`}
                 >
-                  Votre plaque
+                  🚗 Votre plaque
                 </button>
+                <div className="w-px bg-white/10" />
                 <button
                   onClick={() => setActiveTab('vehicule')}
-                  className={`flex-1 py-3 px-4 text-sm font-black uppercase tracking-wider transition-all ${activeTab === 'vehicule' ? 'bg-[#1e2a4a] text-white border-b-2 border-orange-500' : 'bg-white/10 text-white/60 hover:bg-white/20'}`}
+                  className={`flex-1 py-3.5 px-5 text-xs font-black uppercase tracking-widest transition-all duration-200 ${
+                    activeTab === 'vehicule'
+                      ? 'bg-yellow-400 text-[#0d1b3e]'
+                      : 'bg-white/5 text-white/50 hover:bg-white/10 hover:text-white/80'
+                  }`}
                 >
-                  Recherche par véhicule
+                  🔍 Par véhicule
                 </button>
               </div>
 
               {/* Tab content */}
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-b-xl shadow-2xl shadow-black/20">
+              <div className="bg-[#1e2a4a]/80 backdrop-blur-md border border-white/10 border-t-0 rounded-b-2xl shadow-2xl shadow-black/40 overflow-hidden">
                 {activeTab === 'plaque' ? (
-                  <div className="flex items-center gap-0">
+                  <div className="flex items-stretch">
                     {/* EU plate badge */}
-                    <div className="flex items-center gap-2 bg-blue-700 px-4 py-4 rounded-bl-xl shrink-0">
-                      <div className="flex flex-col items-center">
-                        <span className="text-yellow-300 text-[10px]">★ ★ ★</span>
-                        <span className="text-white font-black text-sm leading-none">F</span>
+                    <div className="flex flex-col items-center justify-center bg-blue-800 px-4 shrink-0 gap-0.5">
+                      <div className="flex gap-0.5">
+                        {['★','★','★'].map((s,i) => <span key={i} className="text-yellow-300 text-[8px]">{s}</span>)}
                       </div>
+                      <span className="text-white font-black text-base leading-none">F</span>
                     </div>
                     <input
                       type="text"
@@ -193,59 +210,50 @@ export default function TurboHero() {
                       onChange={handlePlateChange}
                       placeholder="AA-123-AA"
                       maxLength={9}
-                      className="flex-1 px-4 py-4 bg-white text-slate-700 placeholder-slate-400 font-mono text-xl tracking-widest uppercase focus:outline-none"
+                      className="flex-1 px-5 py-5 bg-white/95 text-[#1e2a4a] placeholder-slate-400/60 font-mono text-2xl font-black tracking-[0.3em] uppercase focus:outline-none focus:bg-white transition-colors"
                     />
                     <Link
                       href={plate ? `/produits?immatriculation=${encodeURIComponent(plate)}` : '/produits'}
-                      className="flex items-center justify-center px-5 py-4 bg-orange-500 hover:bg-orange-400 text-white rounded-br-xl transition-all"
+                      className="flex items-center justify-center px-6 bg-yellow-400 hover:bg-yellow-300 text-[#0d1b3e] transition-all duration-200 group"
                     >
-                      <Search className="w-5 h-5" />
+                      <Search className="w-5 h-5 group-hover:scale-110 transition-transform" />
                     </Link>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-0 flex-wrap sm:flex-nowrap">
-                    <select
-                      value={brand}
-                      onChange={e => { setBrand(e.target.value); setModel(''); }}
-                      className="flex-1 min-w-0 px-3 py-4 bg-white text-slate-700 text-sm font-semibold focus:outline-none border-r border-slate-200 cursor-pointer appearance-none"
-                    >
-                      <option value="">MARQUE</option>
-                      {BRANDS.map(b => <option key={b} value={b}>{b}</option>)}
-                    </select>
-                    <select
-                      value={model}
-                      onChange={e => setModel(e.target.value)}
-                      disabled={!brand}
-                      className="flex-1 min-w-0 px-3 py-4 bg-white text-slate-700 text-sm font-semibold focus:outline-none border-r border-slate-200 cursor-pointer appearance-none disabled:opacity-40"
-                    >
-                      <option value="">MODÈLE</option>
-                      {(MODELS[brand] || []).map(m => <option key={m} value={m}>{m}</option>)}
-                    </select>
-                    <select
-                      value={engine}
-                      onChange={e => setEngine(e.target.value)}
-                      className="flex-1 min-w-0 px-3 py-4 bg-white text-slate-700 text-sm font-semibold focus:outline-none border-r border-slate-200 cursor-pointer appearance-none"
-                    >
-                      <option value="">MOTORISATION</option>
-                      {ENGINES.default.map(eng => <option key={eng} value={eng}>{eng}</option>)}
-                    </select>
-                    <select
-                      value={piece}
-                      onChange={e => setPiece(e.target.value)}
-                      className="flex-1 min-w-0 px-3 py-4 bg-white text-slate-700 text-sm font-semibold focus:outline-none border-r border-slate-200 cursor-pointer appearance-none"
-                    >
-                      <option value="">PIÈCES</option>
-                      {PIECES.map(p => <option key={p} value={p}>{p}</option>)}
-                    </select>
+                  <div className="flex items-stretch flex-wrap sm:flex-nowrap">
+                    {[
+                      { value: brand, onChange: (v: string) => { setBrand(v); setModel(''); }, placeholder: 'Marque', options: BRANDS },
+                      { value: model, onChange: (v: string) => setModel(v), placeholder: 'Modèle', options: MODELS[brand] || [], disabled: !brand },
+                      { value: engine, onChange: (v: string) => setEngine(v), placeholder: 'Motorisation', options: ENGINES.default },
+                      { value: piece, onChange: (v: string) => setPiece(v), placeholder: 'Pièces', options: PIECES },
+                    ].map((sel, i) => (
+                      <div key={i} className="flex-1 min-w-[80px] relative border-r border-white/10 last:border-r-0">
+                        <select
+                          value={sel.value}
+                          onChange={e => sel.onChange(e.target.value)}
+                          disabled={sel.disabled}
+                          className="w-full h-full px-4 py-4 bg-white/95 text-[#1e2a4a] text-xs font-bold uppercase tracking-wide focus:outline-none focus:bg-white cursor-pointer appearance-none disabled:opacity-30 transition-colors"
+                        >
+                          <option value="">{sel.placeholder}</option>
+                          {sel.options.map(o => <option key={o} value={o}>{o}</option>)}
+                        </select>
+                        <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 text-xs">▾</span>
+                      </div>
+                    ))}
                     <Link
                       href={vehiculeSearchUrl()}
-                      className="flex items-center justify-center px-5 py-4 bg-orange-500 hover:bg-orange-400 text-white rounded-br-xl transition-all shrink-0"
+                      className="flex items-center justify-center px-6 bg-yellow-400 hover:bg-yellow-300 text-[#0d1b3e] transition-all duration-200 group shrink-0"
                     >
-                      <Search className="w-5 h-5" />
+                      <Search className="w-5 h-5 group-hover:scale-110 transition-transform" />
                     </Link>
                   </div>
                 )}
               </div>
+
+              {/* Bottom hint */}
+              <p className="text-slate-500 text-xs mt-3 text-center">
+                Plus de <span className="text-yellow-400 font-semibold">50 000 références</span> disponibles · Livraison 24-48h
+              </p>
             </div>
           </div>
         </div>
