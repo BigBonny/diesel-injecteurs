@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: "Injection Diesel - Pièces Auto & Turbo de Qualité",
   description: "Achetez des pièces auto et turbos de qualité au meilleur prix. Commande rapide et livraison rapide.",
   icons: {
-    icon: "https://diesel-injecteurs.com/favicon.ico",
+    icon: "/images/favicon.png",
   },
 };
 
