@@ -32,8 +32,16 @@ export default function TurboHero() {
   const [model, setModel] = useState('');
   const [engine, setEngine] = useState('');
   const [piece, setPiece] = useState('');
+  const [productCount, setProductCount] = useState<number | null>(null);
 
   useEffect(() => { setMounted(true); }, []); // intentional mount animation trigger
+
+  useEffect(() => {
+    fetch('/api/products?limit=1&count=true')
+      .then(r => r.json())
+      .then(d => { if (d.total) setProductCount(d.total); })
+      .catch(() => {});
+  }, []);
 
   const formatPlate = (value: string) => {
     const cleaned = value.toUpperCase().replace(/[^A-Z0-9]/g, '');
@@ -252,7 +260,11 @@ export default function TurboHero() {
 
               {/* Bottom hint */}
               <p className="text-slate-500 text-xs mt-3 text-center">
-                Plus de <span className="text-yellow-400 font-semibold">50 000 références</span> disponibles · Livraison 24-48h
+                {productCount !== null ? (
+                  <><span className="text-yellow-400 font-semibold">{productCount.toLocaleString('fr-FR')} références</span> disponibles · Livraison 24-48h</>
+                ) : (
+                  <>Plus de <span className="text-yellow-400 font-semibold">50 000 références</span> disponibles · Livraison 24-48h</>
+                )}
               </p>
             </div>
           </div>

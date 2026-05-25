@@ -30,6 +30,13 @@ export async function GET(request: Request) {
     const brand = searchParams.get('brand');
     const category = searchParams.get('category');
     const search = searchParams.get('search');
+    const countOnly = searchParams.get('count') === 'true';
+
+    // If only requesting total count
+    if (countOnly && !search && !category && !brand) {
+      const { count } = await supabase.from('products').select('*', { count: 'exact', head: true });
+      return NextResponse.json({ total: count ?? 0 });
+    }
 
     // If requesting a single product
     if (productId) {
