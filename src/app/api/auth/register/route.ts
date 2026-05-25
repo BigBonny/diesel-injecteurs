@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const PS_SCRIPT_URL = process.env.PS_SCRIPT_URL || 'http://192.162.69.186/create_ps_order.php';
+const PS_AUTH_URL = process.env.PS_AUTH_URL || 'http://192.162.69.186/ps_auth.php';
 const PS_SCRIPT_SECRET = process.env.PS_SCRIPT_SECRET || 'DIESEL_ORDER_SECRET_2024';
 
 export async function POST(request: Request) {
@@ -15,9 +15,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Le mot de passe doit contenir au moins 8 caractères' }, { status: 400 });
     }
 
-    const psAuthUrl = PS_SCRIPT_URL.replace('create_ps_order.php', 'ps_auth.php');
-
-    const resp = await fetch(psAuthUrl, {
+    console.log('Calling PS auth URL:', PS_AUTH_URL);
+    const resp = await fetch(PS_AUTH_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
@@ -32,8 +31,10 @@ export async function POST(request: Request) {
     });
 
     const text = await resp.text();
+    console.log('PS auth response:', resp.status, text.substring(0, 200));
     let data: { success?: boolean; error?: string; id?: string; firstname?: string; lastname?: string; email?: string };
     try { data = JSON.parse(text); } catch {
+      console.error('PS auth non-JSON response:', text.substring(0, 500));
       return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
     }
 
