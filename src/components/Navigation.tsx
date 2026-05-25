@@ -2,8 +2,8 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
-import { Menu, X, ShoppingCart, Search, Phone, ChevronRight, ChevronDown, Zap } from 'lucide-react';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
+import { Menu, X, ShoppingCart, Search, Phone, ChevronRight, ChevronDown, Zap, User, LogIn } from 'lucide-react';
 import { useCart } from '@/app/CartContext';
 
 const NAV_ITEMS = [
@@ -16,6 +16,7 @@ const NAV_ITEMS = [
   { name: 'Contact', href: '/contact' },
   { name: 'Retour consigne', href: '/retour-consigne' },
 ];
+
 
 const DROPDOWN_BRANDS: Record<string, string[]> = {
   turbos: ['Renault', 'Peugeot', 'Citroën', 'Volkswagen', 'BMW', 'Mercedes', 'Audi', 'Ford', 'Opel'],
@@ -31,7 +32,22 @@ function NavigationInner() {
   const { totalItems } = useCart();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const currentCategory = searchParams.get('category');
+
+  const getUserFromStorage = () => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const stored = localStorage.getItem('ps_user');
+      return stored ? JSON.parse(stored) : null;
+    } catch { return null; }
+  };
+  const [user, setUser] = useState<{ firstname: string; lastname: string } | null>(getUserFromStorage);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) router.push(`/produits?search=${encodeURIComponent(searchQuery.trim())}`);
+  };
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10);
@@ -65,14 +81,40 @@ function NavigationInner() {
         {/* Top Bar */}
         <div className="bg-slate-900">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between items-center py-2">
+            <div className="flex justify-between items-center py-2 gap-3">
               <span className="text-slate-400 text-xs sm:text-sm font-medium hidden sm:block">
                 Bienvenue sur <span className="text-white font-semibold">Diesel-injecteurs.com</span>
               </span>
-              <a href="tel:+33612429880" className="flex items-center gap-2 text-white hover:text-yellow-400 transition text-xs sm:text-sm font-semibold">
-                <Phone className="w-3.5 h-3.5" />
-                +33 6 12 42 98 80
-              </a>
+              <div className="flex items-center gap-3 ml-auto">
+                <a href="tel:+33612429880" className="flex items-center gap-2 text-white hover:text-yellow-400 transition text-xs sm:text-sm font-semibold">
+                  <Phone className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">+33 6 12 42 98 80</span>
+                </a>
+                <div className="w-px h-4 bg-white/20" />
+                {/* Cart in top bar */}
+                <Link href="/panier" className="relative flex items-center gap-1.5 text-white hover:text-yellow-400 transition text-xs font-semibold">
+                  <ShoppingCart className="w-4 h-4" />
+                  <span className="hidden sm:inline">Panier</span>
+                  {totalItems > 0 && (
+                    <span className="w-4 h-4 bg-yellow-400 text-[#1e2a4a] rounded-full text-[9px] font-black flex items-center justify-center">
+                      {totalItems}
+                    </span>
+                  )}
+                </Link>
+                <div className="w-px h-4 bg-white/20" />
+                {/* Connexion / Account */}
+                {user ? (
+                  <Link href="/compte" className="flex items-center gap-1.5 text-yellow-400 hover:text-yellow-300 transition text-xs font-semibold">
+                    <User className="w-4 h-4" />
+                    <span className="hidden sm:inline">{user.firstname}</span>
+                  </Link>
+                ) : (
+                  <Link href="/connexion" className="flex items-center gap-1.5 text-white hover:text-yellow-400 transition text-xs font-semibold">
+                    <LogIn className="w-4 h-4" />
+                    <span className="hidden sm:inline">Connexion</span>
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -91,9 +133,9 @@ function NavigationInner() {
                 />
               </Link>
 
-              {/* Desktop right side: trust + CTA */}
-              <div className="hidden lg:flex items-center gap-5">
-                <div className="flex items-center gap-1.5">
+              {/* Desktop right side: stars + search bar */}
+              <div className="hidden lg:flex items-center gap-4 flex-1 justify-end">
+                <div className="flex items-center gap-1.5 shrink-0">
                   <div className="flex">
                     {[...Array(5)].map((_, i) => (
                       <svg key={i} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
@@ -102,12 +144,19 @@ function NavigationInner() {
                   <span className="text-sm font-bold text-[#1e2a4a]">4.8/5</span>
                   <span className="text-xs text-slate-500">(+200 avis)</span>
                 </div>
-                <Link
-                  href="/produits"
-                  className="px-5 py-2.5 bg-yellow-400 text-[#1e2a4a] rounded-lg font-bold text-sm hover:bg-yellow-300 transition-all shadow-sm"
-                >
-                  Voir nos produits
-                </Link>
+                {/* Search bar next to stars */}
+                <form onSubmit={handleSearch} className="relative w-72">
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Rechercher un produit..."
+                    className="w-full pl-9 pr-4 py-2 bg-slate-100 border border-slate-200 rounded-lg text-slate-800 text-sm placeholder-slate-400 focus:bg-white focus:border-yellow-400 focus:outline-none transition-all"
+                  />
+                  <button type="submit" className="absolute left-2.5 top-1/2 -translate-y-1/2">
+                    <Search className="w-4 h-4 text-slate-400 hover:text-yellow-500 transition" />
+                  </button>
+                </form>
               </div>
 
               {/* Mobile actions (shown only on small screens) */}
@@ -214,38 +263,6 @@ function NavigationInner() {
 
               {/* Spacer */}
               <div className="flex-1" />
-
-              {/* Search Bar */}
-              <div className="flex items-center max-w-xs w-full">
-                <div className="relative w-full">
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Rechercher..."
-                    className="w-full pl-9 pr-3 py-1.5 bg-white/10 border border-white/20 rounded-md text-white text-sm placeholder-slate-400 focus:bg-white/20 focus:border-yellow-400 focus:outline-none transition-all"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && searchQuery) {
-                        window.location.href = `/produits?search=${encodeURIComponent(searchQuery)}`;
-                      }
-                    }}
-                  />
-                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                </div>
-              </div>
-
-              {/* Cart */}
-              <Link
-                href="/panier"
-                className="relative p-2.5 text-white/85 hover:text-yellow-400 transition ml-2"
-              >
-                <ShoppingCart className="w-5 h-5" />
-                {totalItems > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-yellow-400 text-[#1e2a4a] rounded-full text-[10px] font-black flex items-center justify-center">
-                    {totalItems}
-                  </span>
-                )}
-              </Link>
             </div>
           </div>
         </div>
