@@ -23,7 +23,7 @@ const nextConfig: NextConfig = {
       },
       // Redirect /produits/ID-slug (wrong format from old code) to /produit/ID
       {
-        source: '/produits/:id([0-9]+)-:slug*',
+        source: '/produits/:id([0-9]+)-:slug(.*)',
         destination: '/produit/:id',
         permanent: true,
       },
