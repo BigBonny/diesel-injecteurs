@@ -3,11 +3,10 @@ import { supabase } from '@/lib/supabase';
 
 export async function GET() {
   try {
-    // Fetch all active products from Supabase
+    // Fetch all products from Supabase
     const { data: products, error } = await supabase
       .from('products')
       .select('*')
-      .eq('active', true)
       .limit(50000);
 
     if (error) {
