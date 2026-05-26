@@ -1,8 +1,13 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Allow: /api/feed/
 Disallow: /connexion
 Disallow: /compte
 Disallow: /panier
 
 Sitemap: https://diesel-injecteurs.com/sitemap.xml
+
+# Google Merchant Center Product Feed
+# Submit this URL in your Merchant Center account:
+# https://diesel-injecteurs.com/api/feed/google-merchant
