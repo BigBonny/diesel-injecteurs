@@ -58,6 +58,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://diesel-injecteurs.com",
   },
+  verification: {
+    google: "i0kVhsF46nK9jJXAmH2IkztE4PPMcjuDRZp2bJW17pI",
+  },
 };
 
 export default function RootLayout({
