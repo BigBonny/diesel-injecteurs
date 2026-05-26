@@ -3,6 +3,12 @@ import { supabase } from '@/lib/supabase';
 
 export async function GET() {
   try {
+    // Debug: Check env vars
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    if (!supabaseUrl) {
+      return new NextResponse('Missing SUPABASE_URL', { status: 500 });
+    }
+
     const { data: products, error } = await supabase
       .from('products')
       .select('*')
@@ -13,7 +19,7 @@ export async function GET() {
     }
 
     if (!products?.length) {
-      return new NextResponse('No products', { status: 404 });
+      return new NextResponse(`No products found. Count: ${products?.length}`, { status: 404 });
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-injecteurs.com';
