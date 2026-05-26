@@ -307,10 +307,7 @@ function ProductsContent() {
   };
 
   const getProductUrl = (product: PrestaShopProduct): string => {
-    if (product.link_rewrite) {
-      return `/produits/${product.id}-${product.link_rewrite}`;
-    }
-    return `/produits/${product.id}`;
+    return `/produit/${product.id}`;
   };
 
   const formatPrice = (price: string): string => {
