@@ -1,70 +1,34 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, ShoppingCart, Package } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
 }
 
-// Use server IP directly to avoid SSL and DNS issues
-const PRESTASHOP_API_URL = 'http://192.162.69.186/api';
-const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
-
 async function getProduct(id: string) {
   try {
-    const response = await fetch(`${PRESTASHOP_API_URL}/products/${id}?ws_key=${PRESTASHOP_API_KEY}&display=full`, {
-      cache: 'no-store',
-    });
+    const { data: product, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('id', parseInt(id))
+      .single();
 
-    if (!response.ok) {
+    if (error || !product) {
+      console.error('Error fetching product:', error);
       return null;
     }
-
-    const text = await response.text();
-    
-    // PrestaShop API returns XML, parse it
-    const productMatch = text.match(/<product>([\s\S]*?)<\/product>/);
-    if (!productMatch) {
-      return null;
-    }
-
-    const productXml = productMatch[1];
-    
-    // Helper to extract XML values
-    const extractValue = (tag: string) => {
-      const match = productXml.match(new RegExp(`<${tag}[^>]*>([^<]*)</${tag}>`));
-      return match ? match[1] : null;
-    };
-
-    const extractLanguageValue = (tag: string) => {
-      const match = productXml.match(new RegExp(`<${tag}[^>]*><language[^>]*>([^<]*)</language></${tag}>`));
-      return match ? match[1] : null;
-    };
-
-    // Extract associations
-    const extractAssociations = () => {
-      const imagesMatch = productXml.match(/<images>([\s\S]*?)<\/images>/);
-      if (!imagesMatch) return { images: [] };
-      
-      const imageMatches = imagesMatch[1].matchAll(/<image>([\s\S]*?)<\/image>/g);
-      const images = [];
-      for (const match of imageMatches) {
-        const idMatch = match[1].match(/<id>([^<]*)<\/id>/);
-        if (idMatch) {
-          images.push({ id: idMatch[1] });
-        }
-      }
-      return { images };
-    };
 
     return {
-      id: extractValue('id'),
-      name: extractLanguageValue('name') || extractValue('name'),
-      description: extractLanguageValue('description') || extractValue('description'),
-      price: extractValue('price'),
-      reference: extractValue('reference'),
-      link_rewrite: extractLanguageValue('link_rewrite') || extractValue('link_rewrite'),
-      associations: extractAssociations(),
+      id: String(product.id),
+      name: product.name || 'Product',
+      description: product.description || '',
+      price: product.price ? String(product.price) : '0.00',
+      reference: product.reference || '',
+      link_rewrite: product.link_rewrite || '',
+      id_default_image: product.id_default_image ? String(product.id_default_image) : null,
+      images: product.images || [],
     };
   } catch (error) {
     console.error('Error fetching product:', error);
@@ -90,9 +54,10 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
   // Get image URL
   let imageUrl = '';
-  if (product.associations?.images && product.associations.images.length > 0) {
-    const imageId = product.associations.images[0].id;
-    imageUrl = `/api/product-image/${product.id}/${imageId}`;
+  if (product.id_default_image) {
+    imageUrl = `/api/product-image/${product.id}/${product.id_default_image}`;
+  } else if (product.images && product.images.length > 0) {
+    imageUrl = `/api/product-image/${product.id}/${product.images[0].id}`;
   }
 
   return (
