@@ -2,6 +2,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, ShoppingCart, Package } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import ChatWidget from '@/components/ChatWidget';
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -61,8 +64,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-white flex flex-col">
+      <Navigation />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-1">
         <Link href="/" className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-8 transition">
           <ArrowLeft className="w-5 h-5" />
           Retour à l&apos;accueil
@@ -112,6 +116,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
       </div>
+      <Footer />
+      <ChatWidget />
     </div>
   );
 }
