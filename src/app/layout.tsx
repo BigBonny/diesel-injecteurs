@@ -18,7 +18,45 @@ export const metadata: Metadata = {
   title: "Injection Diesel - Pièces Auto & Turbo de Qualité",
   description: "Achetez des pièces auto et turbos de qualité au meilleur prix. Commande rapide et livraison rapide.",
   icons: {
-    icon: "/images/favicon.png",
+    icon: [
+      { url: "/images/favicon.png", type: "image/png", sizes: "32x32" },
+      { url: "/images/favicon.png", type: "image/png", sizes: "16x16" },
+    ],
+    shortcut: "/images/favicon.png",
+    apple: "/images/favicon.png",
+  },
+  openGraph: {
+    title: "Injection Diesel - Pièces Auto & Turbo de Qualité",
+    description: "Turbos et injecteurs neufs et reconditionnés OEM. Garantie 2 ans, livraison 24-48h.",
+    url: "https://diesel-injecteurs.com",
+    siteName: "Injection Diesel",
+    images: [
+      {
+        url: "https://diesel-injecteurs.com/images/favicon.png",
+        width: 512,
+        height: 512,
+        alt: "Injection Diesel Logo",
+      },
+    ],
+    locale: "fr_FR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Injection Diesel - Pièces Auto & Turbo de Qualité",
+    description: "Turbos et injecteurs neufs et reconditionnés OEM. Garantie 2 ans, livraison 24-48h.",
+    images: ["https://diesel-injecteurs.com/images/favicon.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  alternates: {
+    canonical: "https://diesel-injecteurs.com",
   },
 };
 
