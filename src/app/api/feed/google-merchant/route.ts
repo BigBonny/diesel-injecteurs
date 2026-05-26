@@ -23,7 +23,7 @@ export async function GET() {
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-injecteurs.com';
-    const merchantId = process.env.GOOGLE_MERCHANT_ID || '664430553';
+    const merchantId = process.env.GOOGLE_MERCHANT_ID || '5337300514';
 
     const feedItems = products.map((p: any) => {
       const id = String(p.id || '0');
