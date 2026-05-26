@@ -3,81 +3,68 @@ import { supabase } from '@/lib/supabase';
 
 export async function GET() {
   try {
-    // Fetch all products from Supabase
     const { data: products, error } = await supabase
       .from('products')
       .select('*')
       .limit(50000);
 
     if (error) {
-      console.error('Error fetching products for merchant feed:', error);
-      return new NextResponse('Error generating feed', { status: 500 });
+      return new NextResponse(`DB error: ${error.message}`, { status: 500 });
+    }
+
+    if (!products?.length) {
+      return new NextResponse('No products', { status: 404 });
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-injecteurs.com';
     const merchantId = process.env.GOOGLE_MERCHANT_ID || '664430553';
 
-    // Build RSS/XML feed for Google Merchant Center
-    const feedItems = products?.map((product: any) => {
-      const id = product.id;
-      const title = escapeXml(product.name);
-      const description = escapeXml(product.description?.replace(/<[^>]*>/g, '').substring(0, 5000) || product.name);
-      const link = `${baseUrl}/produit/${product.link_rewrite || product.id}`;
-      const imageLink = product.id_default_image 
-        ? `${baseUrl}/api/product-image-direct/${product.id}` 
-        : `${baseUrl}/images/placeholder-product.png`;
-      const price = product.price ? parseFloat(product.price).toFixed(2) : '0.00';
-      const brand = extractBrand(product.name);
-      const mpn = product.reference || product.supplier_reference || id;
-      const condition = 'new';
-      const availability = product.quantity > 0 ? 'in stock' : 'out of stock';
-      const googleProductCategory = '783';
-      const productType = categorizeProduct(product.name);
+    const feedItems = products.map((p: any) => {
+      const id = String(p.id || '0');
+      const name = p.name || 'Produit';
+      const price = p.price ? parseFloat(p.price).toFixed(2) : '0.00';
+      const brand = extractBrand(name);
+      const mpn = p.reference || p.supplier_reference || id;
+      const desc = escapeXml((p.description || name).replace(/<[^>]*>/g, '').slice(0, 5000));
 
-      return `
-    <item>
+      return `    <item>
       <g:id>${id}</g:id>
-      <title>${title}</title>
-      <description>${description}</description>
-      <link>${link}</link>
-      <g:image_link>${imageLink}</g:image_link>
-      <g:condition>${condition}</g:condition>
-      <g:availability>${availability}</g:availability>
+      <title>${escapeXml(name)}</title>
+      <description>${desc}</description>
+      <link>${baseUrl}/produit/${id}</link>
+      <g:image_link>${baseUrl}/api/product-image-direct/${id}</g:image_link>
+      <g:condition>new</g:condition>
+      <g:availability>in stock</g:availability>
       <g:price>${price} EUR</g:price>
       <g:brand>${brand}</g:brand>
       <g:mpn>${mpn}</g:mpn>
-      <g:google_product_category>${googleProductCategory}</g:google_product_category>
-      <g:product_type>${productType}</g:product_type>
+      <g:google_product_category>783</g:google_product_category>
+      <g:product_type>${categorizeProduct(name)}</g:product_type>
       <g:shipping>
         <g:country>FR</g:country>
         <g:service>Standard</g:service>
         <g:price>0.00 EUR</g:price>
       </g:shipping>
-      <g:shipping_label>FR_STANDARD</g:shipping_label>
     </item>`;
-    }).join('') || '';
+    }).join('\n');
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
   <channel>
-    <title>Injection Diesel - Catalogue Produits</title>
+    <title>Injection Diesel</title>
     <link>${baseUrl}</link>
-    <description>Turbos et injecteurs diesel neufs et reconditionnés OEM</description>
+    <description>Catalogue turbos et injecteurs</description>
     <g:merchant_id>${merchantId}</g:merchant_id>
-    ${feedItems}
+${feedItems}
   </channel>
 </rss>`;
 
     return new NextResponse(xml, {
-      headers: {
-        'Content-Type': 'application/xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600',
-      },
+      headers: { 'Content-Type': 'application/xml; charset=utf-8' },
     });
 
-  } catch (error) {
-    console.error('Error generating merchant feed:', error);
-    return new NextResponse('Error generating feed', { status: 500 });
+  } catch (err: any) {
+    return new NextResponse(`Error: ${err.message}`, { status: 500 });
   }
 }
 
