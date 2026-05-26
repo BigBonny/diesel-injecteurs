@@ -85,7 +85,23 @@ export async function GET(request: Request) {
       );
     }
 
-    return NextResponse.json({ products });
+    // Transform products to match frontend interface
+    const transformedProducts = products.map(p => ({
+      id: String(p.id),
+      name: p.name || 'Produit sans nom',
+      description: p.description || '',
+      price: p.price ? String(p.price) : '0.00',
+      reference: p.reference || '',
+      supplier_reference: p.supplier_reference || null,
+      compatible_references: p.compatible_references || null,
+      link_rewrite: p.link_rewrite || null,
+      id_default_image: p.id_default_image ? String(p.id_default_image) : null,
+      id_category_default: p.id_category_default ? String(p.id_category_default) : null,
+      category_name: p.category_name || null,
+      images: p.images || []
+    }));
+
+    return NextResponse.json({ products: transformedProducts });
   } catch (error) {
     console.error('Error fetching products:', error);
     return NextResponse.json(
