@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /connexion
+Disallow: /compte
+Disallow: /panier
+
+Sitemap: https://diesel-injecteurs.com/sitemap.xml
