@@ -21,18 +21,6 @@ const nextConfig: NextConfig = {
         destination: '/produit/:productId',
         permanent: true,
       },
-      // Redirect /produits/ID-slug (wrong format from old code) to /produit/ID
-      {
-        source: '/produits/:id([0-9]+)-:slug(.*)',
-        destination: '/produit/:id',
-        permanent: true,
-      },
-      // Redirect /produits/ID (no slug) to /produit/ID
-      {
-        source: '/produits/:id([0-9]+)',
-        destination: '/produit/:id',
-        permanent: true,
-      },
     ];
   },
 };
