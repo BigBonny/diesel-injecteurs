@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { name: 'Turbos', href: '/produits?category=turbos', hasDropdown: true, category: 'turbos' },
   { name: 'Injecteurs', href: '/produits?category=injecteurs', hasDropdown: true, category: 'injecteurs' },
   { name: 'Kit CHRA', href: '/produits?category=kit-turbo-chra', hasDropdown: true, category: 'kit-turbo-chra' },
+  { name: 'Pompes HP', href: '/produits?category=pompes-hp', hasDropdown: true, category: 'pompes-hp' },
   { name: 'Blog', href: '/blog' },
   { name: 'À propos', href: '/apropos' },
   { name: 'Contact', href: '/contact' },
@@ -22,6 +23,7 @@ const DROPDOWN_BRANDS: Record<string, string[]> = {
   turbos: ['Renault', 'Peugeot', 'Citroën', 'Volkswagen', 'BMW', 'Mercedes', 'Audi', 'Ford', 'Opel'],
   injecteurs: ['Renault', 'Peugeot', 'Citroën', 'Volkswagen', 'BMW', 'Mercedes', 'Ford'],
   'kit-turbo-chra': ['Renault', 'Peugeot', 'Citroën', 'Audi', 'BMW', 'Mercedes', 'Volkswagen', 'Ford'],
+  'pompes-hp': ['Bosch', 'Denso', 'Siemens', 'Continental', 'Delphi', 'Renault', 'Peugeot', 'Volkswagen'],
 };
 
 function NavigationInner() {
@@ -35,14 +37,20 @@ function NavigationInner() {
   const router = useRouter();
   const currentCategory = searchParams.get('category');
 
-  const getUserFromStorage = () => {
-    if (typeof window === 'undefined') return null;
+  // Initialize user as null to avoid hydration mismatch
+  const [user, setUser] = useState<{ firstname: string; lastname: string } | null>(null);
+  
+  // Load user from localStorage only on client side after mount
+  useEffect(() => {
     try {
       const stored = localStorage.getItem('ps_user');
-      return stored ? JSON.parse(stored) : null;
-    } catch { return null; }
-  };
-  const [user, setUser] = useState<{ firstname: string; lastname: string } | null>(getUserFromStorage);
+      if (stored) {
+        setUser(JSON.parse(stored));
+      }
+    } catch { 
+      // Ignore localStorage errors
+    }
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +62,8 @@ function NavigationInner() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+  
+  // Remove the old getUserFromStorage function - now handled in useEffect above
 
   // Close dropdown when clicking outside
   useEffect(() => {

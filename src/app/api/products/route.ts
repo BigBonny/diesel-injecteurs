@@ -5,7 +5,8 @@ import { supabase } from '@/lib/supabase';
 const CATEGORY_PATTERNS: Record<string, string[]> = {
   'turbos': ['turbo', 'turbos'],
   'injecteurs': ['injecteur', 'injecteurs', 'injector', 'injecteurs'],
-  'kit-turbo-chra': ['chra', 'kit chra', 'cartouche chra', 'kit turbo chra']
+  'kit-turbo-chra': ['chra', 'kit chra', 'cartouche chra', 'kit turbo chra'],
+  'pompes-hp': ['pompe', 'pompe hp', 'pompe haute pression', 'hp pump', 'pompe injection']
 };
 
 interface Product {
@@ -73,7 +74,10 @@ export async function GET(request: Request) {
       const patterns = CATEGORY_PATTERNS[category];
       if (patterns && patterns.length > 0) {
         products = products.filter(p => 
-          patterns.some(pat => p.name.toLowerCase().includes(pat.toLowerCase()))
+          // Check product name patterns
+          patterns.some(pat => p.name.toLowerCase().includes(pat.toLowerCase())) ||
+          // Also check category_name field (for imported products like Pompes HP)
+          (p.category_name && p.category_name.toLowerCase().includes(category.toLowerCase().replace('-', ' ')))
         );
       }
     }

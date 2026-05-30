@@ -290,14 +290,22 @@ function ProductsContent() {
     if (product.id_default_image) {
       return `/api/product-image/${product.id}/${product.id_default_image}`;
     }
-    // Check associations.images (from old PrestaShop format)
+    // Check associations.images (from old PrestaShop format or scraped products)
     else if (product.associations?.images && product.associations.images.length > 0) {
       const imageId = product.associations.images[0].id;
+      // Check if it's an external URL or local asset path
+      if (imageId && (imageId.startsWith('http') || imageId.startsWith('/'))) {
+        return imageId;
+      }
       return `/api/product-image/${product.id}/${imageId}`;
     }
     // Check images array directly (from Supabase)
     else if (product.images && product.images.length > 0) {
       const imageId = product.images[0].id;
+      // Check if it's an external URL or local asset path
+      if (imageId && (imageId.startsWith('http') || imageId.startsWith('/'))) {
+        return imageId;
+      }
       return `/api/product-image/${product.id}/${imageId}`;
     }
     // Fallback: fetch image directly from PrestaShop

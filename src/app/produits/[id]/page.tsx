@@ -88,13 +88,18 @@ export default function ProductDetailPage() {
   const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
   const formattedPrice = `${numericPrice.toFixed(2)} €`;
 
-  // Get image URL - try id_default_image first, then associations
+  // Get image URL - handle internal PrestaShop images, external URLs, and local assets
   let imageUrl = '';
   if (product.id_default_image) {
     imageUrl = `/api/product-image/${product.id}/${product.id_default_image}`;
   } else if (product.associations?.images && product.associations.images.length > 0) {
     const imageId = product.associations.images[0].id;
-    imageUrl = `/api/product-image/${product.id}/${imageId}`;
+    // Check if it's an external URL (from scraped products) or local asset path
+    if (imageId && (imageId.startsWith('http') || imageId.startsWith('/'))) {
+      imageUrl = imageId;
+    } else {
+      imageUrl = `/api/product-image/${product.id}/${imageId}`;
+    }
   }
 
   console.log('Product data for display:', { product, price, numericPrice, formattedPrice, imageUrl });
