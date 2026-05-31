@@ -124,7 +124,7 @@ async function scrapePompesHP() {
                   image,
                   link,
                   reference,
-                  description,
+                  description: description || name, // Will be updated with full description from product page
                   category: 'pompes-hp'
                 });
               }
@@ -172,6 +172,146 @@ async function scrapePompesHP() {
     }
 
     console.log(`Total: Found ${allProducts.length} products across ${pageNum} pages`);
+    
+    // Now fetch detailed descriptions from each product page
+    console.log('\nFetching detailed descriptions from product pages...');
+    let processedCount = 0;
+    
+    for (let i = 0; i < allProducts.length; i++) {
+      const product = allProducts[i];
+      if (product.link) {
+        try {
+          console.log(`[${i + 1}/${allProducts.length}] Fetching: ${product.name.substring(0, 50)}...`);
+          
+          await page.goto(product.link, { waitUntil: 'networkidle2', timeout: 30000 });
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          const pageData = await page.evaluate(() => {
+            // --- Description ---
+            const descSelectors = [
+              '.product-description p',
+              '.description-content',
+              '#product-description',
+              '.product-info__description',
+              '.product-details__description',
+              '.tab-content .description',
+              '[data-tab="description"] .content',
+              '.product-tabs .tab-pane p',
+              '.product-content__description',
+              '#description p'
+            ];
+            
+            let description = '';
+            for (const selector of descSelectors) {
+              const elements = document.querySelectorAll(selector);
+              if (elements.length > 0) {
+                description = Array.from(elements)
+                  .map(el => el.textContent?.trim())
+                  .filter(text => text && text.length > 50)
+                  .join('\n\n');
+                if (description.length > 100) break;
+              }
+            }
+            
+            const infoSection = document.querySelector('.product-info, .product-details, .product-attributes');
+            if (infoSection && !description.includes('Marque') && !description.includes('Type')) {
+              const infoText = infoSection.textContent?.trim();
+              if (infoText && infoText.length > 20) {
+                description += '\n\n' + infoText;
+              }
+            }
+            
+            // --- Car Image (vehicle image in "Mon véhicule" section) ---
+            let carImage = null;
+            // Look for car/vehicle images - typically larger images in the product info area
+            const carImgSelectors = [
+              '.vehicle-image img',
+              '.car-image img',
+              '.product-vehicle img',
+              '#myVehicle img',
+              '.mon-vehicule img',
+              '.product-sheet img[src*="car"]',
+              '.product-sheet img[src*="vehicule"]',
+              'img[alt*="véhicule"]',
+              'img[alt*="vehicle"]'
+            ];
+            for (const sel of carImgSelectors) {
+              const img = document.querySelector(sel);
+              if (img && img.src) { carImage = img.src; break; }
+            }
+            // Fallback: find images that look like car images (large, not logos, not product)
+            if (!carImage) {
+              const allImgs = document.querySelectorAll('img');
+              for (const img of allImgs) {
+                const src = img.src || '';
+                const alt = (img.alt || '').toLowerCase();
+                // Look for car-related images by URL pattern or alt text
+                if ((src.includes('/car') || src.includes('/vehic') || src.includes('/voiture') || 
+                     alt.includes('véhicule') || alt.includes('voiture') || alt.includes('car')) &&
+                    img.naturalWidth > 100) {
+                  carImage = src;
+                  break;
+                }
+              }
+            }
+            
+            // --- Brand/Pump Logo ---
+            let brandLogo = null;
+            const logoSelectors = [
+              '.manufacturer-logo img',
+              '.brand-logo img',
+              '.product-manufacturer img',
+              'img[alt*="BOSCH"]',
+              'img[alt*="Bosch"]',
+              'img[alt*="DELPHI"]',
+              'img[alt*="Delphi"]',
+              'img[alt*="SIEMENS"]',
+              'img[alt*="Siemens"]',
+              'img[alt*="CONTINENTAL"]',
+              'img[alt*="Continental"]',
+              'img[alt*="DENSO"]',
+              'img[alt*="Denso"]',
+              'img[alt*="VDO"]'
+            ];
+            for (const sel of logoSelectors) {
+              const img = document.querySelector(sel);
+              if (img && img.src) { brandLogo = img.src; break; }
+            }
+            // Fallback: look for brand logos by src pattern
+            if (!brandLogo) {
+              const allImgs = document.querySelectorAll('img');
+              for (const img of allImgs) {
+                const src = (img.src || '').toLowerCase();
+                if (src.includes('bosch') || src.includes('delphi') || src.includes('siemens') || 
+                    src.includes('continental') || src.includes('denso') || src.includes('vdo')) {
+                  brandLogo = img.src;
+                  break;
+                }
+              }
+            }
+            
+            return { description, carImage, brandLogo };
+          });
+          
+          if (pageData.description && pageData.description.length > 100) {
+            product.description = pageData.description;
+            processedCount++;
+          }
+          if (pageData.carImage) {
+            product.carImage = pageData.carImage;
+          }
+          if (pageData.brandLogo) {
+            product.brandLogo = pageData.brandLogo;
+          }
+          
+        } catch (error) {
+          console.log(`  Error fetching description: ${error.message}`);
+          // Keep the default description
+        }
+      }
+    }
+    
+    console.log(`\nUpdated ${processedCount} products with full descriptions`);
     
     if (allProducts.length === 0) {
       // Take a screenshot for debugging
@@ -235,7 +375,11 @@ async function importToSupabase(products) {
           link_rewrite: linkRewrite,
           id_category_default: 999,
           category_name: 'Pompes HP',
-          images: product.image ? [{ id: product.image }] : [],
+          images: [
+            { id: product.image || '/assets/pompeImg.jpg' },
+            ...(product.carImage ? [{ id: product.carImage, type: 'car' }] : []),
+            ...(product.brandLogo ? [{ id: product.brandLogo, type: 'brand' }] : [])
+          ],
           supplier_reference: 'AUTO-PLATINIUM',
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()

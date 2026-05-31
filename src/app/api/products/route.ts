@@ -2,11 +2,20 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
 // Category name patterns (filter by product name)
+// These are used ONLY for categories that don't have a dedicated category_name in the DB
 const CATEGORY_PATTERNS: Record<string, string[]> = {
-  'turbos': ['turbo', 'turbos'],
-  'injecteurs': ['injecteur', 'injecteurs', 'injector', 'injecteurs'],
-  'kit-turbo-chra': ['chra', 'kit chra', 'cartouche chra', 'kit turbo chra'],
-  'pompes-hp': ['pompe', 'pompe hp', 'pompe haute pression', 'hp pump', 'pompe injection']
+  'turbos': ['turbo'],
+  'injecteurs': ['injecteur', 'injector'],
+  'kit-turbo-chra': ['chra'],
+  'pompes-hp': ['pompe']
+};
+
+// Exclusion patterns to prevent cross-contamination between categories
+const CATEGORY_EXCLUSIONS: Record<string, string[]> = {
+  'turbos': ['pompe', 'injecteur'],
+  'injecteurs': ['pompe', 'turbo'],
+  'kit-turbo-chra': ['pompe', 'injecteur'],
+  'pompes-hp': ['turbo', 'injecteur']
 };
 
 interface Product {
@@ -22,6 +31,28 @@ interface Product {
   id_category_default: string | null;
   category_name: string | null;
   images: Array<{ id: string }>;
+}
+
+// Helper to fetch all rows from a query (bypassing Supabase 1000 row limit)
+async function fetchAllProducts(query: ReturnType<ReturnType<typeof supabase.from>['select']>) {
+  const PAGE_SIZE = 1000;
+  let allData: Product[] = [];
+  let from = 0;
+  let hasMore = true;
+
+  while (hasMore) {
+    const { data, error } = await query.range(from, from + PAGE_SIZE - 1);
+    if (error) throw error;
+    if (data && data.length > 0) {
+      allData = allData.concat(data as Product[]);
+      from += PAGE_SIZE;
+      hasMore = data.length === PAGE_SIZE;
+    } else {
+      hasMore = false;
+    }
+  }
+
+  return allData;
 }
 
 export async function GET(request: Request) {
@@ -58,28 +89,54 @@ export async function GET(request: Request) {
 
     if (search) {
       // Use fuzzy search function that matches base reference patterns
-      // e.g., searching "03L130270" will match "03L130277B" (same base "03L13027")
       const { data: searchResults } = await supabase
         .rpc('search_by_reference_base', { search_term: search });
 
       products = searchResults || [];
-    } else {
-      // No search - just fetch all products
-      const { data } = await supabase.from('products').select('*');
-      products = data || [];
-    }
-
-    // Apply category filter
-    if (category && category !== 'Tous') {
-      const patterns = CATEGORY_PATTERNS[category];
-      if (patterns && patterns.length > 0) {
-        products = products.filter(p => 
-          // Check product name patterns
-          patterns.some(pat => p.name.toLowerCase().includes(pat.toLowerCase())) ||
-          // Also check category_name field (for imported products like Pompes HP)
-          (p.category_name && p.category_name.toLowerCase().includes(category.toLowerCase().replace('-', ' ')))
-        );
+    } else if (category && category !== 'Tous') {
+      // For pompes-hp, use the category_name field directly (most efficient)
+      if (category === 'pompes-hp') {
+        const query = supabase.from('products').select('*').eq('category_name', 'Pompes HP');
+        products = await fetchAllProducts(query);
+      } else {
+        // For other categories, fetch by name pattern with pagination
+        const patterns = CATEGORY_PATTERNS[category];
+        if (patterns && patterns.length > 0) {
+          // Build OR filter for name patterns
+          const orFilter = patterns.map(pat => `name.ilike.%${pat}%`).join(',');
+          const query = supabase.from('products').select('*').or(orFilter);
+          products = await fetchAllProducts(query);
+          
+          // Exclude products that belong to other categories
+          const exclusions = CATEGORY_EXCLUSIONS[category];
+          if (exclusions) {
+            products = products.filter(p => {
+              const nameLower = p.name.toLowerCase();
+              // If product has category_name set and it doesn't match this category, exclude it
+              if (p.category_name && p.category_name === 'Pompes HP' && category !== 'pompes-hp') {
+                return false;
+              }
+              // For turbos category: exclude products whose name starts with excluded terms
+              if (category === 'turbos') {
+                if (nameLower.startsWith('pompe') || nameLower.startsWith('injecteur')) {
+                  return false;
+                }
+              }
+              if (category === 'kit-turbo-chra') {
+                // CHRA products should have 'chra' prominently in the name
+                if (!nameLower.includes('chra')) {
+                  return false;
+                }
+              }
+              return true;
+            });
+          }
+        }
       }
+    } else {
+      // No category filter - fetch all products with pagination
+      const query = supabase.from('products').select('*');
+      products = await fetchAllProducts(query);
     }
 
     // Apply brand filter

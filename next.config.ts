@@ -1,6 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.auto-platinium.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'auto-platinium.com',
+      },
+    ],
+  },
   async redirects() {
     return [
       // Redirect old PrestaShop .html URLs: /1234-product-name.html -> /produit/1234

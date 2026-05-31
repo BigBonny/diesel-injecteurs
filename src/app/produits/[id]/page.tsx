@@ -339,19 +339,244 @@ export default function ProductDetailPage() {
             </div>
           </div>
 
-          {/* Description Section */}
-          <div className="mt-16 bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-            <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-4 border-b border-slate-100">
-              Description du produit
-            </h2>
-            <div className="prose prose-lg max-w-none text-slate-600 leading-relaxed">
-              {product.description ? (
-                <div dangerouslySetInnerHTML={{ __html: product.description }} />
-              ) : (
-                <p className="text-slate-400 italic">Aucune description disponible pour ce produit.</p>
-              )}
+          {/* Pompes HP Full Description Layout */}
+          {product.category_name === 'Pompes HP' && (() => {
+            // Parse product name to extract vehicle & pump info
+            const nameMatch = product.name.match(/Pompe à haute pression\s+(.+?)(?:\s+(?:BOSCH|SIEMENS|CONTINENTAL|DELPHI|DENSO|VDO|SIEMENS\/VDO|CONTINENTAL\/VDO)\s*\()/i);
+            const vehicleInfo = nameMatch ? nameMatch[1].trim() : product.name.replace('Pompe à haute pression ', '');
+            const pumpBrandMatch = product.name.match(/(BOSCH|SIEMENS\/VDO|CONTINENTAL\/VDO|SIEMENS|CONTINENTAL|DELPHI|DENSO)\s*\(/i);
+            const pumpBrand = pumpBrandMatch ? pumpBrandMatch[1] : null;
+            const refMatch = product.name.match(/\(([^)]+)\)\s*$/);
+            const refCode = refMatch ? refMatch[1] : product.reference;
+
+            // Get car image from images array
+            const images = product.associations?.images || product.images || [];
+            const carImageObj = images.find((img: { type?: string }) => img.type === 'car');
+            const carImage = carImageObj?.id || null;
+
+            // Brand logo mapping from auto-platinium
+            const brandLogoMap: Record<string, string> = {
+              'BOSCH': 'https://www.auto-platinium.com/img/su/1.jpg',
+              'DELPHI': 'https://www.auto-platinium.com/img/su/6.jpg',
+              'SIEMENS/VDO': 'https://www.auto-platinium.com/img/su/15.jpg',
+              'SIEMENS': 'https://www.auto-platinium.com/img/su/15.jpg',
+              'CONTINENTAL/VDO': 'https://www.auto-platinium.com/img/su/8.jpg',
+              'CONTINENTAL': 'https://www.auto-platinium.com/img/su/8.jpg',
+              'VDO': 'https://www.auto-platinium.com/img/su/8.jpg',
+              'DENSO': 'https://www.auto-platinium.com/img/su/9.jpg',
+            };
+            const brandLogo = pumpBrand ? (brandLogoMap[pumpBrand.toUpperCase()] || null) : null;
+
+            // Parse vehicle specs from name
+            const carBrand = vehicleInfo.split(' ')[0];
+            const modelMatch = vehicleInfo.match(/^(\w+)\s+(.+?)\s+(\d+\.?\d*\s*(?:HDi|TDCi|TDI|dCi|JTDM|CRDi|CDTi|D|CRDI|BlueHDi|Blue dCi|GTi|THP|DI|JTD|Multijet|CRD|CDTI)[^[]*)/i);
+            const carModel = modelMatch ? modelMatch[2] : vehicleInfo.replace(carBrand, '').trim().split(/\d+\.?\d*\s*(HDi|TDCi|TDI)/)[0].trim();
+            const motorMatch = vehicleInfo.match(/(\d+\.?\d*\s*(?:HDi|TDCi|TDI|dCi|JTDM|CRDi|CDTi|D|CRDI|BlueHDi|Blue dCi|GTi|THP|DI|JTD|Multijet|CRD|CDTI)[^[]*)/i);
+            const motorisation = motorMatch ? motorMatch[1].trim() : '';
+            const cvMatch = vehicleInfo.match(/(\d+)\s*CV/i);
+            const puissanceDIN = cvMatch ? `${cvMatch[1]} CV` : '';
+            const dateMatch = vehicleInfo.match(/\[([^\]]+)\]/);
+            const annee = dateMatch ? `[${dateMatch[1]}]` : '';
+
+            // Split description into paragraphs
+            const descParagraphs = product.description ? product.description.split('\n\n').filter((p: string) => p.trim().length > 0) : [];
+
+            return (
+              <>
+                {/* Mon véhicule + Fiche technique */}
+                <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Mon véhicule */}
+                  <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10l2-1m8 1V6a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16" />
+                      </svg>
+                      Mon véhicule
+                    </h3>
+                    <p className="text-sm text-slate-700 font-medium mb-4">{product.name}</p>
+
+                    {/* Car Image */}
+                    {carImage && (
+                      <div className="mb-5 flex justify-center">
+                        <img src={carImage} alt={vehicleInfo} className="max-h-40 object-contain rounded-lg" />
+                      </div>
+                    )}
+
+                    {/* Vehicle Specs Table */}
+                    <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                      <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
+                        <span className="text-blue-600">●</span>
+                        <span className="text-slate-500">Marque</span>
+                        <span className="ml-auto font-medium text-slate-900">{carBrand}</span>
+                      </div>
+                      <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
+                        <span className="text-blue-600">●</span>
+                        <span className="text-slate-500">Modèle</span>
+                        <span className="ml-auto font-medium text-slate-900">{carModel || '—'}</span>
+                      </div>
+                      <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
+                        <span className="text-blue-600">●</span>
+                        <span className="text-slate-500">Motorisation</span>
+                        <span className="ml-auto font-medium text-slate-900">{motorisation || '—'}</span>
+                      </div>
+                      <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
+                        <span className="text-blue-600">●</span>
+                        <span className="text-slate-500">Puissance DIN</span>
+                        <span className="ml-auto font-medium text-slate-900">{puissanceDIN || '—'}</span>
+                      </div>
+                      <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
+                        <span className="text-blue-600">●</span>
+                        <span className="text-slate-500">Année</span>
+                        <span className="ml-auto font-medium text-slate-900">{annee || '—'}</span>
+                      </div>
+                      <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
+                        <span className="text-blue-600">●</span>
+                        <span className="text-slate-500">Énergie</span>
+                        <span className="ml-auto font-medium text-slate-900">Diesel</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Fiche technique */}
+                  <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-xl font-bold text-slate-900 mb-5">Fiche technique</h3>
+
+                    {/* Pump Brand Logo */}
+                    <div className="mb-6 flex items-center justify-center">
+                      {brandLogo ? (
+                        <img src={brandLogo} alt={pumpBrand || 'Pump brand'} className="max-h-16 object-contain" />
+                      ) : pumpBrand ? (
+                        <div className="px-6 py-3 bg-slate-900 rounded-xl">
+                          <span className="text-lg font-bold text-white tracking-wide">{pumpBrand}</span>
+                        </div>
+                      ) : null}
+                    </div>
+
+                    <div className="space-y-3 text-sm">
+                      <div className="flex justify-between py-2 border-b border-slate-100">
+                        <span className="text-slate-500">Marque Pompe</span>
+                        <span className="font-medium text-slate-900">{pumpBrand || '—'}</span>
+                      </div>
+                      <div className="flex justify-between py-2 border-b border-slate-100">
+                        <span className="text-slate-500">Type</span>
+                        <span className="font-medium text-slate-900">Pompe Haute Pression (CR)</span>
+                      </div>
+                      <div className="flex justify-between py-2 border-b border-slate-100">
+                        <span className="text-slate-500">Origine</span>
+                        <span className="font-medium text-slate-900">Reconditionné</span>
+                      </div>
+                      <div className="flex justify-between py-2 border-b border-slate-100">
+                        <span className="text-slate-500">Poids</span>
+                        <span className="font-medium text-slate-900">≈ 6 kg</span>
+                      </div>
+                      <div className="flex justify-between py-2 border-b border-slate-100">
+                        <span className="text-slate-500">Référence</span>
+                        <span className="font-medium text-blue-600 font-mono">{refCode || '—'}</span>
+                      </div>
+                      <div className="flex justify-between py-2 border-b border-slate-100">
+                        <span className="text-slate-500">Ce que contient ce colis</span>
+                        <span className="font-medium text-slate-900">Étiquette de retour</span>
+                      </div>
+                      <div className="flex justify-between py-2">
+                        <span className="text-slate-500">Garantie</span>
+                        <span className="font-medium text-green-600">2 ans</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Informations détaillées */}
+                <div className="mt-6 bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
+                  <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-4 border-b border-blue-100">
+                    Informations détaillées
+                  </h2>
+                  <div className="space-y-6">
+                    {descParagraphs.length > 0 ? (
+                      descParagraphs.map((paragraph: string, index: number) => {
+                        // Check if paragraph looks like a heading (short and ends without period)
+                        const isHeading = paragraph.length < 120 && !paragraph.endsWith('.') && (
+                          paragraph.includes('?') || 
+                          paragraph.startsWith('Quelle') ||
+                          paragraph.startsWith('Quand') ||
+                          paragraph.startsWith('Pourquoi') ||
+                          paragraph.startsWith('Comment') ||
+                          paragraph.startsWith('Pompe à injection')
+                        );
+                        
+                        if (isHeading) {
+                          return (
+                            <h3 key={index} className="text-lg font-bold text-slate-900 mt-8 mb-2 first:mt-0">
+                              {paragraph}
+                            </h3>
+                          );
+                        }
+                        return (
+                          <p key={index} className="text-slate-600 leading-7">
+                            {paragraph}
+                          </p>
+                        );
+                      })
+                    ) : (
+                      <p className="text-slate-400 italic">Aucune description disponible pour ce produit.</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Les plus du produit */}
+                <div className="mt-6 bg-slate-900 rounded-2xl p-6 shadow-sm">
+                  <h3 className="text-lg font-bold text-white mb-4">Les plus du produit</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="flex items-center gap-3 text-white/90">
+                      <span className="text-blue-400">→</span>
+                      <span className="text-sm">Reconditionnée en France dans nos ateliers de production</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-white/90">
+                      <span className="text-blue-400">→</span>
+                      <span className="text-sm">Techniciens formés régulièrement</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-white/90">
+                      <span className="text-blue-400">→</span>
+                      <span className="text-sm">Des réglages certifiés en usine</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-white/90">
+                      <span className="text-blue-400">→</span>
+                      <span className="text-sm">Une garantie fabricant de deux ans</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Références compatibles */}
+                {refCode && (
+                  <div className="mt-6 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                    <h3 className="text-xl font-bold text-slate-900 mb-4">Références compatibles</h3>
+                    <div className="flex flex-wrap gap-2">
+                      <span className="px-3 py-1.5 bg-slate-100 rounded-lg text-sm font-mono text-slate-700 border border-slate-200">{refCode}</span>
+                      {product.reference && product.reference !== refCode && (
+                        <span className="px-3 py-1.5 bg-slate-100 rounded-lg text-sm font-mono text-slate-700 border border-slate-200">{product.reference.replace('Ref. ', '')}</span>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </>
+            );
+          })()}
+
+          {/* Generic Description Section (for non-Pompes HP products) */}
+          {product.category_name !== 'Pompes HP' && (
+            <div className="mt-16 bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
+              <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-4 border-b border-slate-100">
+                Description du produit
+              </h2>
+              <div className="prose prose-lg max-w-none text-slate-600 leading-relaxed">
+                {product.description ? (
+                  <div dangerouslySetInnerHTML={{ __html: product.description }} />
+                ) : (
+                  <p className="text-slate-400 italic">Aucune description disponible pour ce produit.</p>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </section>
 

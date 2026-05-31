@@ -32,6 +32,8 @@ export async function GET(
       link_rewrite: product.link_rewrite || '',
       id_default_image: product.id_default_image ? String(product.id_default_image) : null,
       id_category_default: product.id_category_default ? String(product.id_category_default) : null,
+      category_name: product.category_name || null,
+      supplier_reference: product.supplier_reference || null,
       associations: {
         images: product.images || []
       },
