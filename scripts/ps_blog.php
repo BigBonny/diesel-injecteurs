@@ -3,6 +3,12 @@
  * LeoBlog posts API endpoint for Next.js frontend
  * Place at: /var/www/clients/client0/web4/web/ps_blog.php  (same dir as ps_auth.php)
  * Access: http://192.162.69.186/ps_blog.php?token=DIESEL_BLOG_SECRET_2024
+ *
+ * Actual DB tables (prefix=new_):
+ *   new_leoblog_blog       — id_leoblog_blog, id_leoblogcat, date_add, active, image, author_name
+ *   new_leoblog_blog_lang  — id_leoblog_blog, id_lang, meta_title, description, content, link_rewrite
+ *   new_leoblogcat         — id_leoblogcat
+ *   new_leoblogcat_lang    — id_leoblogcat, id_lang, title, link_rewrite
  */
 error_reporting(0);
 define('_PS_ROOT_DIR_', dirname(__FILE__));
@@ -24,40 +30,35 @@ $limit   = min(50, max(1, (int)(isset($_GET['limit']) ? $_GET['limit'] : 12)));
 $offset  = ($page - 1) * $limit;
 
 $db = Db::getInstance();
-$prefix = _DB_PREFIX_;
 
-// Count active posts that have a translation for this language
+// Count active posts with a translation
 $total = (int)$db->getValue("
-    SELECT COUNT(DISTINCT p.id_leoblog_post)
-    FROM `{$prefix}leoblog_post` p
-    INNER JOIN `{$prefix}leoblog_post_lang` pl
-        ON p.id_leoblog_post = pl.id_leoblog_post AND pl.id_lang = {$id_lang}
+    SELECT COUNT(*)
+    FROM `new_leoblog_blog` p
+    INNER JOIN `new_leoblog_blog_lang` pl
+        ON p.id_leoblog_blog = pl.id_leoblog_blog AND pl.id_lang = {$id_lang}
     WHERE p.active = 1
         AND pl.meta_title != ''
 ");
 
-// Fetch posts
+// Fetch posts with category name
 $rows = $db->executeS("
     SELECT
-        p.id_leoblog_post,
+        p.id_leoblog_blog,
         p.date_add,
+        p.image,
+        p.author_name,
         pl.meta_title,
-        pl.short_description,
+        pl.description      AS short_description,
         pl.content,
         pl.link_rewrite,
-        pl.meta_keywords,
-        (SELECT cl.name FROM `{$prefix}leoblog_cat_lang` cl
-         INNER JOIN `{$prefix}leoblog_post_category` pc ON pc.id_leoblog_cat = cl.id_leoblog_cat
-         WHERE pc.id_leoblog_post = p.id_leoblog_post AND cl.id_lang = {$id_lang}
-         LIMIT 1) AS category_name,
-        (SELECT cl2.link_rewrite FROM `{$prefix}leoblog_cat_lang` cl2
-         INNER JOIN `{$prefix}leoblog_post_category` pc2 ON pc2.id_leoblog_cat = cl2.id_leoblog_cat
-         WHERE pc2.id_leoblog_post = p.id_leoblog_post AND cl2.id_lang = {$id_lang}
-         LIMIT 1) AS category_slug,
-        (SELECT image FROM `{$prefix}leoblog_post_image` WHERE id_leoblog_post = p.id_leoblog_post AND cover = 1 LIMIT 1) AS image_file
-    FROM `{$prefix}leoblog_post` p
-    INNER JOIN `{$prefix}leoblog_post_lang` pl
-        ON p.id_leoblog_post = pl.id_leoblog_post AND pl.id_lang = {$id_lang}
+        cl.title            AS category_name,
+        cl.link_rewrite     AS category_slug
+    FROM `new_leoblog_blog` p
+    INNER JOIN `new_leoblog_blog_lang` pl
+        ON p.id_leoblog_blog = pl.id_leoblog_blog AND pl.id_lang = {$id_lang}
+    LEFT JOIN `new_leoblogcat_lang` cl
+        ON p.id_leoblogcat = cl.id_leoblogcat AND cl.id_lang = {$id_lang}
     WHERE p.active = 1
         AND pl.meta_title != ''
     ORDER BY p.date_add DESC
@@ -72,6 +73,10 @@ if (!is_array($rows)) {
 $months = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
 
 foreach ($rows as &$row) {
+    // Rename PK field to match frontend interface
+    $row['id_leoblog_post'] = $row['id_leoblog_blog'];
+    unset($row['id_leoblog_blog']);
+
     // Format date
     if (!empty($row['date_add'])) {
         $ts = strtotime($row['date_add']);
@@ -82,13 +87,13 @@ foreach ($rows as &$row) {
         $row['date_formatted'] = '';
     }
 
-    // Build image URL
-    if (!empty($row['image_file'])) {
-        $row['image_url'] = _PS_BASE_URL_ . '/modules/leoblog/views/img/' . $row['image_file'];
+    // Build image URL — LeoBlog stores images in modules/leoblog/views/img/
+    if (!empty($row['image'])) {
+        $row['image_url'] = _PS_BASE_URL_ . '/modules/leoblog/views/img/' . $row['image'];
     } else {
         $row['image_url'] = null;
     }
-    unset($row['image_file']);
+    unset($row['image']);
 
     // Estimate read time (~200 words/min)
     $wordCount = !empty($row['content']) ? str_word_count(strip_tags($row['content'])) : 0;
