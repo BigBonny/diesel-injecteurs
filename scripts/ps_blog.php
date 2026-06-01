@@ -28,8 +28,49 @@ $id_lang = (int)(isset($_GET['id_lang']) ? $_GET['id_lang'] : Configuration::get
 $page    = max(1, (int)(isset($_GET['page'])  ? $_GET['page']  : 1));
 $limit   = min(50, max(1, (int)(isset($_GET['limit']) ? $_GET['limit'] : 12)));
 $offset  = ($page - 1) * $limit;
+$single_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 $db = Db::getInstance();
+
+// Single post fetch
+if ($single_id > 0) {
+    $row = $db->getRow("
+        SELECT
+            p.id_leoblog_blog,
+            p.date_add,
+            p.image,
+            p.author_name,
+            pl.meta_title,
+            pl.description      AS short_description,
+            pl.content,
+            pl.link_rewrite,
+            cl.title            AS category_name,
+            cl.link_rewrite     AS category_slug
+        FROM `new_leoblog_blog` p
+        INNER JOIN `new_leoblog_blog_lang` pl
+            ON p.id_leoblog_blog = pl.id_leoblog_blog AND pl.id_lang = {$id_lang}
+        LEFT JOIN `new_leoblogcat_lang` cl
+            ON p.id_leoblogcat = cl.id_leoblogcat AND cl.id_lang = {$id_lang}
+        WHERE p.id_leoblog_blog = {$single_id} AND p.active = 1
+        LIMIT 1
+    ");
+    if (!$row) {
+        http_response_code(404);
+        die(json_encode(['error' => 'Post not found']));
+    }
+    $months = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
+    $row['id_leoblog_post'] = $row['id_leoblog_blog'];
+    unset($row['id_leoblog_blog']);
+    $ts = strtotime($row['date_add']);
+    $row['date_formatted'] = $ts ? (date('d', $ts) . ' ' . $months[(int)date('n', $ts) - 1] . ' ' . date('Y', $ts)) : $row['date_add'];
+    $row['image_url'] = !empty($row['image']) ? _PS_BASE_URL_ . '/modules/leoblog/views/img/' . $row['image'] : null;
+    unset($row['image']);
+    $wordCount = !empty($row['content']) ? str_word_count(strip_tags($row['content'])) : 0;
+    $row['read_time'] = max(1, (int)round($wordCount / 200)) . ' min';
+    $row['short_description'] = !empty($row['short_description']) ? trim(strip_tags($row['short_description'])) : '';
+    echo json_encode(['success' => true, 'post' => $row], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    exit;
+}
 
 // Count active posts with a translation
 $total = (int)$db->getValue("
@@ -73,7 +114,6 @@ if (!is_array($rows)) {
 $months = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
 
 foreach ($rows as &$row) {
-    // Rename PK field to match frontend interface
     $row['id_leoblog_post'] = $row['id_leoblog_blog'];
     unset($row['id_leoblog_blog']);
 

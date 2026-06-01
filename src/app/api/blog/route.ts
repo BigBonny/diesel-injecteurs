@@ -9,11 +9,11 @@ export async function GET(request: Request) {
     const page  = searchParams.get('page')  || '1';
     const limit = searchParams.get('limit') || '12';
 
-    const url = `${PS_BASE_URL}/ps_blog.php?token=${BLOG_SECRET}&page=${page}&limit=${limit}&id_lang=2`;
+    const url = `${PS_BASE_URL}/ps_blog.php?token=${BLOG_SECRET}&page=${page}&limit=${limit}&id_lang=1`;
 
     const res = await fetch(url, {
       signal: AbortSignal.timeout(10000),
-      next: { revalidate: 300 }, // cache 5 min
+      cache: 'no-store',
     });
 
     if (!res.ok) {

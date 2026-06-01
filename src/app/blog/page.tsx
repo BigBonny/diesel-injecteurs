@@ -176,9 +176,7 @@ export default function BlogPage() {
 
                         {/* Read More */}
                         <Link
-                          href={`https://injection-diesel.com/fr/blog/${post.id_leoblog_post}-${post.link_rewrite}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          href={`/blog/${post.id_leoblog_post}`}
                           className="flex items-center gap-2 text-yellow-600 font-medium text-sm group-hover:gap-3 transition-all"
                         >
                           <span>Lire l&apos;article</span>
