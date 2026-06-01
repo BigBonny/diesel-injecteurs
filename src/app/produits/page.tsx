@@ -410,8 +410,12 @@ function ProductsContent() {
 
         <div className="flex gap-8">
           {/* Sidebar Filters - Desktop */}
-          <aside className={`${showFilters ? 'block' : 'hidden'} md:block w-full md:w-64 shrink-0`}>
-            <div className="bg-white rounded-xl p-6 space-y-6 sticky top-24 border border-slate-200">
+          <aside className={`${showFilters ? 'fixed inset-0 z-50 flex' : 'hidden'} md:relative md:inset-auto md:z-auto md:block w-full md:w-64 shrink-0`}>
+            {/* Mobile overlay backdrop */}
+            {showFilters && (
+              <div className="absolute inset-0 bg-black/50 md:hidden" onClick={() => setShowFilters(false)} />
+            )}
+            <div className="bg-white rounded-xl p-6 space-y-6 md:sticky top-24 border border-slate-200 w-72 md:w-full max-h-screen overflow-y-auto z-10 ml-auto mr-4 md:ml-0 md:mr-0 md:max-h-none">
               <div className="flex items-center justify-between md:hidden">
                 <h3 className="font-semibold text-gray-900">Filtres</h3>
                 <button onClick={() => setShowFilters(false)}>
@@ -556,7 +560,7 @@ function ProductsContent() {
                 
                 {/* Products Grid */}
                 {!loading && filteredProducts.length > 0 && (
-                  <div className={viewMode === 'grid' ? 'grid md:grid-cols-2 lg:grid-cols-3 gap-6' : 'space-y-4'}>
+                  <div className={viewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6' : 'space-y-4'}>
                     {filteredProducts.map(product => (
                       <div 
                         key={product.id} 
@@ -592,18 +596,18 @@ function ProductsContent() {
                         </Link>
 
                         {/* Content */}
-                        <div className="p-5 flex-1 flex flex-col">
+                        <div className="p-3 sm:p-5 flex-1 flex flex-col">
                           <Link href={getProductUrl(product)}>
-                            <h3 className="font-bold text-gray-900 mb-1 hover:text-yellow-600 transition line-clamp-2">{product.name}</h3>
+                            <h3 className="font-bold text-xs sm:text-sm text-gray-900 mb-1 hover:text-yellow-600 transition line-clamp-2">{product.name}</h3>
                           </Link>
                           
                           {product.reference && (
-                            <p className="text-sm text-gray-500 mb-2">Ref: {product.reference}</p>
+                            <p className="text-xs text-gray-500 mb-1 hidden sm:block">Ref: {product.reference}</p>
                           )}
 
-                          <div className="mt-auto pt-3 border-t border-slate-100">
+                          <div className="mt-auto pt-2 sm:pt-3 border-t border-slate-100">
                             <div className="flex items-center justify-between">
-                              <span className="text-2xl font-bold text-[#1e2a4a]">{formatPrice(product.price)}</span>
+                              <span className="text-base sm:text-2xl font-bold text-[#1e2a4a]">{formatPrice(product.price)}</span>
                             </div>
                           </div>
                         </div>

@@ -29,7 +29,9 @@ const DROPDOWN_BRANDS: Record<string, string[]> = {
 function NavigationInner() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [mobileSearchQuery, setMobileSearchQuery] = useState('');
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const { totalItems } = useCart();
   const pathname = usePathname();
@@ -304,14 +306,19 @@ function NavigationInner() {
 
           {/* Mobile Search */}
           <div className="px-5 py-4">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Rechercher..."
-                className="w-full pl-10 pr-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder-slate-400 focus:border-yellow-400 focus:outline-none"
-              />
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-            </div>
+            <form onSubmit={(e) => { e.preventDefault(); if (mobileSearchQuery.trim()) { setIsMenuOpen(false); router.push(`/produits?search=${encodeURIComponent(mobileSearchQuery.trim())}`); }}}>
+              <div className="relative">
+                <input
+                  type="text"
+                  value={mobileSearchQuery}
+                  onChange={(e) => setMobileSearchQuery(e.target.value)}
+                  placeholder="Rechercher..."
+                  className="w-full pl-10 pr-12 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm placeholder-slate-400 focus:border-yellow-400 focus:outline-none"
+                />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 px-2 py-1 bg-yellow-400 text-[#1e2a4a] rounded-lg text-xs font-bold">OK</button>
+              </div>
+            </form>
           </div>
 
           {/* Mobile Nav Items */}
@@ -320,6 +327,52 @@ function NavigationInner() {
               const isMobileActive = item.category
                 ? pathname === '/produits' && currentCategory === item.category
                 : pathname === item.href;
+              
+              if (item.hasDropdown && item.category) {
+                const isExpanded = mobileExpanded === item.category;
+                const brands = DROPDOWN_BRANDS[item.category] || [];
+                return (
+                  <div key={item.name}>
+                    <button
+                      onClick={() => setMobileExpanded(isExpanded ? null : item.category!)}
+                      className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-sm font-semibold transition-all ${
+                        isMobileActive
+                          ? 'bg-yellow-400 text-[#1e2a4a]'
+                          : 'text-white/80 hover:bg-white/10 hover:text-white'
+                      }`}
+                    >
+                      <span className="flex items-center gap-2">
+                        <Link href={item.href} onClick={() => setIsMenuOpen(false)} className="hover:text-yellow-400">{item.name}</Link>
+                      </span>
+                      <ChevronDown className={`w-4 h-4 opacity-70 transition-transform duration-200 ${isExpanded ? 'rotate-180' : ''}`} />
+                    </button>
+                    {isExpanded && (
+                      <div className="ml-4 mt-0.5 space-y-0.5 border-l-2 border-yellow-400/30 pl-3">
+                        {brands.map((brand) => (
+                          <Link
+                            key={brand}
+                            href={`/produits?category=${item.category}&brand=${brand}`}
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-white/60 hover:text-yellow-400 hover:bg-white/5 transition-all"
+                          >
+                            <ChevronRight className="w-3 h-3" />
+                            {brand}
+                          </Link>
+                        ))}
+                        <Link
+                          href={item.href}
+                          onClick={() => setIsMenuOpen(false)}
+                          className="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm text-yellow-400 font-semibold hover:bg-white/5 transition-all"
+                        >
+                          <ChevronRight className="w-3 h-3" />
+                          Voir tous les {item.name.toLowerCase()} →
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
               return (
                 <Link
                   key={item.name}
@@ -336,14 +389,6 @@ function NavigationInner() {
                 </Link>
               );
             })}
-            <Link
-              href="/retour-consigne"
-              onClick={() => setIsMenuOpen(false)}
-              className="flex items-center justify-between px-4 py-3.5 rounded-xl text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white transition-all"
-            >
-              Retour Consigne
-              <ChevronRight className="w-4 h-4 opacity-50" />
-            </Link>
           </div>
 
           {/* Mobile Footer */}

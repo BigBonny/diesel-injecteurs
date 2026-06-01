@@ -82,8 +82,8 @@ export default function TurboHero() {
 
       {/* ── HERO CONTENT ── */}
       <div className="relative z-10 flex-1 flex items-center">
-        <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-20 lg:py-24">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="w-full max-w-7xl mx-auto px-5 sm:px-8 lg:px-12 py-12 lg:py-24">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
             {/* LEFT: Text Content */}
             <div className="max-w-2xl">
               <div className={`inline-flex items-center gap-2.5 px-4 py-2 bg-yellow-400/10 border border-yellow-400/30 rounded-full mb-8 transition-all duration-700 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
@@ -92,12 +92,12 @@ export default function TurboHero() {
               </div>
 
               <h1 className={`font-black leading-[0.92] mb-6 transition-all duration-700 delay-100 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-                <span className="block text-white text-5xl sm:text-6xl md:text-7xl lg:text-8xl">Remplacez vos</span>
-                <span className="block text-yellow-400 text-5xl sm:text-6xl md:text-7xl lg:text-8xl">pièces diesel</span>
-                <span className="block text-white/60 text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-1">sans vous ruiner.</span>
+                <span className="block text-white text-4xl sm:text-5xl md:text-6xl lg:text-8xl">Remplacez vos</span>
+                <span className="block text-yellow-400 text-4xl sm:text-5xl md:text-6xl lg:text-8xl">pièces diesel</span>
+                <span className="block text-white/60 text-2xl sm:text-3xl md:text-4xl lg:text-6xl mt-1">sans vous ruiner.</span>
               </h1>
 
-              <p className={`text-slate-300 text-lg sm:text-xl leading-relaxed mb-8 max-w-xl transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+              <p className={`text-slate-300 text-base sm:text-lg leading-relaxed mb-6 max-w-xl transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
                 Turbos & injecteurs neufs et reconditionnés OEM. <span className="text-yellow-400 font-semibold">Garantie 2 ans</span> · Livraison <span className="text-white font-semibold">24-48h</span> · Paiement 3x sans frais.
               </p>
 
@@ -134,17 +134,17 @@ export default function TurboHero() {
                 ))}
               </div>
 
-              <div className={`flex flex-col sm:flex-row gap-4 mb-8 transition-all duration-700 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+              <div className={`flex flex-col sm:flex-row gap-3 mb-6 transition-all duration-700 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                 <Link
                   href="/produits"
-                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-[#0d1b3e] font-bold rounded-xl hover:bg-yellow-400 hover:shadow-2xl hover:shadow-yellow-400/20 transition-all duration-300"
+                  className="group inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-white text-[#0d1b3e] font-bold rounded-xl hover:bg-yellow-400 hover:shadow-2xl hover:shadow-yellow-400/20 transition-all duration-300"
                 >
-                  Voir les turbos
+                  Voir le catalogue
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <a
                   href="tel:+33612429880"
-                  className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-transparent border-2 border-white/20 text-white font-bold rounded-xl hover:border-yellow-400 hover:text-yellow-400 transition-all duration-300"
+                  className="inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-transparent border-2 border-white/20 text-white font-bold rounded-xl hover:border-yellow-400 hover:text-yellow-400 transition-all duration-300"
                 >
                   <Phone className="w-5 h-5" />
                   06 12 42 98 80
@@ -166,8 +166,8 @@ export default function TurboHero() {
               </div>
             </div>
 
-            {/* RIGHT: Two-tab search bar */}
-            <div className={`transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+            {/* RIGHT: Two-tab search bar — hidden on mobile */}
+            <div className={`hidden lg:block transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
 
               {/* Label above */}
               <p className="text-yellow-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2">
@@ -228,7 +228,7 @@ export default function TurboHero() {
                     </Link>
                   </div>
                 ) : (
-                  <div className="flex items-stretch flex-wrap sm:flex-nowrap">
+                  <div className="flex items-stretch flex-col sm:flex-row">
                     {[
                       { value: brand, onChange: (v: string) => { setBrand(v); setModel(''); }, placeholder: 'Marque', options: BRANDS },
                       { value: model, onChange: (v: string) => setModel(v), placeholder: 'Modèle', options: MODELS[brand] || [], disabled: !brand },

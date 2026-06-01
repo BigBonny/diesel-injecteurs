@@ -3,7 +3,7 @@
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ChatWidget from '@/components/ChatWidget';
-import { Package, Truck, RotateCcw, ShieldCheck, FileText, Phone, Clock, AlertCircle } from 'lucide-react';
+import { Package, Truck, RotateCcw, ShieldCheck, FileText, Phone, Clock, AlertCircle, Download } from 'lucide-react';
 import Link from 'next/link';
 
 const steps = [
@@ -78,6 +78,31 @@ export default function RetourConsignePage() {
             <p className="text-xl text-slate-300 mt-6 max-w-3xl mx-auto">
               Comment récupérer le montant de votre consigne ? Suivez ces étapes simples pour un remboursement rapide.
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* PDF Download Banner */}
+      <section className="py-8 bg-yellow-50 border-y border-yellow-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center shrink-0">
+                <FileText className="w-6 h-6 text-[#1e2a4a]" />
+              </div>
+              <div>
+                <p className="font-bold text-slate-900">Guide complet de retour consigne</p>
+                <p className="text-sm text-slate-500">Instructions détaillées, montants déduits, conditions de remboursement</p>
+              </div>
+            </div>
+            <a
+              href="/assets/CONSIGNE DIESEL INJECTEURS.pdf"
+              download="CONSIGNE DIESEL INJECTEURS.pdf"
+              className="flex items-center gap-2 px-6 py-3 bg-[#1e2a4a] text-white rounded-xl font-semibold hover:bg-[#162038] transition shrink-0"
+            >
+              <Download className="w-5 h-5" />
+              Télécharger le PDF
+            </a>
           </div>
         </div>
       </section>

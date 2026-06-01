@@ -157,11 +157,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-yellow-500 font-bold text-sm uppercase tracking-[0.2em]">Choisissez la performance</span>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3">
+            <h2 className="text-3xl md:text-5xl font-black text-slate-900 mt-3">
               Les experts du turbo <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-blue-800">reconditionné</span>
             </h2>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {features.map((feature, index) => (
               <FeatureCard key={index} feature={feature} index={index} />
             ))}
@@ -175,14 +175,14 @@ export default function Home() {
           <div className="flex justify-between items-end mb-12">
             <div>
               <span className="text-yellow-400 font-bold text-sm uppercase tracking-[0.2em]">Catalogue</span>
-              <h2 className="text-4xl font-black text-white mt-3">Nos catégories</h2>
+              <h2 className="text-3xl sm:text-4xl font-black text-white mt-3">Nos catégories</h2>
             </div>
             <Link href="/produits" className="hidden md:flex items-center gap-2 text-yellow-400 font-bold hover:text-yellow-300 transition group">
               Voir tout
               <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {categories.map((category, index) => (
               <CategoryCard key={index} category={category} index={index} />
             ))}
@@ -195,13 +195,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="text-yellow-500 font-bold text-sm uppercase tracking-[0.2em]">Nos vidéos</span>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3">Découvrez nos produits en action</h2>
+            <h2 className="text-2xl md:text-4xl font-black text-slate-900 mt-3">Découvrez nos produits en action</h2>
             <p className="text-slate-500 mt-4 max-w-2xl mx-auto">
               Vidéos explicatives et démonstrations de nos turbos et injecteurs
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Video 1 */}
             <div className="relative group">
               <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-900 shadow-xl">
@@ -244,13 +244,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <span className="text-yellow-500 font-bold text-sm uppercase tracking-[0.2em]">Injecteur échange standard & turbo pas cher</span>
-            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-3">Solution fiable et rapide pour votre moteur diesel</h2>
+            <h2 className="text-2xl md:text-4xl font-black text-slate-900 mt-3">Solution fiable et rapide pour votre moteur diesel</h2>
             <p className="text-slate-500 mt-4 max-w-3xl mx-auto">
               Nos injecteurs Bosch, Delphi, Siemens et Denso. Qualité garantie et performance optimale.
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Avantages */}
             <div className="bg-white rounded-2xl p-8 border border-slate-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
               <div className="w-12 h-12 bg-[#1e2a4a] rounded-xl flex items-center justify-center mb-6">
@@ -326,11 +326,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-16">
             <span className="text-yellow-400 font-bold text-sm uppercase tracking-[0.2em]">Nos chiffres</span>
-            <h2 className="text-4xl md:text-5xl font-black mt-3">Ils nous font confiance</h2>
+            <h2 className="text-3xl md:text-5xl font-black mt-3">Ils nous font confiance</h2>
             <p className="text-slate-400 text-lg mt-4">Des milliers de professionnels nous font confiance chaque jour</p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
             {[
               { value: 50000, suffix: '+', label: 'Pièces en stock', sublabel: 'Toutes marques disponibles' },
               { value: 15000, suffix: '+', label: 'Clients satisfaits', sublabel: 'Note moyenne 4.9/5' },
@@ -381,7 +381,7 @@ export default function Home() {
             </h2>
             <p className="text-slate-500 mt-4 max-w-xl mx-auto">Recevez votre pièce en 3 étapes simples, livrée chez vous en 24-48h.</p>
           </div>
-          <div className="grid md:grid-cols-3 gap-6 relative">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 relative">
             {/* Connector line desktop */}
             <div className="hidden md:block absolute top-14 left-[calc(16.66%+1rem)] right-[calc(16.66%+1rem)] h-0.5 bg-linear-to-r from-yellow-400 to-blue-500 z-0" />
             {[
@@ -421,7 +421,7 @@ export default function Home() {
               <span className="text-slate-400 text-sm">• 15 000+ avis</span>
             </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {[
               { name: 'Mehdi L.', vehicle: 'Renault Clio 4', text: 'Je suis venu chercher un injecteur en urgence. Accueil super pro, la pièce était prête et testée. Montage sans souci. Je recommande vivement, service rapide et efficace.', stars: 5 },
               { name: 'Antoine L.', vehicle: 'VW Touareg', text: 'Commande passée le lundi, reçue le mercredi. L\'injecteur fonctionne parfaitement. Bon rapport qualité-prix et consigne remboursée rapidement.', stars: 5 },
@@ -480,7 +480,7 @@ export default function Home() {
               <Mail className="w-4 h-4 text-blue-400" />
               <span className="text-blue-400 text-sm font-medium">24/7 Support Expert</span>
             </div>
-            <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">
+            <h2 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4">
               Parlons de votre <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-cyan-400">projet</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
@@ -488,7 +488,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 lg:gap-8">
             {/* Contact Cards - Left Side */}
             <div className="lg:col-span-2 space-y-6">
               {/* Phone Card */}
@@ -648,7 +648,7 @@ export default function Home() {
         </div>
 
         <div className="relative max-w-5xl mx-auto px-4 text-center">
-          <h2 className="text-4xl md:text-5xl font-black text-[#1e2a4a] mb-6">
+          <h2 className="text-3xl md:text-5xl font-black text-[#1e2a4a] mb-6">
             Trouvez votre pièce en 3 clics
           </h2>
           

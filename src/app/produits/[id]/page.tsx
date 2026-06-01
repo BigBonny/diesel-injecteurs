@@ -136,12 +136,12 @@ export default function ProductDetailPage() {
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center gap-2 text-sm text-slate-600">
-            <Link href="/" className="hover:text-blue-600 transition">Accueil</Link>
-            <ChevronRight className="w-4 h-4" />
-            <Link href="/produits" className="hover:text-blue-600 transition">Produits</Link>
-            <ChevronRight className="w-4 h-4" />
-            <span className="text-slate-900 font-medium">{product.name}</span>
+          <div className="flex items-center gap-2 text-sm text-slate-600 overflow-hidden">
+            <Link href="/" className="hover:text-blue-600 transition shrink-0">Accueil</Link>
+            <ChevronRight className="w-4 h-4 shrink-0" />
+            <Link href="/produits" className="hover:text-blue-600 transition shrink-0">Produits</Link>
+            <ChevronRight className="w-4 h-4 shrink-0" />
+            <span className="text-slate-900 font-medium truncate">{product.name}</span>
           </div>
         </div>
       </div>
@@ -149,9 +149,9 @@ export default function ProductDetailPage() {
       {/* Product Section */}
       <section className="py-12 flex-1">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-6 lg:gap-12">
             {/* Image */}
-            <div className="bg-white rounded-2xl p-8 border border-slate-200">
+            <div className="bg-white rounded-2xl p-4 sm:p-8 border border-slate-200">
               <div className="aspect-square bg-linear-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center overflow-hidden">
                 {imageUrl ? (
                   <img src={imageUrl} alt={product.name} className="w-full h-full object-cover" />
@@ -170,10 +170,10 @@ export default function ProductDetailPage() {
                 </span>
               </div>
 
-              <h1 className="text-3xl font-bold text-slate-900 mb-4">{product.name}</h1>
+              <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 mb-4 leading-snug">{product.name}</h1>
 
               {/* Core Charge Section - MANDATORY */}
-              <div className={`rounded-xl p-6 mb-8 border-2 transition-all ${coreChargeAccepted ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-400'}`}>
+              <div className={`rounded-xl p-4 sm:p-6 mb-6 border-2 transition-all ${coreChargeAccepted ? 'bg-green-50 border-green-500' : 'bg-amber-50 border-amber-400'}`}>
                 <div className="flex items-start gap-4">
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${coreChargeAccepted ? 'bg-green-500' : 'bg-amber-500'}`}>
                     <RotateCcw className="w-6 h-6 text-white" />
@@ -232,7 +232,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Quantity */}
-              <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center gap-4 mb-4">
                 <span className="text-slate-900 font-medium">Quantité:</span>
                 <div className="flex items-center gap-3 bg-white border border-slate-300 rounded-xl">
                   <button
@@ -252,7 +252,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Price Display */}
-              <div className="bg-white rounded-xl p-6 border border-slate-200 mb-6">
+              <div className="bg-white rounded-xl p-4 sm:p-6 border border-slate-200 mb-4">
                 <div className="space-y-2">
                   <div className="flex justify-between text-slate-600">
                     <span>Prix unitaire</span>
@@ -276,7 +276,7 @@ export default function ProductDetailPage() {
                   <div className="border-t border-slate-200 pt-2 mt-2">
                     <div className="flex justify-between items-center">
                       <span className="text-lg font-medium text-slate-900">Total</span>
-                      <span className="text-3xl font-bold text-blue-600">{totalWithQuantity}€</span>
+                      <span className="text-2xl sm:text-3xl font-bold text-blue-600">{totalWithQuantity}€</span>
                     </div>
                     {quantity > 1 && (
                       <p className="text-sm text-slate-500 text-right">
@@ -288,7 +288,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Actions */}
-              <div className="flex gap-4">
+              <div className="flex gap-3">
                 <button
                   onClick={handleAddToCart}
                   className={`flex-1 flex items-center justify-center gap-3 py-4 rounded-xl font-semibold transition ${
@@ -322,18 +322,18 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Trust Badges */}
-              <div className="grid grid-cols-3 gap-4 mt-8 pt-8 border-t border-slate-200">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 mt-6 pt-6 border-t border-slate-200">
                 <div className="text-center">
                   <Truck className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <p className="text-sm font-medium text-slate-900">Livraison 24h</p>
+                  <p className="text-xs sm:text-sm font-medium text-slate-900">Livraison 24h</p>
                 </div>
                 <div className="text-center">
-                  <Shield className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <p className="text-sm font-medium text-slate-900">Garantie 2 ans</p>
+                  <Shield className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 mx-auto mb-2" />
+                  <p className="text-xs sm:text-sm font-medium text-slate-900">Garantie 2 ans</p>
                 </div>
                 <div className="text-center">
-                  <RotateCcw className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <p className="text-sm font-medium text-slate-900">Retour 30 jours</p>
+                  <RotateCcw className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 mx-auto mb-2" />
+                  <p className="text-xs sm:text-sm font-medium text-slate-900">Retour 30 jours</p>
                 </div>
               </div>
             </div>
@@ -384,7 +384,7 @@ export default function ProductDetailPage() {
             return (
               <>
                 {/* Mon véhicule + Fiche technique */}
-                <div className="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                   {/* Mon véhicule */}
                   <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
                     <h3 className="text-xl font-bold text-slate-900 mb-5 flex items-center gap-2">
@@ -404,7 +404,7 @@ export default function ProductDetailPage() {
                     )}
 
                     {/* Vehicle Specs Table */}
-                    <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-sm">
                       <div className="flex items-center gap-2 py-1.5 border-b border-slate-100">
                         <span className="text-blue-600">●</span>
                         <span className="text-slate-500">Marque</span>
@@ -487,8 +487,8 @@ export default function ProductDetailPage() {
                 </div>
 
                 {/* Informations détaillées */}
-                <div className="mt-6 bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-                  <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-4 border-b border-blue-100">
+                <div className="mt-4 bg-white rounded-2xl border border-slate-200 p-4 sm:p-8 shadow-sm">
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-4 sm:mb-6 pb-4 border-b border-blue-100">
                     Informations détaillées
                   </h2>
                   <div className="space-y-6">
@@ -524,7 +524,7 @@ export default function ProductDetailPage() {
                 </div>
 
                 {/* Les plus du produit */}
-                <div className="mt-6 bg-slate-900 rounded-2xl p-6 shadow-sm">
+                <div className="mt-4 bg-slate-900 rounded-2xl p-4 sm:p-6 shadow-sm">
                   <h3 className="text-lg font-bold text-white mb-4">Les plus du produit</h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div className="flex items-center gap-3 text-white/90">
@@ -548,8 +548,8 @@ export default function ProductDetailPage() {
 
                 {/* Références compatibles */}
                 {refCode && (
-                  <div className="mt-6 bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                    <h3 className="text-xl font-bold text-slate-900 mb-4">Références compatibles</h3>
+                  <div className="mt-4 bg-white rounded-2xl border border-slate-200 p-4 sm:p-6 shadow-sm">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-4">Références compatibles</h3>
                     <div className="flex flex-wrap gap-2">
                       <span className="px-3 py-1.5 bg-slate-100 rounded-lg text-sm font-mono text-slate-700 border border-slate-200">{refCode}</span>
                       {product.reference && product.reference !== refCode && (
@@ -564,7 +564,7 @@ export default function ProductDetailPage() {
 
           {/* Generic Description Section (for non-Pompes HP products) */}
           {product.category_name !== 'Pompes HP' && (
-            <div className="mt-16 bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
+            <div className="mt-8 bg-white rounded-2xl border border-slate-200 p-4 sm:p-8 shadow-sm">
               <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-4 border-b border-slate-100">
                 Description du produit
               </h2>
