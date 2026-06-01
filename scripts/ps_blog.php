@@ -10,7 +10,9 @@
  *   new_leoblogcat         — id_leoblogcat
  *   new_leoblogcat_lang    — id_leoblogcat, id_lang, title, link_rewrite
  */
-error_reporting(0);
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
 define('_PS_ROOT_DIR_', dirname(__FILE__));
 require_once(_PS_ROOT_DIR_ . '/config/config.inc.php');
 
@@ -34,7 +36,7 @@ $db = Db::getInstance();
 
 // Single post fetch
 if ($single_id > 0) {
-    $row = $db->getRow("
+    $results = $db->executeS("
         SELECT
             p.id_leoblog_blog,
             p.date_add,
@@ -54,10 +56,11 @@ if ($single_id > 0) {
         WHERE p.id_leoblog_blog = {$single_id} AND p.active = 1
         LIMIT 1
     ");
-    if (!$row) {
+    if (empty($results)) {
         http_response_code(404);
-        die(json_encode(['error' => 'Post not found']));
+        die(json_encode(['error' => 'Post not found', 'id' => $single_id, 'id_lang' => $id_lang]));
     }
+    $row = $results[0];
     $months = ['Jan','Fév','Mar','Avr','Mai','Jun','Jul','Aoû','Sep','Oct','Nov','Déc'];
     $row['id_leoblog_post'] = $row['id_leoblog_blog'];
     unset($row['id_leoblog_blog']);
