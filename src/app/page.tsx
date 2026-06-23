@@ -666,11 +666,11 @@ export default function Home() {
             </Link>
             
             <a 
-              href="tel:+33612429880" 
+              href="tel:+33172517665" 
               className="group px-10 py-4 bg-white text-[#1e2a4a] rounded-full font-bold text-lg hover:shadow-xl transition-all duration-300 flex items-center gap-3"
             >
               <Phone className="w-5 h-5" />
-              06 12 42 98 80
+              01 72 51 76 65
             </a>
           </div>
         </div>
@@ -681,11 +681,11 @@ export default function Home() {
       {/* Mobile Sticky Call CTA */}
       <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden">
         <a
-          href="tel:+33612429880"
+          href="tel:+33172517665"
           className="flex items-center justify-center gap-3 w-full py-4 bg-yellow-400 text-[#1e2a4a] font-black text-lg shadow-2xl"
         >
           <Phone className="w-5 h-5" />
-          Appeler maintenant — 06 12 42 98 80
+          Appeler maintenant — 01 72 51 76 65
         </a>
       </div>
 
@@ -787,7 +787,7 @@ function FaqSection() {
     },
     {
       q: 'Comment trouver la bonne pièce pour mon véhicule ?',
-      a: 'Trois méthodes : (1) Saisir votre immatriculation dans notre moteur de recherche, (2) Rechercher par marque/modèle/motorisation dans notre catalogue, (3) Nous appeler directement au 06 12 42 98 80 — nos experts identifient la pièce en quelques minutes.',
+      a: 'Trois méthodes : (1) Saisir votre immatriculation dans notre moteur de recherche, (2) Rechercher par marque/modèle/motorisation dans notre catalogue, (3) Nous appeler directement au 01 72 51 76 65 — nos experts identifient la pièce en quelques minutes.',
     },
     {
       q: 'Quelle garantie avez-vous sur vos pièces ?',
@@ -825,7 +825,7 @@ function FaqSection() {
         </div>
         <div className="mt-10 text-center">
           <p className="text-slate-500 text-sm">Vous avez d&apos;autres questions ?{' '}
-            <a href="tel:+33612429880" className="text-blue-600 font-semibold hover:underline">Appelez-nous</a>{' '}ou{' '}
+            <a href="tel:+33172517665" className="text-blue-600 font-semibold hover:underline">Appelez-nous</a>{' '}ou{' '}
             <a href="/contact" className="text-blue-600 font-semibold hover:underline">écrivez-nous</a>.
           </p>
         </div>

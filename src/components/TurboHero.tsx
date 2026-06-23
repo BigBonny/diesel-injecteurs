@@ -143,11 +143,11 @@ export default function TurboHero() {
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <a
-                  href="tel:+33612429880"
+                  href="tel:+33172517665"
                   className="inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-transparent border-2 border-white/20 text-white font-bold rounded-xl hover:border-yellow-400 hover:text-yellow-400 transition-all duration-300"
                 >
                   <Phone className="w-5 h-5" />
-                  06 12 42 98 80
+                  01 72 51 76 65
                 </a>
               </div>
 

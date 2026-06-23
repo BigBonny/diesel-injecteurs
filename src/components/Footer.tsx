@@ -22,8 +22,8 @@ export default function Footer() {
     ],
     service: [
       { name: 'Commande Rapide', href: '#quick-finder' },
-      { name: 'Livraison & Retours', href: '#' },
-      { name: 'Garantie 2 Ans', href: '#' },
+      { name: 'Livraison & Retours', href: '/cgv' },
+      { name: 'Garantie 2 Ans', href: '/cgv' },
       { name: 'FAQ', href: '#' },
       { name: 'Support Technique', href: '#contact' },
     ],
@@ -107,13 +107,22 @@ export default function Footer() {
 
               {/* Contact Info */}
               <div className="space-y-3">
-                <a href="tel:+33612429880" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
+                <a href="tel:+33172517665" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
                   <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-blue-600/20 transition">
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500">Assistance 24/7</p>
-                    <p className="font-semibold">+33 6 12 42 98 80</p>
+                    <p className="text-xs text-gray-500">Téléphone fixe</p>
+                    <p className="font-semibold">01 72 51 76 65</p>
+                  </div>
+                </a>
+                <a href="https://wa.me/33612429880" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
+                  <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-green-600/20 transition">
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-xs text-gray-500">WhatsApp</p>
+                    <p className="font-semibold">06 12 42 98 80</p>
                   </div>
                 </a>
                 <a href="mailto:diesel.injecteurs@gmail.com" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
@@ -243,13 +252,13 @@ export default function Footer() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-sm text-gray-500">
-                © {new Date().getFullYear()} Injection Diesel. Tous droits réservés.
+                © {new Date().getFullYear()} Diesel Injecteurs. Tous droits réservés.
               </p>
               <div className="flex items-center gap-6 text-sm text-gray-500">
-                <a href="#" className="hover:text-white transition">Mentions légales</a>
-                <a href="#" className="hover:text-white transition">CGV</a>
-                <a href="#" className="hover:text-white transition">Confidentialité</a>
-                <a href="#" className="hover:text-white transition">Cookies</a>
+                <a href="/mentions-legales" className="hover:text-white transition">Mentions légales</a>
+                <a href="/cgv" className="hover:text-white transition">CGV</a>
+                <a href="/confidentialite" className="hover:text-white transition">Confidentialité</a>
+                <a href="/confidentialite" className="hover:text-white transition">Cookies</a>
               </div>
             </div>
           </div>

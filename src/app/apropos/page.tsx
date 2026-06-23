@@ -261,8 +261,9 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Notre Adresse</h3>
               <p className="text-slate-600">
-                123 Rue de l&apos;Industrie<br />
-                75015 Paris, France
+                Diesel Injecteurs<br />
+                SIRET : 848 214 359 00012<br />
+                France
               </p>
             </div>
             <div className="bg-slate-50 rounded-2xl p-8 text-center">
@@ -271,8 +272,8 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Téléphone</h3>
               <p className="text-slate-600">
-                +33 1 23 45 67 89<br />
-                Lun-Ven : 8h-19h
+                <a href="tel:+33172517665" className="hover:text-yellow-600 transition">01 72 51 76 65</a><br />
+                WhatsApp : <a href="https://wa.me/33612429880" className="hover:text-yellow-600 transition">06 12 42 98 80</a>
               </p>
             </div>
             <div className="bg-slate-50 rounded-2xl p-8 text-center">
@@ -281,8 +282,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Email</h3>
               <p className="text-slate-600">
-                contact@injection-diesel.fr<br />
-                support@injection-diesel.fr
+                <a href="mailto:diesel.injecteurs@gmail.com" className="hover:text-yellow-600 transition">diesel.injecteurs@gmail.com</a>
               </p>
             </div>
           </div>
