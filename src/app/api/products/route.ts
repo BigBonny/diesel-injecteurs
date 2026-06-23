@@ -88,7 +88,7 @@ export async function GET(request: Request) {
     let products: Product[] = [];
 
     if (search) {
-      // Title-only search: only return products whose name contains the search term
+      // Search by title and all reference fields so cross-references (e.g. OEM vs supplier ref) return the same product
       let searchTerm = search.trim();
 
       // If the search term is numeric and starts with 0, ignore leading zeros
@@ -96,10 +96,11 @@ export async function GET(request: Request) {
         searchTerm = searchTerm.replace(/^0+/, '') || searchTerm;
       }
 
+      const escaped = searchTerm.replace(/[%_]/g, '\\$&');
       const query = supabase
         .from('products')
         .select('*')
-        .ilike('name', `%${searchTerm}%`);
+        .or(`name.ilike.%${escaped}%,reference.ilike.%${escaped}%,supplier_reference.ilike.%${escaped}%,compatible_references.cs.{${escaped}}`);
 
       products = await fetchAllProducts(query);
     } else if (category && category !== 'Tous') {
