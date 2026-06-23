@@ -88,11 +88,13 @@ export async function GET(request: Request) {
     let products: Product[] = [];
 
     if (search) {
-      // Use fuzzy search function that matches base reference patterns
-      const { data: searchResults } = await supabase
-        .rpc('search_by_reference_base', { search_term: search });
+      // Title-only search: only return products whose name contains the search term
+      const query = supabase
+        .from('products')
+        .select('*')
+        .ilike('name', `%${search}%`);
 
-      products = searchResults || [];
+      products = await fetchAllProducts(query);
     } else if (category && category !== 'Tous') {
       // For pompes-hp, use the category_name field directly (most efficient)
       if (category === 'pompes-hp') {
