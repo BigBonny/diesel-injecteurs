@@ -89,10 +89,17 @@ export async function GET(request: Request) {
 
     if (search) {
       // Title-only search: only return products whose name contains the search term
+      let searchTerm = search.trim();
+
+      // If the search term is numeric and starts with 0, ignore leading zeros
+      if (/^0+\d+$/.test(searchTerm)) {
+        searchTerm = searchTerm.replace(/^0+/, '') || searchTerm;
+      }
+
       const query = supabase
         .from('products')
         .select('*')
-        .ilike('name', `%${search}%`);
+        .ilike('name', `%${searchTerm}%`);
 
       products = await fetchAllProducts(query);
     } else if (category && category !== 'Tous') {
