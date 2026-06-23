@@ -3,6 +3,7 @@ import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "./CartContext";
+import EmailCapturePopup from "@/components/EmailCapturePopup";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -95,7 +96,10 @@ export default function RootLayout({
           <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KV6FGZ7L"
             height="0" width="0" style={{ display: 'none', visibility: 'hidden' }} />
         </noscript>
-        <CartProvider>{children}</CartProvider>
+        <CartProvider>
+          {children}
+          <EmailCapturePopup />
+        </CartProvider>
       </body>
     </html>
   );

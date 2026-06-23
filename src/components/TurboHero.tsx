@@ -24,7 +24,6 @@ const ENGINES: Record<string, string[]> = {
 const PIECES = ['Turbo', 'Injecteur', 'Kit CHRA', 'Pompe injection', 'Vanne EGR'];
 
 export default function TurboHero() {
-  const [query, setQuery] = useState('');
   const [plate, setPlate] = useState('');
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<'plaque' | 'vehicule'>('plaque');
@@ -101,26 +100,6 @@ export default function TurboHero() {
                 Turbos & injecteurs neufs et reconditionnés OEM. <span className="text-yellow-400 font-semibold">Garantie 2 ans</span> · Livraison <span className="text-white font-semibold">24-48h</span> · Paiement 3x sans frais.
               </p>
 
-              <div className={`flex flex-col sm:flex-row gap-3 mb-8 transition-all duration-700 delay-300 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-                <div className="flex-1 relative">
-                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
-                  <input
-                    type="text"
-                    value={query}
-                    onChange={e => setQuery(e.target.value)}
-                    placeholder="Marque, modèle, référence… ex: Renault Clio 1.5 dCi"
-                    className="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:border-yellow-400 focus:bg-white/15 transition-all text-sm sm:text-base"
-                  />
-                </div>
-                <Link
-                  href={`/produits${query ? `?search=${encodeURIComponent(query)}` : ''}`}
-                  className="group flex items-center justify-center gap-2 px-8 py-4 bg-yellow-400 text-[#0d1b3e] font-black text-base rounded-xl hover:bg-yellow-300 hover:shadow-2xl hover:shadow-yellow-400/30 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap"
-                >
-                  Trouver ma pièce
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-
               <div className={`flex flex-wrap gap-2 mb-8 transition-all duration-700 delay-400 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
                 <span className="text-slate-400 text-sm self-center mr-1">Populaire :</span>
                 {['Turbos Renault', 'Injecteurs Bosch', 'Kit CHRA Peugeot', 'Turbos BMW'].map(t => (
@@ -137,16 +116,16 @@ export default function TurboHero() {
               <div className={`flex flex-col sm:flex-row gap-3 mb-6 transition-all duration-700 delay-500 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
                 <Link
                   href="/produits"
-                  className="group inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-white text-[#0d1b3e] font-bold rounded-xl hover:bg-yellow-400 hover:shadow-2xl hover:shadow-yellow-400/20 transition-all duration-300"
+                  className="group inline-flex items-center justify-center gap-2 px-6 py-3 text-white/70 font-semibold rounded-xl hover:text-yellow-400 transition-all duration-300"
                 >
-                  Voir le catalogue
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  Voir tout le catalogue
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <a
                   href="tel:+33172517665"
-                  className="inline-flex items-center justify-center gap-3 px-6 py-3.5 bg-transparent border-2 border-white/20 text-white font-bold rounded-xl hover:border-yellow-400 hover:text-yellow-400 transition-all duration-300"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 text-white/70 font-semibold rounded-xl hover:text-yellow-400 transition-all duration-300"
                 >
-                  <Phone className="w-5 h-5" />
+                  <Phone className="w-4 h-4" />
                   01 72 51 76 65
                 </a>
               </div>
@@ -166,8 +145,8 @@ export default function TurboHero() {
               </div>
             </div>
 
-            {/* RIGHT: Two-tab search bar — hidden on mobile */}
-            <div className={`hidden lg:block transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
+            {/* RIGHT: Two-tab search bar — primary CTA, visible on all screens */}
+            <div className={`block transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
 
               {/* Label above */}
               <p className="text-yellow-400 text-xs font-bold uppercase tracking-widest mb-3 flex items-center gap-2">

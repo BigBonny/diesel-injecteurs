@@ -209,6 +209,7 @@ export default function Home() {
                   src="/assets/vid1.mp4" 
                   controls
                   playsInline
+                  preload="none"
                   className="w-full h-full object-cover"
                   poster="https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=800&fit=crop"
                 />
@@ -226,6 +227,7 @@ export default function Home() {
                   src="/assets/vid2.mp4" 
                   controls
                   playsInline
+                  preload="none"
                   className="w-full h-full object-cover"
                   poster="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=800&fit=crop"
                 />
