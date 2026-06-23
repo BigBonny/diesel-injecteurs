@@ -258,7 +258,7 @@ export default function Footer() {
                 <a href="/mentions-legales" className="hover:text-white transition">Mentions légales</a>
                 <a href="/cgv" className="hover:text-white transition">CGV</a>
                 <a href="/confidentialite" className="hover:text-white transition">Confidentialité</a>
-                <a href="/confidentialite" className="hover:text-white transition">Cookies</a>
+                <a href="/confidentialite#cookies" className="hover:text-white transition">Cookies</a>
               </div>
             </div>
           </div>

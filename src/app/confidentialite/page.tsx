@@ -89,7 +89,7 @@ export default function ConfidentialitePage() {
           </ul>
         </section>
 
-        <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
+        <section id="cookies" className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">7. Cookies</h2>
           <p className="text-slate-700 leading-relaxed mb-4">
             Notre site utilise des cookies pour améliorer votre expérience de navigation. Nous utilisons notamment :
