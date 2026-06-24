@@ -233,18 +233,24 @@ function ProductsContent() {
       let matchesSearch = true;
       
       if (searchQuery !== '') {
-        const searchLower = searchQuery.toLowerCase();
+        let searchTerm = searchQuery.toLowerCase().trim();
+
+        // If the search term is numeric and starts with 0, ignore leading zeros
+        if (/^0+\d+$/.test(searchTerm)) {
+          searchTerm = searchTerm.replace(/^0+/, '') || searchTerm;
+        }
+
         // Extract base pattern for fuzzy matching (e.g., "03L130270B" -> "03L13027")
-        const basePattern = searchLower.length >= 8 ? searchLower.substring(0, 8) : searchLower;
+        const basePattern = searchTerm.length >= 8 ? searchTerm.substring(0, 8) : searchTerm;
         // Extract suffix letter if present (e.g., "03L130270B" -> "b")
-        const suffixMatch = searchLower.match(/[a-z]$/);
+        const suffixMatch = searchTerm.match(/[a-z]$/);
         const suffix = suffixMatch ? suffixMatch[0] : null;
-        
-        const nameMatch = product.name.toLowerCase().includes(searchLower);
-        const refMatch = product.reference ? product.reference.toLowerCase().includes(searchLower) : false;
-        const supplierRefMatch = (product as any).supplier_reference ? (product as any).supplier_reference.toLowerCase().includes(searchLower) : false;
+
+        const nameMatch = product.name.toLowerCase().includes(searchTerm);
+        const refMatch = product.reference ? product.reference.toLowerCase().includes(searchTerm) : false;
+        const supplierRefMatch = (product as any).supplier_reference ? (product as any).supplier_reference.toLowerCase().includes(searchTerm) : false;
         // Use base pattern + suffix for fuzzy matching in compatible_references
-        const compatibleRefsMatch = (product as any).compatible_references && Array.isArray((product as any).compatible_references) 
+        const compatibleRefsMatch = (product as any).compatible_references && Array.isArray((product as any).compatible_references)
           ? (product as any).compatible_references.some((ref: string) => {
               const refLower = ref.toLowerCase();
               // Must contain base pattern AND end with suffix if suffix was specified
