@@ -97,12 +97,33 @@ export async function GET(request: Request) {
       }
 
       const escaped = searchTerm.replace(/[%_]/g, '\\$&');
-      const query = supabase
+
+      // Query text fields (name, reference, supplier_reference)
+      const textQuery = supabase
         .from('products')
         .select('*')
-        .or(`name.ilike.%${escaped}%,reference.ilike.%${escaped}%,supplier_reference.ilike.%${escaped}%,compatible_references.cs.{${escaped}}`);
+        .or(`name.ilike.%${escaped}%,reference.ilike.%${escaped}%,supplier_reference.ilike.%${escaped}%`);
 
-      products = await fetchAllProducts(query);
+      // Query array field (compatible_references) separately for reliability
+      const arrayQuery = supabase
+        .from('products')
+        .select('*')
+        .contains('compatible_references', [searchTerm]);
+
+      const [textResults, arrayResults] = await Promise.all([
+        fetchAllProducts(textQuery),
+        fetchAllProducts(arrayQuery)
+      ]);
+
+      // Merge and deduplicate by id
+      const seen = new Set<string | number>();
+      products = [];
+      for (const product of [...textResults, ...arrayResults]) {
+        if (!seen.has(product.id)) {
+          seen.add(product.id);
+          products.push(product);
+        }
+      }
     } else if (category && category !== 'Tous') {
       // For pompes-hp, use the category_name field directly (most efficient)
       if (category === 'pompes-hp') {
