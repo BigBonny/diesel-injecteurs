@@ -96,24 +96,35 @@ export async function GET(request: Request) {
         searchTerm = searchTerm.replace(/^0+/, '') || searchTerm;
       }
 
+      console.log('[API search] raw:', search, 'normalized:', searchTerm);
+
       const escaped = searchTerm.replace(/[%_]/g, '\\$&');
 
       // Query text fields (name, reference, supplier_reference)
-      const textQuery = supabase
-        .from('products')
-        .select('*')
-        .or(`name.ilike.%${escaped}%,reference.ilike.%${escaped}%,supplier_reference.ilike.%${escaped}%`);
+      let textResults: Product[] = [];
+      try {
+        const textQuery = supabase
+          .from('products')
+          .select('*')
+          .or(`name.ilike.%${escaped}%,reference.ilike.%${escaped}%,supplier_reference.ilike.%${escaped}%`);
+        textResults = await fetchAllProducts(textQuery);
+        console.log('[API search] text query results:', textResults.length);
+      } catch (err) {
+        console.error('[API search] text query failed:', err);
+      }
 
       // Query array field (compatible_references) separately for reliability
-      const arrayQuery = supabase
-        .from('products')
-        .select('*')
-        .contains('compatible_references', [searchTerm]);
-
-      const [textResults, arrayResults] = await Promise.all([
-        fetchAllProducts(textQuery),
-        fetchAllProducts(arrayQuery)
-      ]);
+      let arrayResults: Product[] = [];
+      try {
+        const arrayQuery = supabase
+          .from('products')
+          .select('*')
+          .contains('compatible_references', [searchTerm]);
+        arrayResults = await fetchAllProducts(arrayQuery);
+        console.log('[API search] array query results:', arrayResults.length);
+      } catch (err) {
+        console.error('[API search] array query failed:', err);
+      }
 
       // Merge and deduplicate by id
       const seen = new Set<string | number>();
@@ -124,6 +135,7 @@ export async function GET(request: Request) {
           products.push(product);
         }
       }
+      console.log('[API search] total merged products:', products.length);
     } else if (category && category !== 'Tous') {
       // For pompes-hp, use the category_name field directly (most efficient)
       if (category === 'pompes-hp') {

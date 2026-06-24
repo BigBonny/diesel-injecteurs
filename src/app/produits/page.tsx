@@ -69,7 +69,7 @@ function ProductsContent() {
         if (response.ok) {
           const data = await response.json();
           const products = data.products || [];
-          console.log('Products received:', products.length);
+          console.log('[Products page] API response:', products.length, 'products for search:', searchQuery);
           
           setAllProducts(products);
         }
@@ -279,6 +279,7 @@ function ProductsContent() {
         break;
     }
 
+    console.log('[Products page] filtered products:', result.length, 'from', allProducts.length, 'for search:', searchQuery);
     return result;
   }, [allProducts, searchQuery, priceRange, sortBy, searchParams]);
 
