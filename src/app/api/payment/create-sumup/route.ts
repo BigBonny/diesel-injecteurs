@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { createSumUpCheckout } from '@/lib/sumup';
 import { supabase } from '@/lib/supabase';
+import { createPrestashopOrder } from '@/lib/prestashop';
 
 export async function POST(request: Request) {
   try {
@@ -23,6 +24,9 @@ export async function POST(request: Request) {
       baseUrl,
     });
 
+    // Create order in PrestaShop BEFORE payment (same as Sogecommerce flow)
+    const psOrderId = await createPrestashopOrder(orderId, amount, customerEmail, customerName || 'Client');
+
     const paymentResponse = await createSumUpCheckout({
       amount,
       currency: currency || 'EUR',
@@ -44,6 +48,7 @@ export async function POST(request: Request) {
       customer_name: customerName || 'Client',
       status: 'pending',
       payment_method: 'sumup',
+      prestashop_order_id: psOrderId ? parseInt(psOrderId) : null,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     });

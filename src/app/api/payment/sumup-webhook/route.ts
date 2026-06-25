@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { sendPaymentNotificationEmail } from '@/lib/notifications';
+import { updatePrestashopOrderStatus } from '@/lib/prestashop';
 
 interface SumUpWebhookPayload {
   event_type: string;
@@ -57,10 +58,12 @@ export async function POST(request: Request) {
     }
 
     // Update order status
+    const transactionId = payload.transactions?.[0]?.id;
     const { error: updateError } = await supabase
       .from('orders')
       .update({
         status,
+        transaction_id: transactionId,
         updated_at: new Date().toISOString(),
       })
       .eq('id', orderId);
@@ -91,6 +94,20 @@ export async function POST(request: Request) {
           console.log('[SumUp webhook] Notification email sent for order:', orderId);
         } catch (emailError) {
           console.error('[SumUp webhook] Failed to send notification email:', emailError);
+        }
+
+        // Update PrestaShop order status to paid
+        if (order.prestashop_order_id) {
+          try {
+            await updatePrestashopOrderStatus(
+              order.prestashop_order_id,
+              'paid',
+              order.amount || payload.amount || 0
+            );
+            console.log('[SumUp webhook] PrestaShop order marked as paid:', order.prestashop_order_id);
+          } catch (psError) {
+            console.error('[SumUp webhook] Failed to update PrestaShop order:', psError);
+          }
         }
       }
     }

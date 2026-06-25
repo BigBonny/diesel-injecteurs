@@ -2,9 +2,7 @@ import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { supabase } from '@/lib/supabase';
 import { sendPaymentNotificationEmail } from '@/lib/notifications';
-
-const PS_SCRIPT_URL = process.env.PS_SCRIPT_URL || 'http://192.162.69.186/create_ps_order.php';
-const PS_SCRIPT_SECRET = process.env.PS_SCRIPT_SECRET || 'DIESEL_ORDER_SECRET_2024';
+import { updatePrestashopOrderStatus } from '@/lib/prestashop';
 
 interface CmiNotification {
   vads_trans_status: string;
@@ -157,42 +155,17 @@ export async function POST(request: Request) {
     );
 
     // Update PrestaShop order status (order was already created at checkout)
-    // Status map: paid=2, cancelled=6, refused=8, failed=8
-    const psStatusMap: Record<string, number> = {
-      paid: 2,
-      cancelled: 6,
-      refused: 8,
-      failed: 8,
-      expired: 6,
-    };
-    const psNewState = psStatusMap[finalStatus];
-
-    if (psNewState && orderData?.prestashop_order_id) {
+    if (orderData?.prestashop_order_id) {
       try {
-        const psOrderId = orderData.prestashop_order_id;
-        console.log(`Updating PS order ${psOrderId} to state ${psNewState} via script...`);
-
-        const body = new URLSearchParams({
-          token:    PS_SCRIPT_SECRET,
-          action:   'update_status',
-          order_id: String(psOrderId),
-          state:    String(psNewState),
-          amount:   amount.toFixed(2),
-        });
-
-        const resp = await fetch(PS_SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: body.toString(),
-          signal: AbortSignal.timeout(10000),
-        });
-
-        const text = await resp.text();
-        console.log('PS status update response:', resp.status, text.substring(0, 200));
+        await updatePrestashopOrderStatus(
+          orderData.prestashop_order_id,
+          finalStatus as 'paid' | 'cancelled' | 'refused' | 'failed' | 'expired',
+          amount
+        );
       } catch (psError) {
         console.error('Error updating PrestaShop order status:', psError);
       }
-    } else if (psNewState) {
+    } else {
       console.log('PS order update skipped - no prestashop_order_id');
     }
 
