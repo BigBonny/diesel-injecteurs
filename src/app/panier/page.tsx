@@ -18,6 +18,7 @@ export default function CartPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [customerEmail, setCustomerEmail] = useState('');
   const [customerName, setCustomerName] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<'sogecommerce' | 'sumup'>('sogecommerce');
 
   const discount = promoApplied ? subtotal * 0.1 : 0;
   // Temporarily disable shipping and core charge for testing
@@ -54,7 +55,10 @@ export default function CartPage() {
         quantity: item.quantity,
       }));
 
-      const response = await fetch('/api/payment/create-form', {
+      const isSumUp = paymentMethod === 'sumup';
+      const apiUrl = isSumUp ? '/api/payment/create-sumup' : '/api/payment/create-form';
+
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -68,23 +72,33 @@ export default function CartPage() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create payment');
+        const errorData = await response.json().catch(() => ({ error: 'Failed to create payment' }));
+        throw new Error(errorData.error || 'Failed to create payment');
       }
 
-      // Get HTML form and render it
-      const html = await response.text();
-      
-      // Create a new window/tab with the form
-      const paymentWindow = window.open('', '_blank');
-      if (paymentWindow) {
-        paymentWindow.document.write(html);
-        paymentWindow.document.close();
+      if (isSumUp) {
+        const data = await response.json();
+        if (!data.checkoutUrl) {
+          throw new Error('No SumUp checkout URL received');
+        }
+        window.location.href = data.checkoutUrl;
         clearCart();
       } else {
-        // Fallback: render form in current page
-        document.open();
-        document.write(html);
-        document.close();
+        // Sogecommerce: get HTML form and render it
+        const html = await response.text();
+        
+        // Create a new window/tab with the form
+        const paymentWindow = window.open('', '_blank');
+        if (paymentWindow) {
+          paymentWindow.document.write(html);
+          paymentWindow.document.close();
+          clearCart();
+        } else {
+          // Fallback: render form in current page
+          document.open();
+          document.write(html);
+          document.close();
+        }
       }
     } catch (error) {
       console.error('Payment error:', error);
@@ -288,6 +302,36 @@ export default function CartPage() {
 
                 {/* Customer Info */}
                 <div className="space-y-4 mb-6">
+                  <div>
+                    <label className="block text-sm font-medium text-stone-700 mb-2">Moyen de paiement *</label>
+                    <div className="grid grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('sogecommerce')}
+                        className={`px-4 py-3 rounded-xl border text-sm font-medium transition ${
+                          paymentMethod === 'sogecommerce'
+                            ? 'border-yellow-400 bg-yellow-50 text-[#1e2a4a]'
+                            : 'border-slate-200 bg-slate-50 text-stone-600 hover:border-slate-300'
+                        }`}
+                      >
+                        Carte bancaire
+                        <span className="block text-xs font-normal text-stone-500">Sogecommerce</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('sumup')}
+                        className={`px-4 py-3 rounded-xl border text-sm font-medium transition ${
+                          paymentMethod === 'sumup'
+                            ? 'border-yellow-400 bg-yellow-50 text-[#1e2a4a]'
+                            : 'border-slate-200 bg-slate-50 text-stone-600 hover:border-slate-300'
+                        }`}
+                      >
+                        SumUp
+                        <span className="block text-xs font-normal text-stone-500">Carte / Apple Pay</span>
+                      </button>
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-sm font-medium text-stone-700 mb-2">Email *</label>
                     <input
