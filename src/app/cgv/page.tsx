@@ -42,7 +42,7 @@ export default function CGVPage() {
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">2. Objet</h2>
           <p className="text-slate-700 leading-relaxed">
-            Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre Diesel Injecteurs et toute personne physique ou morale (ci-après « le Client ») souhaitant effectuer un achat via le site <strong>diesel-injecteurs.com</strong>. Tout achat implique l'acceptation sans réserve des présentes CGV.
+            Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre Diesel Injecteurs et toute personne physique ou morale (ci-après « le Client ») souhaitant effectuer un achat via le site <strong>diesel-turbo-injection.com</strong>. Tout achat implique l'acceptation sans réserve des présentes CGV.
           </p>
         </section>
 
@@ -63,7 +63,7 @@ export default function CGVPage() {
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">5. Commande</h2>
           <p className="text-slate-700 leading-relaxed mb-4">
-            Le Client passe commande en ligne depuis le site diesel-injecteurs.com. La commande n'est définitive qu'après confirmation du paiement. Un email de confirmation est envoyé au Client à l'adresse fournie lors de la commande.
+            Le Client passe commande en ligne depuis le site diesel-turbo-injection.com. La commande n'est définitive qu'après confirmation du paiement. Un email de confirmation est envoyé au Client à l'adresse fournie lors de la commande.
           </p>
           <p className="text-slate-700 leading-relaxed">
             Diesel Injecteurs se réserve le droit d'annuler toute commande d'un Client avec lequel existerait un litige relatif au paiement d'une commande antérieure, ou en cas de rupture de stock imprévue.

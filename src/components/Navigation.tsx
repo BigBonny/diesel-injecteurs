@@ -95,7 +95,7 @@ function NavigationInner() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between items-center py-2 gap-3">
               <span className="text-slate-400 text-xs sm:text-sm font-medium hidden sm:block">
-                Bienvenue sur <span className="text-white font-semibold">Diesel-injecteurs.com</span>
+                Bienvenue sur <span className="text-white font-semibold">Diesel-turbo-injection.com</span>
               </span>
               <div className="flex items-center gap-3 ml-auto">
                 <a href="tel:+33612429880" className="flex items-center gap-2 text-white hover:text-yellow-400 transition text-xs sm:text-sm font-semibold">

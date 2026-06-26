@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     const hmacKey = isProd
       ? (process.env.SOGECOMMERCE_PROD_HMAC_KEY || 'c7yvgXLJnsAABgrb')
       : (process.env.SOGECOMMERCE_TEST_HMAC_KEY || 'Fm2MhXURHIFtmSx7dUgUEK21en6opBYUGE3qSO0w2jXif');
-    const returnBase = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-injecteurs.vercel.app';
+    const returnBase = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-turbo-injection.com';
 
     // Create order in PrestaShop BEFORE payment (status: En attente de paiement)
     const psOrderId = await createPrestashopOrder(orderId, amount, customerEmail, customerName);

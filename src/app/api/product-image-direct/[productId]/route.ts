@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'https://diesel-injecteurs.com/api';
+const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'https://diesel-turbo-injection.com/api';
 const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
 
 export async function GET(

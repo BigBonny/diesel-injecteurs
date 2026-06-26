@@ -37,6 +37,6 @@ export async function POST(request: Request) {
 export async function GET() {
   return NextResponse.json({ 
     message: 'Send POST with form data to test notification endpoint',
-    testCommand: `curl -X POST https://diesel-injecteurs.com/api/payment/debug-notification -H "Content-Type: application/x-www-form-urlencoded" -d "vads_trans_status=AUTHORISED&vads_order_id=TEST123&vads_amount=10000"`
+    testCommand: `curl -X POST https://diesel-turbo-injection.com/api/payment/debug-notification -H "Content-Type: application/x-www-form-urlencoded" -d "vads_trans_status=AUTHORISED&vads_order_id=TEST123&vads_amount=10000"`
   });
 }

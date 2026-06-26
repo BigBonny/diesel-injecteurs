@@ -41,7 +41,7 @@ export default function MentionsLegalesPage() {
               <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>
             </p>
             <p><span className="font-semibold">Site web :</span>{' '}
-              <a href="https://diesel-injecteurs.com" className="text-yellow-600 hover:underline">diesel-injecteurs.com</a>
+              <a href="https://diesel-turbo-injection.com" className="text-yellow-600 hover:underline">diesel-turbo-injection.com</a>
             </p>
           </div>
         </section>

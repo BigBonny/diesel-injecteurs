@@ -22,7 +22,7 @@ export async function GET() {
       return new NextResponse(`No products found. Count: ${products?.length}`, { status: 404 });
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-injecteurs.com';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-turbo-injection.com';
     const merchantId = process.env.GOOGLE_MERCHANT_ID || '5485884670';
 
     const feedItems = products.map((p: any) => {

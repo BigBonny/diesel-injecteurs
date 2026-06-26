@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 
     // Simple redirect to PrestaShop checkout
     // User will need to add products manually in PrestaShop
-    const checkoutUrl = 'https://diesel-injecteurs.com/commande';
+    const checkoutUrl = 'https://diesel-turbo-injection.com/commande';
 
     return NextResponse.json({
       success: true,

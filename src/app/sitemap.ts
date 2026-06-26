@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://diesel-injecteurs.com';
+  const baseUrl = 'https://diesel-turbo-injection.com';
 
   // Static pages
   const staticPages = [

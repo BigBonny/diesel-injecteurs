@@ -35,8 +35,8 @@ export async function GET() {
       vads_cust_email: 'test@example.com',
       vads_cust_first_name: 'Test',
       vads_cust_last_name: 'User',
-      vads_url_return: 'https://diesel-injecteurs.vercel.app/payment/success',
-      vads_url_cancel: 'https://diesel-injecteurs.vercel.app/payment/cancel',
+      vads_url_return: 'https://diesel-turbo-injection.com/payment/success',
+      vads_url_cancel: 'https://diesel-turbo-injection.com/payment/cancel',
       // NOTICE: No vads_url_check, vads_url_refused, vads_url_error
     };
     

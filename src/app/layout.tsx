@@ -30,11 +30,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Injection Diesel - Pièces Auto & Turbo de Qualité",
     description: "Turbos et injecteurs neufs et reconditionnés OEM. Garantie 2 ans, livraison 24-48h.",
-    url: "https://diesel-injecteurs.com",
+    url: "https://diesel-turbo-injection.com",
     siteName: "Injection Diesel",
     images: [
       {
-        url: "https://diesel-injecteurs.com/images/favicon.png",
+        url: "https://diesel-turbo-injection.com/images/favicon.png",
         width: 512,
         height: 512,
         alt: "Injection Diesel Logo",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "Injection Diesel - Pièces Auto & Turbo de Qualité",
     description: "Turbos et injecteurs neufs et reconditionnés OEM. Garantie 2 ans, livraison 24-48h.",
-    images: ["https://diesel-injecteurs.com/images/favicon.png"],
+    images: ["https://diesel-turbo-injection.com/images/favicon.png"],
   },
   robots: {
     index: true,
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://diesel-injecteurs.com",
+    canonical: "https://diesel-turbo-injection.com",
   },
   verification: {
     google: "i0kVhsF46nK9jJXAmH2IkztE4PPMcjuDRZp2bJW17pI",

@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     ];
     
     const baseUrl = 'https://sogecommerce.societegenerale.eu/vads-payment/';
-    const returnBase = 'https://diesel-injecteurs.vercel.app';
+    const returnBase = 'https://diesel-turbo-injection.com';
     
     const now = new Date();
     const transDate = now.toISOString().replace(/[-:T.Z]/g, '').slice(0, 14);

@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const siteId = process.env.AFONE_PROD_SITE_ID || 'VAD-393-138';
     const hmacKey = process.env.AFONE_PROD_HMAC_KEY || 'lM7iC1bY0gWv9ZxdQ15H';
     const baseUrl = 'https://sogecommerce.societegenerale.eu/vads-payment/';
-    const returnBase = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-injecteurs.vercel.app';
+    const returnBase = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-turbo-injection.com';
 
     const now = new Date();
     const transDate = now.toISOString().replace(/[-:T.Z]/g, '').slice(0, 14);

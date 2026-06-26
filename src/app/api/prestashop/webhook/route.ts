@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
-const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'https://diesel-injecteurs.com/api';
+const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'https://diesel-turbo-injection.com/api';
 const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
 
 // Webhook secret for verifying requests from PrestaShop

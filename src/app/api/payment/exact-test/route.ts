@@ -9,7 +9,7 @@ export async function GET() {
     const orderId = 'TEST-' + Date.now();
     const amount = 10.00; // 10 EUR like in cart
     
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-injecteurs.vercel.app';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-turbo-injection.com';
     
     // This calls the EXACT same function as the cart
     const paymentResponse = await createSogecommercePayment({
@@ -82,11 +82,11 @@ export async function POST(request: Request) {
       vads_cust_email: 'test@example.com',
       vads_cust_first_name: 'Test',
       vads_cust_last_name: 'User',
-      vads_url_return: `https://diesel-injecteurs.vercel.app/payment/success?orderId=${orderId}`,
-      vads_url_cancel: `https://diesel-injecteurs.vercel.app/payment/cancel?orderId=${orderId}`,
-      vads_url_check: 'https://diesel-injecteurs.vercel.app/api/payment/notification',
-      vads_url_refused: `https://diesel-injecteurs.vercel.app/payment/cancel?orderId=${orderId}`,
-      vads_url_error: `https://diesel-injecteurs.vercel.app/payment/cancel?orderId=${orderId}`,
+      vads_url_return: `https://diesel-turbo-injection.com/payment/success?orderId=${orderId}`,
+      vads_url_cancel: `https://diesel-turbo-injection.com/payment/cancel?orderId=${orderId}`,
+      vads_url_check: 'https://diesel-turbo-injection.com/api/payment/notification',
+      vads_url_refused: `https://diesel-turbo-injection.com/payment/cancel?orderId=${orderId}`,
+      vads_url_error: `https://diesel-turbo-injection.com/payment/cancel?orderId=${orderId}`,
     };
     
     // Remove empty values

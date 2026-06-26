@@ -47,8 +47,8 @@ export async function GET(request: Request) {
     vadsFields.vads_cust_email = 'test@example.com';
     vadsFields.vads_cust_first_name = 'Test';
     vadsFields.vads_cust_last_name = 'User';
-    vadsFields.vads_url_return = 'https://diesel-injecteurs.vercel.app/payment/success';
-    vadsFields.vads_url_cancel = 'https://diesel-injecteurs.vercel.app/payment/cancel';
+    vadsFields.vads_url_return = 'https://diesel-turbo-injection.com/payment/success';
+    vadsFields.vads_url_cancel = 'https://diesel-turbo-injection.com/payment/cancel';
     
     // Get sorted keys
     const vadsKeys = Object.keys(vadsFields).sort((a, b) => a.localeCompare(b));
