@@ -61,7 +61,7 @@ export const metadata: Metadata = {
     canonical: "https://diesel-turbo-injection.com",
   },
   verification: {
-    google: "i0kVhsF46nK9jJXAmH2IkztE4PPMcjuDRZp2bJW17pI",
+    google: "vh77uDdWINwPZPCELbGTpoN6y66H8pReMusX8KxN3aA",
   },
 };
 
