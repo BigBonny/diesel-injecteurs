@@ -33,6 +33,7 @@ export async function GET() {
       const mpn = p.reference || p.supplier_reference || id;
       const desc = escapeXml((p.description || name).replace(/<[^>]*>/g, '').slice(0, 5000));
 
+      const category = getGoogleCategory(name);
       return `    <item>
       <g:id>${id}</g:id>
       <title>${escapeXml(name)}</title>
@@ -43,9 +44,10 @@ export async function GET() {
       <g:availability>in stock</g:availability>
       <g:price>${price} EUR</g:price>
       <g:brand>${brand}</g:brand>
-      <g:mpn>${mpn}</g:mpn>
-      <g:google_product_category>783</g:google_product_category>
-      <g:product_type>${categorizeProduct(name)}</g:product_type>
+      <g:mpn>${escapeXml(mpn)}</g:mpn>
+      <g:identifier_exists>false</g:identifier_exists>
+      <g:google_product_category>${category}</g:google_product_category>
+      <g:product_type>${escapeXml(categorizeProduct(name))}</g:product_type>
       <g:shipping>
         <g:country>FR</g:country>
         <g:service>Standard</g:service>
@@ -93,6 +95,15 @@ function extractBrand(name: string): string {
     }
   }
   return 'OEM';
+}
+
+function getGoogleCategory(name: string): string {
+  const lower = name.toLowerCase();
+  if (lower.includes('turbo') || lower.includes('chra') || lower.includes('cartouche')) return '3577';
+  if (lower.includes('injecteur')) return '8237';
+  if (lower.includes('pompe')) return '8166';
+  if (lower.includes('egr')) return '8471';
+  return '3577';
 }
 
 function categorizeProduct(name: string): string {
