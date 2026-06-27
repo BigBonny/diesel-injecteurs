@@ -12,9 +12,6 @@ interface Consent {
   marketing: boolean;
 }
 
-interface WindowWithDataLayer extends Window {
-  dataLayer?: Array<Record<string, unknown>>;
-}
 
 export default function CookieConsent() {
   const [visible, setVisible] = useState(false);
@@ -46,10 +43,8 @@ export default function CookieConsent() {
 
   const pushConsentToDataLayer = (consent: Partial<Consent>) => {
     if (typeof window === 'undefined') return;
-    const w = window as WindowWithDataLayer;
-    if (!w.dataLayer) return;
-
-    w.dataLayer.push({
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
       event: 'consent_update',
       consent: {
         ad_storage: consent.marketing ? 'granted' : 'denied',
