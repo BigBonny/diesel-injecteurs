@@ -1,3 +1,9 @@
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
 User-agent: *
 Allow: /
 Disallow: /api/
@@ -6,8 +12,8 @@ Disallow: /connexion
 Disallow: /compte
 Disallow: /panier
 
-Sitemap: https://diesel-injecteurs.com/sitemap.xml
+Sitemap: https://diesel-turbo-injection.com/sitemap.xml
 
 # Google Merchant Center Product Feed
 # Submit this URL in your Merchant Center account:
-# https://diesel-injecteurs.com/api/feed/google-merchant
+# https://diesel-turbo-injection.com/api/feed/google-merchant
