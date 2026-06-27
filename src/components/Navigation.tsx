@@ -141,7 +141,7 @@ function NavigationInner() {
                 <img 
                   src="/assets/logo.png" 
                   alt="Injection Diesel Logo" 
-                  className="h-24 sm:h-32 w-auto"
+                  className="h-32 sm:h-44 w-auto"
                 />
               </Link>
 
