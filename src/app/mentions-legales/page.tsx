@@ -31,6 +31,7 @@ export default function MentionsLegalesPage() {
             <p><span className="font-semibold">Forme juridique :</span> Entreprise individuelle</p>
             <p><span className="font-semibold">SIRET :</span> 848 214 359 00012</p>
             <p><span className="font-semibold">Adresse :</span> France</p>
+            <p><span className="font-semibold">TVA intracommunautaire :</span> Non assujetti (micro-entreprise)</p>
             <p><span className="font-semibold">Téléphone :</span>{' '}
               <a href="tel:+33172517665" className="text-yellow-600 hover:underline">01 72 51 76 65</a>
             </p>
