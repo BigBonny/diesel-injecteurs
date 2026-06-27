@@ -1,16 +1,19 @@
 'use client';
 
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ChatWidget from '@/components/ChatWidget';
 import { CheckCircle, ShoppingBag, Home, Package } from 'lucide-react';
+import { gtmPurchase } from '@/lib/gtm';
 
 function PaymentSuccessContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get('orderId');
+
+  const purchaseFired = useRef(false);
 
   useEffect(() => {
     // Verify order status with Supabase
@@ -27,6 +30,17 @@ function PaymentSuccessContent() {
         }
       }
     };
+
+    // Fire purchase event once
+    if (orderId && !purchaseFired.current) {
+      purchaseFired.current = true;
+      try {
+        const raw = sessionStorage.getItem('last_cart');
+        const cartItems = raw ? JSON.parse(raw) : [];
+        const total = cartItems.reduce((sum: number, i: { price: number; quantity: number }) => sum + i.price * i.quantity, 0);
+        gtmPurchase(orderId, cartItems, total);
+      } catch { /* ignore */ }
+    }
 
     verifyOrder();
   }, [orderId]);

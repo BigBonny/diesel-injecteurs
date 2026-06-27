@@ -6,6 +6,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ChatWidget from '@/components/ChatWidget';
 import { useCart } from '@/app/CartContext';
+import { gtmBeginCheckout } from '@/lib/gtm';
 import { 
   ShoppingCart, Trash2, Plus, Minus, ArrowRight, Package, 
   Truck, ShieldCheck, CreditCard, Gift, ChevronRight, RotateCcw, Loader2
@@ -43,6 +44,9 @@ export default function CartPage() {
     }
 
     setIsProcessing(true);
+    const cartSnapshot = items.map(i => ({ id: i.id, name: i.name, price: i.price, quantity: i.quantity }));
+    gtmBeginCheckout(cartSnapshot, finalTotal);
+    try { sessionStorage.setItem('last_cart', JSON.stringify(cartSnapshot)); } catch { /* ignore */ }
 
     try {
       const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;

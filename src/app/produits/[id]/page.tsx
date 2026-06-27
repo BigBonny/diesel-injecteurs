@@ -12,6 +12,7 @@ import {
   Package, RotateCcw
 } from 'lucide-react';
 import { useCart } from '@/app/CartContext';
+import { gtmViewItem, gtmAddToCart } from '@/lib/gtm';
 
 const CORE_CHARGE_AMOUNT = 80;
 
@@ -39,6 +40,7 @@ export default function ProductDetailPage() {
           const productData = await response.json();
           console.log('Parsed product data:', productData);
           setProduct(productData);
+          gtmViewItem({ id: productData.id, name: productData.name, price: typeof productData.price === 'string' ? parseFloat(productData.price) : productData.price });
         } else {
           console.error('API response not OK');
         }
@@ -124,6 +126,7 @@ export default function ProductDetailPage() {
         coreChargeAccepted,
         coreChargeAmount: CORE_CHARGE_AMOUNT,
       });
+      gtmAddToCart({ id: product.id, name: product.name, price: numericPrice, quantity });
       setAddedToCart(true);
       setTimeout(() => setAddedToCart(false), 3000);
     }
