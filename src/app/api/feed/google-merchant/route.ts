@@ -9,14 +9,31 @@ export async function GET() {
       return new NextResponse('Missing SUPABASE_URL', { status: 500 });
     }
 
-    const { data: products, error } = await supabase
-      .from('products')
-      .select('*')
-      .limit(50000);
+    const PAGE_SIZE = 1000;
+    let allProducts: any[] = [];
+    let from = 0;
+    let hasMore = true;
 
-    if (error) {
-      return new NextResponse(`DB error: ${error.message}`, { status: 500 });
+    while (hasMore) {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .range(from, from + PAGE_SIZE - 1);
+
+      if (error) {
+        return new NextResponse(`DB error: ${error.message}`, { status: 500 });
+      }
+
+      if (!data || data.length === 0) {
+        hasMore = false;
+      } else {
+        allProducts = allProducts.concat(data);
+        from += PAGE_SIZE;
+        if (data.length < PAGE_SIZE) hasMore = false;
+      }
     }
+
+    const products = allProducts;
 
     if (!products?.length) {
       return new NextResponse(`No products found. Count: ${products?.length}`, { status: 404 });
