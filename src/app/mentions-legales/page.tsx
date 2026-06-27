@@ -3,8 +3,8 @@ import Footer from '@/components/Footer';
 import { Scale } from 'lucide-react';
 
 export const metadata = {
-  title: 'Mentions légales – Diesel Injecteurs',
-  description: 'Mentions légales de la société Diesel Injecteurs, SIRET 848 214 359 00012.',
+  title: 'Mentions légales – Diesel Turbo Injection',
+  description: 'Mentions légales de la société Diesel Turbo Injection, SIRET 848 214 359 00012.',
 };
 
 export default function MentionsLegalesPage() {
@@ -27,7 +27,7 @@ export default function MentionsLegalesPage() {
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">1. Éditeur du site</h2>
           <div className="space-y-2 text-slate-700">
-            <p><span className="font-semibold">Raison sociale :</span> Diesel Injecteurs</p>
+            <p><span className="font-semibold">Raison sociale :</span> Diesel Turbo Injection</p>
             <p><span className="font-semibold">Forme juridique :</span> Entreprise individuelle</p>
             <p><span className="font-semibold">SIRET :</span> 848 214 359 00012</p>
             <p><span className="font-semibold">Adresse :</span> France</p>
@@ -61,14 +61,14 @@ export default function MentionsLegalesPage() {
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">3. Propriété intellectuelle</h2>
           <p className="text-slate-700 leading-relaxed">
-            L'ensemble du contenu de ce site (textes, images, graphismes, logotypes, icônes, sons, logiciels…) est la propriété exclusive de Diesel Injecteurs ou de ses partenaires, et est protégé par les lois françaises et internationales relatives à la propriété intellectuelle. Toute reproduction, représentation, modification, publication ou transmission, totale ou partielle, du contenu de ce site, par quelque procédé que ce soit, est interdite sans l'autorisation préalable et écrite de Diesel Injecteurs.
+            L'ensemble du contenu de ce site (textes, images, graphismes, logotypes, icônes, sons, logiciels…) est la propriété exclusive de Diesel Turbo Injection ou de ses partenaires, et est protégé par les lois françaises et internationales relatives à la propriété intellectuelle. Toute reproduction, représentation, modification, publication ou transmission, totale ou partielle, du contenu de ce site, par quelque procédé que ce soit, est interdite sans l'autorisation préalable et écrite de Diesel Turbo Injection.
           </p>
         </section>
 
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">4. Responsabilité</h2>
           <p className="text-slate-700 leading-relaxed">
-            Diesel Injecteurs s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur ce site. Toutefois, Diesel Injecteurs ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à la disposition sur ce site. En conséquence, Diesel Injecteurs décline toute responsabilité pour toute imprécision, inexactitude ou omission portant sur des informations disponibles sur ce site.
+            Diesel Turbo Injection s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur ce site. Toutefois, Diesel Turbo Injection ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à la disposition sur ce site. En conséquence, Diesel Turbo Injection décline toute responsabilité pour toute imprécision, inexactitude ou omission portant sur des informations disponibles sur ce site.
           </p>
         </section>
 

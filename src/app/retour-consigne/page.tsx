@@ -53,7 +53,7 @@ const importantNotes = [
   {
     icon: ShieldCheck,
     title: 'Responsabilité transport',
-    content: 'Diesel Injecteurs décline toute responsabilité pour les dégâts imputables au transporteur. Emballez soigneusement pour protéger votre pièce.'
+    content: 'Diesel Turbo Injection décline toute responsabilité pour les dégâts imputables au transporteur. Emballez soigneusement pour protéger votre pièce.'
   }
 ];
 

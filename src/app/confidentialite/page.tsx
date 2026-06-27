@@ -3,8 +3,8 @@ import Footer from '@/components/Footer';
 import { Lock } from 'lucide-react';
 
 export const metadata = {
-  title: 'Politique de confidentialité – Diesel Injecteurs',
-  description: 'Politique de confidentialité et protection des données personnelles de Diesel Injecteurs.',
+  title: 'Politique de confidentialité – Diesel Turbo Injection',
+  description: 'Politique de confidentialité et protection des données personnelles de Diesel Turbo Injection.',
 };
 
 export default function ConfidentialitePage() {
@@ -28,7 +28,7 @@ export default function ConfidentialitePage() {
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">1. Responsable du traitement</h2>
           <div className="space-y-2 text-slate-700">
-            <p><span className="font-semibold">Raison sociale :</span> Diesel Injecteurs</p>
+            <p><span className="font-semibold">Raison sociale :</span> Diesel Turbo Injection</p>
             <p><span className="font-semibold">SIRET :</span> 848 214 359 00012</p>
             <p><span className="font-semibold">Téléphone :</span>{' '}
               <a href="tel:+33172517665" className="text-yellow-600 hover:underline">01 72 51 76 65</a>

@@ -252,7 +252,7 @@ export default function Footer() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-sm text-gray-500">
-                © {new Date().getFullYear()} Diesel Injecteurs. Tous droits réservés.
+                © {new Date().getFullYear()} Diesel Turbo Injection. Tous droits réservés.
               </p>
               <div className="flex items-center gap-6 text-sm text-gray-500">
                 <a href="/mentions-legales" className="hover:text-white transition">Mentions légales</a>

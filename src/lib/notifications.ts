@@ -163,7 +163,7 @@ export async function sendDailySummaryReport(): Promise<void> {
     return;
   }
 
-  const subject = 'Rapport quotidien - Diesel Injecteurs';
+  const subject = 'Rapport quotidien - Diesel Turbo Injection';
   const htmlContent = `
     <h2>Rapport quotidien de votre boutique</h2>
     <p>Rapport du ${new Date().toLocaleDateString('fr-FR')}</p>
