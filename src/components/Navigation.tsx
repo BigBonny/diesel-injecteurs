@@ -137,11 +137,11 @@ function NavigationInner() {
 
             {/* Logo row */}
             <div className="flex items-center justify-between">
-              <Link href="/" className="shrink-0 mx-auto lg:mx-0">
+              <Link href="/" className="shrink-0 mx-auto lg:mx-0 w-64 sm:w-96 lg:w-[480px] block">
                 <img 
                   src="/assets/logo.png" 
                   alt="Injection Diesel Logo" 
-                  className="h-20 sm:h-28 w-full max-w-xs sm:max-w-sm object-contain"
+                  className="h-20 sm:h-28 w-full object-contain object-left"
                 />
               </Link>
 
