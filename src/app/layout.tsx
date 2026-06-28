@@ -6,6 +6,12 @@ import { CartProvider } from "./CartContext";
 import EmailCapturePopup from "@/components/EmailCapturePopup";
 import CookieConsent from "@/components/CookieConsent";
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#1e2a4a",
+};
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -17,8 +23,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Injection Diesel - Pièces Auto & Turbo de Qualité",
-  description: "Achetez des pièces auto et turbos de qualité au meilleur prix. Commande rapide et livraison rapide.",
+  title: {
+    template: "%s | Diesel Turbo Injection",
+    default: "Diesel Turbo Injection - Turbo, Injecteur & Pompe Haute Pression",
+  },
+  description: "Spécialiste turbo, injecteur et pompe haute pression diesel reconditionnés. Échange standard, garantie 2 ans, livraison 24-48h, consigne remboursée.",
+  keywords: ["turbo diesel", "injecteur diesel", "pompe haute pression", "échange standard", "turbo reconditionné", "injecteur Bosch", "pièces auto diesel", "CHRA", "consigne turbo"],
+  authors: [{ name: "Diesel Turbo Injection" }],
+  creator: "Diesel Turbo Injection",
+  publisher: "Diesel Turbo Injection",
+  metadataBase: new URL("https://diesel-turbo-injection.com"),
   icons: {
     icon: [
       { url: "/images/favicon.png", type: "image/png", sizes: "32x32" },
@@ -28,26 +42,26 @@ export const metadata: Metadata = {
     apple: "/images/favicon.png",
   },
   openGraph: {
-    title: "Injection Diesel - Pièces Auto & Turbo de Qualité",
-    description: "Turbos et injecteurs neufs et reconditionnés OEM. Garantie 2 ans, livraison 24-48h.",
-    url: "https://diesel-turbo-injection.com",
-    siteName: "Injection Diesel",
+    title: "Diesel Turbo Injection - Turbo, Injecteur & Pompe Haute Pression",
+    description: "Spécialiste turbo, injecteur et pompe haute pression diesel reconditionnés. Échange standard, garantie 2 ans, livraison 24-48h.",
+    url: "/",
+    siteName: "Diesel Turbo Injection",
     images: [
       {
-        url: "https://diesel-turbo-injection.com/images/favicon.png",
-        width: 512,
-        height: 512,
-        alt: "Injection Diesel Logo",
+        url: "/assets/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Diesel Turbo Injection - Spécialiste pièces diesel",
       },
     ],
     locale: "fr_FR",
     type: "website",
   },
   twitter: {
-    card: "summary",
-    title: "Injection Diesel - Pièces Auto & Turbo de Qualité",
-    description: "Turbos et injecteurs neufs et reconditionnés OEM. Garantie 2 ans, livraison 24-48h.",
-    images: ["https://diesel-turbo-injection.com/images/favicon.png"],
+    card: "summary_large_image",
+    title: "Diesel Turbo Injection - Turbo, Injecteur & Pompe Haute Pression",
+    description: "Spécialiste turbo, injecteur et pompe haute pression diesel reconditionnés. Garantie 2 ans, livraison 24-48h.",
+    images: ["/assets/logo.png"],
   },
   robots: {
     index: true,
@@ -55,14 +69,17 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   alternates: {
-    canonical: "https://diesel-turbo-injection.com",
+    canonical: "/",
   },
   verification: {
     google: "vh77uDdWINwPZPCELbGTpoN6y66H8pReMusX8KxN3aA",
   },
+  category: "automotive",
 };
 
 export default function RootLayout({
@@ -77,6 +94,10 @@ export default function RootLayout({
     >
       <head>
         <meta name="google-site-verification" content="i0kVhsF46nK9jJXAmH2IkztE4PPMcjuDRZp2bJW17pI" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <Script id="gtm" strategy="afterInteractive">
           {`
             (function(w,d,s,l,i){

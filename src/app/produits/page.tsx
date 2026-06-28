@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import { 
@@ -579,14 +580,14 @@ function ProductsContent() {
                           className={`${viewMode === 'list' ? 'w-48 shrink-0' : ''} relative h-48 bg-linear-to-br from-slate-200 to-slate-100 flex items-center justify-center overflow-hidden`}
                         >
                           {getImageUrl(product) ? (
-                            <img 
-                              src={getImageUrl(product)} 
+                            <Image
+                              src={getImageUrl(product)}
                               alt={product.name}
-                              loading="lazy"
-                              decoding="async"
-                              className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                              fill
+                              sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                              className="object-cover transform group-hover:scale-110 transition-transform duration-500"
                               onError={(e) => {
-                                e.currentTarget.style.display = 'none';
+                                (e.currentTarget as HTMLImageElement).style.display = 'none';
                               }}
                             />
                           ) : (

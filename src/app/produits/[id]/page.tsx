@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ChatWidget from '@/components/ChatWidget';
@@ -155,9 +156,16 @@ export default function ProductDetailPage() {
           <div className="grid lg:grid-cols-2 gap-6 lg:gap-12">
             {/* Image */}
             <div className="bg-white rounded-2xl p-4 sm:p-8 border border-slate-200">
-              <div className="aspect-square bg-linear-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center overflow-hidden">
+              <div className="relative aspect-square bg-linear-to-br from-slate-100 to-slate-200 rounded-xl flex items-center justify-center overflow-hidden">
                 {imageUrl ? (
-                  <img src={imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                  <Image
+                    src={imageUrl}
+                    alt={product.name}
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover"
+                  />
                 ) : (
                   <Package className="w-32 h-32 text-slate-400" />
                 )}

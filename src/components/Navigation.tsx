@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { Menu, X, ShoppingCart, Search, Phone, ChevronRight, ChevronDown, Zap, User, LogIn } from 'lucide-react';
 import { useCart } from '@/app/CartContext';
@@ -137,11 +138,14 @@ function NavigationInner() {
 
             {/* Logo row */}
             <div className="flex items-center justify-between">
-              <Link href="/" className="shrink-0 mx-auto lg:mx-0">
-                <img 
+              <Link href="/" className="shrink-0 mx-auto lg:mx-0 relative h-28 sm:h-40 w-32 sm:w-48 block">
+                <Image 
                   src="/assets/logo.png" 
-                  alt="Injection Diesel Logo" 
-                  className="h-28 sm:h-40 w-auto"
+                  alt="Diesel Turbo Injection Logo" 
+                  fill
+                  priority
+                  className="object-contain object-left"
+                  sizes="(max-width: 640px) 128px, 192px"
                 />
               </Link>
 
@@ -295,8 +299,8 @@ function NavigationInner() {
           {/* Mobile Header */}
           <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
             <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex items-center">
-              <div className="bg-white rounded-lg px-2.5 py-1">
-                <img src="/assets/logo.png" alt="Injection Diesel Logo" loading="lazy" decoding="async" className="h-8 w-auto" />
+              <div className="bg-white rounded-lg px-2.5 py-1 relative h-8 w-20">
+                <Image src="/assets/logo.png" alt="Diesel Turbo Injection Logo" fill className="object-contain" sizes="80px" />
               </div>
             </Link>
             <button onClick={() => setIsMenuOpen(false)} className="p-2 text-slate-400 hover:text-white hover:bg-white/10 rounded-lg transition">
