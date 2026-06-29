@@ -55,7 +55,7 @@ export async function GET() {
       <g:id>${id}</g:id>
       <title>${escapeXml(name)}</title>
       <description>${desc}</description>
-      <link>${baseUrl}/produit/${id}</link>
+      <link>${baseUrl}/produits/${id}</link>
       <g:image_link>${baseUrl}/api/product-image-direct/${id}</g:image_link>
       <g:condition>new</g:condition>
       <g:availability>in stock</g:availability>
@@ -65,18 +65,14 @@ export async function GET() {
       <g:identifier_exists>false</g:identifier_exists>
       <g:google_product_category>${category}</g:google_product_category>
       <g:product_type>${escapeXml(categorizeProduct(name))}</g:product_type>
-      <g:shipping>
-        <g:country>FR</g:country>
-        <g:service>Standard</g:service>
-        <g:price>0.00 EUR</g:price>
-      </g:shipping>
+${getShippingBlocks()}
     </item>`;
     }).join('\n');
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss xmlns:g="http://base.google.com/ns/1.0" version="2.0">
   <channel>
-    <title>Injection Diesel</title>
+    <title>Diesel Turbo Injection</title>
     <link>${baseUrl}</link>
     <description>Catalogue turbos et injecteurs</description>
     <g:merchant_id>${merchantId}</g:merchant_id>
@@ -131,4 +127,23 @@ function categorizeProduct(name: string): string {
   if (lower.includes('pompe')) return 'Véhicules et pièces > Pièces auto > Pompes à carburant';
   if (lower.includes('vanne egr') || lower.includes('egr')) return 'Véhicules et pièces > Pièces auto > Vannes EGR';
   return 'Véhicules et pièces > Pièces auto';
+}
+
+function getShippingBlocks(): string {
+  // Adjust prices per country if needed. Default is free standard shipping.
+  const countries = [
+    { code: 'FR', price: '0.00' },
+    { code: 'BE', price: '0.00' },
+    { code: 'LU', price: '0.00' },
+    { code: 'DE', price: '0.00' },
+    { code: 'ES', price: '0.00' },
+    { code: 'IT', price: '0.00' },
+    { code: 'PT', price: '0.00' },
+    { code: 'NL', price: '0.00' },
+  ];
+  return countries.map(c => `      <g:shipping>
+        <g:country>${c.code}</g:country>
+        <g:service>Standard</g:service>
+        <g:price>${c.price} EUR</g:price>
+      </g:shipping>`).join('\n');
 }

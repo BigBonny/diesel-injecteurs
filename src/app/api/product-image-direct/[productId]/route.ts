@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 
-const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'https://diesel-turbo-injection.com/api';
+const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'http://192.162.69.186/api';
 const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
+const PRESTASHOP_FRONT_URL = 'http://192.162.69.186';
 
 export async function GET(
   request: Request,
@@ -34,18 +35,40 @@ export async function GET(
     }
     
     const imageId = imageIdMatch[1];
-    
-    // Fetch the actual image from PrestaShop
-    const imageUrl = `${PRESTASHOP_API_URL}/images/products/${productId}/${imageId}?ws_key=${PRESTASHOP_API_KEY}`;
-    const imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(10000) });
-    
+
+    // Try the front-end JPEG URL first (Google requires JPEG/PNG/GIF)
+    let imageUrl = `${PRESTASHOP_FRONT_URL}/${imageId}/${productId}.jpg`;
+    let imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(10000) });
+
+    if (!imageResponse.ok) {
+      // Try to extract the product rewrite URL and build the named JPEG URL
+      const rewriteMatch = text.match(/<link_rewrite>(?:<!\[CDATA\[)?([^\]]+?)(?:\]\])?<\/link_rewrite>/);
+      if (rewriteMatch) {
+        const productName = rewriteMatch[1].trim();
+        imageUrl = `${PRESTASHOP_FRONT_URL}/${imageId}/${productName}.jpg`;
+        imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(10000) });
+      }
+    }
+
+    if (!imageResponse.ok) {
+      // Fallback to the PrestaShop API binary endpoint
+      imageUrl = `${PRESTASHOP_API_URL}/images/products/${productId}/${imageId}?ws_key=${PRESTASHOP_API_KEY}`;
+      imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(10000) });
+    }
+
     if (!imageResponse.ok) {
       return new NextResponse(null, { status: 404 });
     }
-    
+
     const imageBuffer = await imageResponse.arrayBuffer();
-    const contentType = imageResponse.headers.get('content-type') || 'image/jpeg';
-    
+    let contentType = imageResponse.headers.get('content-type') || 'image/jpeg';
+
+    // Google Merchant Center only accepts JPEG, PNG, GIF
+    const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!acceptedTypes.includes(contentType.toLowerCase())) {
+      return new NextResponse(null, { status: 404 });
+    }
+
     return new NextResponse(imageBuffer, {
       headers: {
         'Content-Type': contentType,
