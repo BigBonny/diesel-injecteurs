@@ -132,7 +132,12 @@ function categorizeProduct(name: string): string {
 
 function getProductImageUrl(p: any, baseUrl: string): string {
   const id = String(p.id || '0');
-  const imageId = p.id_default_image ? String(p.id_default_image) : '';
+  let imageId = p.id_default_image ? String(p.id_default_image) : '';
+
+  if (!imageId && Array.isArray(p.images) && p.images.length > 0) {
+    const firstImage = p.images[0];
+    imageId = typeof firstImage === 'string' ? firstImage : firstImage?.id || '';
+  }
 
   if (imageId) {
     return `${baseUrl}/images/products/${id}/${imageId}.jpg`;

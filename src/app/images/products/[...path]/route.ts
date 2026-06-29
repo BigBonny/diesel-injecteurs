@@ -42,11 +42,22 @@ export async function GET(
     }
 
     if (!imageResponse || !imageResponse.ok) {
+      // Last resort: PrestaShop API binary endpoint
+      const apiUrl = `${PRESTASHOP_API_URL}/images/products/${productId}/${imageId}?ws_key=${PRESTASHOP_API_KEY}`;
+      imageResponse = await fetch(apiUrl, { signal: AbortSignal.timeout(10000) });
+    }
+
+    if (!imageResponse || !imageResponse.ok) {
       return new NextResponse(null, { status: 404 });
     }
 
     const imageBuffer = await imageResponse.arrayBuffer();
     let contentType = imageResponse.headers.get('content-type') || 'image/jpeg';
+
+    // Normalize common JPEG content-type variants
+    if (contentType.toLowerCase().includes('jpeg') || contentType.toLowerCase().includes('jpg')) {
+      contentType = 'image/jpeg';
+    }
 
     const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!acceptedTypes.includes(contentType.toLowerCase())) {
