@@ -1,8 +1,21 @@
 import { NextResponse } from 'next/server';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
 const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'http://192.162.69.186/api';
 const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
 const PRESTASHOP_FRONT_URL = 'http://192.162.69.186';
+
+function getLogoFallback(): { buffer: Buffer; contentType: string } {
+  try {
+    const logoPath = join(process.cwd(), 'public', 'assets', 'logo.png');
+    const buffer = readFileSync(logoPath);
+    return { buffer, contentType: 'image/png' };
+  } catch (error) {
+    console.error('Failed to read logo fallback:', error);
+    throw new Error('Logo fallback not available');
+  }
+}
 
 export async function GET(
   request: Request,
@@ -48,7 +61,13 @@ export async function GET(
     }
 
     if (!imageResponse || !imageResponse.ok) {
-      return new NextResponse(null, { status: 404 });
+      const { buffer, contentType } = getLogoFallback();
+      return new NextResponse(new Uint8Array(buffer), {
+        headers: {
+          'Content-Type': contentType,
+          'Cache-Control': 'public, max-age=86400',
+        },
+      });
     }
 
     const imageBuffer = await imageResponse.arrayBuffer();
@@ -61,7 +80,13 @@ export async function GET(
 
     const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!acceptedTypes.includes(contentType.toLowerCase())) {
-      return new NextResponse(null, { status: 404 });
+      const { buffer, contentType: logoContentType } = getLogoFallback();
+      return new NextResponse(new Uint8Array(buffer), {
+        headers: {
+          'Content-Type': logoContentType,
+          'Cache-Control': 'public, max-age=86400',
+        },
+      });
     }
 
     return new NextResponse(imageBuffer, {

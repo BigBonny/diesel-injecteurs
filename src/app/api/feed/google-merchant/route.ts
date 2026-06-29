@@ -143,7 +143,8 @@ function getProductImageUrl(p: any, baseUrl: string): string {
     return `${baseUrl}/images/products/${id}/${imageId}.jpg`;
   }
 
-  return `${baseUrl}/api/product-image-direct/${id}`;
+  // Fallback to the site logo when no product image exists
+  return `${baseUrl}/assets/logo.png`;
 }
 
 function getShippingBlocks(): string {
