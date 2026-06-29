@@ -40,7 +40,6 @@ export async function GET() {
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://diesel-turbo-injection.com';
-    const imageBaseUrl = process.env.PRESTASHOP_IMAGE_BASE_URL || 'https://diesel-injecteurs.com';
     const merchantId = process.env.GOOGLE_MERCHANT_ID || '5485884670';
 
     const feedItems = products.map((p: any) => {
@@ -50,7 +49,7 @@ export async function GET() {
       const brand = extractBrand(name);
       const mpn = p.reference || p.supplier_reference || id;
       const desc = escapeXml((p.description || name).replace(/<[^>]*>/g, '').slice(0, 5000));
-      const imageUrl = getProductImageUrl(p, imageBaseUrl, baseUrl);
+      const imageUrl = getProductImageUrl(p, baseUrl);
 
       const category = getGoogleCategory(name);
       return `    <item>
@@ -131,17 +130,12 @@ function categorizeProduct(name: string): string {
   return 'Véhicules et pièces > Pièces auto';
 }
 
-function getProductImageUrl(p: any, imageBaseUrl: string, baseUrl: string): string {
+function getProductImageUrl(p: any, baseUrl: string): string {
   const id = String(p.id || '0');
   const imageId = p.id_default_image ? String(p.id_default_image) : '';
-  const linkRewrite = p.link_rewrite || '';
-
-  if (imageId && linkRewrite) {
-    return `${imageBaseUrl}/${imageId}/${linkRewrite}.jpg`;
-  }
 
   if (imageId) {
-    return `${baseUrl}/api/product-image/${id}/${imageId}`;
+    return `${baseUrl}/images/products/${id}/${imageId}.jpg`;
   }
 
   return `${baseUrl}/api/product-image-direct/${id}`;
