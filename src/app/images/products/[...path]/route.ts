@@ -6,15 +6,28 @@ const PRESTASHOP_API_URL = process.env.PRESTASHOP_API_URL || 'http://192.162.69.
 const PRESTASHOP_API_KEY = process.env.PRESTASHOP_API_KEY || '';
 const PRESTASHOP_FRONT_URL = 'http://192.162.69.186';
 
-function getLogoFallback(): { buffer: Buffer; contentType: string } {
+function getImageFallback(productName: string = ''): { buffer: Buffer; contentType: string } {
   try {
-    const logoPath = join(process.cwd(), 'public', 'assets', 'logo.png');
-    const buffer = readFileSync(logoPath);
-    return { buffer, contentType: 'image/png' };
+    const lower = productName.toLowerCase();
+    let fileName = 'logo.png';
+    if (lower.includes('chra') || lower.includes('cartouche')) fileName = 'generic/kitCHRA.jpg';
+    else if (lower.includes('injecteur')) fileName = 'generic/injecteur.jpg';
+    else if (lower.includes('pompe')) fileName = 'generic/pompeHp.jpg';
+    else if (lower.includes('turbo')) fileName = 'generic/turbo.jpg';
+
+    const imagePath = join(process.cwd(), 'public', 'assets', fileName);
+    const buffer = readFileSync(imagePath);
+    const contentType = fileName.endsWith('.png') ? 'image/png' : 'image/jpeg';
+    return { buffer, contentType };
   } catch (error) {
-    console.error('Failed to read logo fallback:', error);
-    throw new Error('Logo fallback not available');
+    console.error('Failed to read image fallback:', error);
+    throw new Error('Image fallback not available');
   }
+}
+
+function extractProductName(productText: string): string {
+  const match = productText.match(/<name><language[^>]*>(?:<!\[CDATA\[)?([^<]+?)(?:\]\])?<\/language><\/name>/);
+  return match ? match[1].trim() : '';
 }
 
 export async function GET(
@@ -36,14 +49,16 @@ export async function GET(
     const productResponse = await fetch(productUrl, { signal: AbortSignal.timeout(10000) });
 
     let imageResponse: Response | null = null;
+    let productName = '';
 
     if (productResponse.ok) {
       const productText = await productResponse.text();
+      productName = extractProductName(productText);
       const rewriteMatch = productText.match(/<link_rewrite>(?:<!\[CDATA\[)?([^\]]+?)(?:\]\])?<\/link_rewrite>/);
 
       if (rewriteMatch) {
-        const productName = rewriteMatch[1].trim();
-        const imageUrl = `${PRESTASHOP_FRONT_URL}/${imageId}/${productName}.jpg`;
+        const productRewrite = rewriteMatch[1].trim();
+        const imageUrl = `${PRESTASHOP_FRONT_URL}/${imageId}/${productRewrite}.jpg`;
         imageResponse = await fetch(imageUrl, { signal: AbortSignal.timeout(10000) });
       }
     }
@@ -61,7 +76,7 @@ export async function GET(
     }
 
     if (!imageResponse || !imageResponse.ok) {
-      const { buffer, contentType } = getLogoFallback();
+      const { buffer, contentType } = getImageFallback(productName);
       return new NextResponse(new Uint8Array(buffer), {
         headers: {
           'Content-Type': contentType,
@@ -80,10 +95,10 @@ export async function GET(
 
     const acceptedTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (!acceptedTypes.includes(contentType.toLowerCase())) {
-      const { buffer, contentType: logoContentType } = getLogoFallback();
+      const { buffer, contentType: fallbackContentType } = getImageFallback(productName);
       return new NextResponse(new Uint8Array(buffer), {
         headers: {
-          'Content-Type': logoContentType,
+          'Content-Type': fallbackContentType,
           'Cache-Control': 'public, max-age=86400',
         },
       });

@@ -143,7 +143,15 @@ function getProductImageUrl(p: any, baseUrl: string): string {
     return `${baseUrl}/images/products/${id}/${imageId}.jpg`;
   }
 
-  // Fallback to the site logo when no product image exists
+  return getGenericImageUrl(p.name || '', baseUrl);
+}
+
+function getGenericImageUrl(name: string, baseUrl: string): string {
+  const lower = name.toLowerCase();
+  if (lower.includes('chra') || lower.includes('cartouche')) return `${baseUrl}/assets/generic/kitCHRA.jpg`;
+  if (lower.includes('injecteur')) return `${baseUrl}/assets/generic/injecteur.jpg`;
+  if (lower.includes('pompe')) return `${baseUrl}/assets/generic/pompeHp.jpg`;
+  if (lower.includes('turbo')) return `${baseUrl}/assets/generic/turbo.jpg`;
   return `${baseUrl}/assets/logo.png`;
 }
 
