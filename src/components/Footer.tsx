@@ -21,17 +21,17 @@ export default function Footer() {
       { name: 'Pièces Moteur', href: '/produits' },
     ],
     service: [
-      { name: 'Commande Rapide', href: '#quick-finder' },
-      { name: 'Livraison & Retours', href: '/cgv' },
-      { name: 'Garantie 2 Ans', href: '/cgv' },
-      { name: 'FAQ', href: '#' },
-      { name: 'Support Technique', href: '#contact' },
+      { name: 'Livraison & Retours', href: '/livraison' },
+      { name: 'Garantie 2 Ans', href: '/garantie' },
+      { name: 'Retour Consigne', href: '/retour-consigne' },
+      { name: 'FAQ', href: '/livraison#faq' },
+      { name: 'Contact', href: '/contact' },
     ],
     entreprise: [
       { name: 'À Propos', href: '/apropos' },
-      { name: 'Blog', href: '/blog' },
-      { name: 'Retour Consigne', href: '/retour-consigne' },
-      { name: 'Contact', href: '/contact' },
+      { name: 'Mentions Légales', href: '/mentions-legales' },
+      { name: 'CGV', href: '/cgv' },
+      { name: 'Confidentialité', href: '/confidentialite' },
     ],
   };
 
@@ -94,16 +94,20 @@ export default function Footer() {
                 </div>
                 <div>
                   <span className="text-2xl font-bold bg-linear-to-r from-white to-gray-300 bg-clip-text text-transparent">
-                    Injection Diesel
+                    Diesel Turbo Injection
                   </span>
-                  <p className="text-xs text-gray-500">Premium Auto Parts</p>
+                  <p className="text-xs text-gray-500">Spécialiste pièces diesel</p>
                 </div>
               </div>
 
-              <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-sm">
+              <p className="text-gray-400 text-sm leading-relaxed mb-4 max-w-sm">
                 Les experts du turbo reconditionné. Solution fiable et rapide 
                 pour votre moteur diesel avec injecteurs Bosch, Delphi, Siemens et Denso.
               </p>
+              <div className="text-gray-500 text-xs space-y-1 mb-6">
+                <p>ZI les Vignes, 5 Rue Bernard, 93000 Bobigny, France</p>
+                <p>SIRET : 848 214 359 00012</p>
+              </div>
 
               {/* Contact Info */}
               <div className="space-y-3">

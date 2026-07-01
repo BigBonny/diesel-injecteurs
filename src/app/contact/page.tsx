@@ -40,8 +40,8 @@ export default function ContactPage() {
     {
       icon: MapPin,
       label: 'Adresse',
-      value: 'Service disponible',
-      description: 'Livraison dans le monde entier'
+      value: '93000 Bobigny, France',
+      description: 'ZI les Vignes, 5 Rue Bernard'
     },
     {
       icon: Clock,

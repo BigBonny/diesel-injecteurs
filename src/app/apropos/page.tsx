@@ -261,9 +261,10 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Notre Adresse</h3>
               <p className="text-slate-600">
-                Diesel Injecteurs<br />
-                SIRET : 848 214 359 00012<br />
-                France
+                Diesel Turbo Injection<br />
+                ZI les Vignes, 5 Rue Bernard<br />
+                93000 Bobigny, France<br />
+                SIRET : 848 214 359 00012
               </p>
             </div>
             <div className="bg-slate-50 rounded-2xl p-8 text-center">

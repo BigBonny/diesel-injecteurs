@@ -5,6 +5,7 @@ import "./globals.css";
 import { CartProvider } from "./CartContext";
 import EmailCapturePopup from "@/components/EmailCapturePopup";
 import CookieConsent from "@/components/CookieConsent";
+import StructuredData from "@/components/StructuredData";
 
 export const viewport = {
   width: "device-width",
@@ -98,6 +99,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <StructuredData />
         <Script id="gtm" strategy="afterInteractive">
           {`
             (function(w,d,s,l,i){

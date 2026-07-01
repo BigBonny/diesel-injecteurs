@@ -30,11 +30,15 @@ export default function CGVPage() {
           <div className="space-y-2 text-slate-700">
             <p><span className="font-semibold">Raison sociale :</span> Diesel Turbo Injection</p>
             <p><span className="font-semibold">SIRET :</span> 848 214 359 00012</p>
+            <p><span className="font-semibold">Adresse :</span> ZI les Vignes, 5 Rue Bernard, 93000 Bobigny, France</p>
             <p><span className="font-semibold">Téléphone :</span>{' '}
               <a href="tel:+33172517665" className="text-yellow-600 hover:underline">01 72 51 76 65</a>
             </p>
             <p><span className="font-semibold">Email :</span>{' '}
               <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>
+            </p>
+            <p><span className="font-semibold">Site web :</span>{' '}
+              <a href="https://diesel-turbo-injection.com" className="text-yellow-600 hover:underline">diesel-turbo-injection.com</a>
             </p>
           </div>
         </section>
