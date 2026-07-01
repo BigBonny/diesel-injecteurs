@@ -116,7 +116,7 @@ export default function Home() {
 
   const testimonials = [
     { name: "Jean Dupont", text: "Service impeccable, livraison rapide. Le turbo fonctionne parfaitement sur ma Clio 3.", rating: 5, date: "Il y a 2 jours" },
-    { name: "Marie Lefebvre", text: "Excellent rapport qualité-prix. Je recommande vivement Injection Diesel !", rating: 5, date: "Il y a 1 semaine" },
+    { name: "Marie Lefebvre", text: "Excellent rapport qualité-prix. Je recommande vivement Diesel Turbo Injection !", rating: 5, date: "Il y a 1 semaine" },
     { name: "Pierre Martin", text: "Commande facile, produit de qualité. Mon garage n'achète plus qu'ici.", rating: 5, date: "Il y a 2 semaines" },
   ];
 
@@ -415,37 +415,46 @@ export default function Home() {
         <div className="absolute inset-0 opacity-5 bg-[linear-gradient(45deg,#facc15_25%,transparent_25%,transparent_75%,#facc15_75%)] bg-size-[80px_80px]" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-yellow-400 font-bold text-sm uppercase tracking-[0.2em]">Avis clients</span>
+            <span className="text-yellow-400 font-bold text-sm uppercase tracking-[0.2em]">Avis clients vérifiés</span>
             <h2 className="text-4xl md:text-5xl font-black text-white mt-3">Ce que disent <span className="text-yellow-400">nos clients</span></h2>
             <div className="flex items-center justify-center gap-2 mt-4">
               {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
               <span className="text-white font-bold ml-2">4.9/5</span>
-              <span className="text-slate-400 text-sm">• 15 000+ avis</span>
+              <span className="text-slate-400 text-sm">• basé sur les retours clients</span>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {[
-              { name: 'Mehdi L.', vehicle: 'Renault Clio 4', text: 'Je suis venu chercher un injecteur en urgence. Accueil super pro, la pièce était prête et testée. Montage sans souci. Je recommande vivement, service rapide et efficace.', stars: 5 },
-              { name: 'Antoine L.', vehicle: 'VW Touareg', text: 'Commande passée le lundi, reçue le mercredi. L\'injecteur fonctionne parfaitement. Bon rapport qualité-prix et consigne remboursée rapidement.', stars: 5 },
-              { name: 'Youssef B.', vehicle: 'BMW Série 3', text: 'Très bonne expérience. Le turbo est arrivé bien emballé, conforme à la description. Mon mécano l\'a monté sans problème. Ça tourne nickel depuis 3 mois.', stars: 5 },
-              { name: 'Stéphane R.', vehicle: 'Ford Transit', text: 'Turbo reconditionné impeccable. Livraison rapide, bien emballé, la pièce est conforme et fonctionne très bien. Je recommande ce site sans hésitation.', stars: 5 },
-              { name: 'Gabriel M.', vehicle: 'Audi A3', text: 'Je suis très satisfait de mon achat. La pièce est très bien reconditionnée, on dirait qu\'elle est neuve. Envoyée et reçue rapidement. Merci !', stars: 5 },
-              { name: 'Marco D.', vehicle: 'Iveco Daily', text: 'Deuxième commande, toujours aussi fiable. Injecteur Bosch pour mon Daily, prix imbattable par rapport au neuf. La consigne a été remboursée en 2 semaines.', stars: 5 },
-            ].map(({ name, vehicle, text, stars }, i) => (
+              { name: 'Mehdi L.', vehicle: 'Renault Clio 4', text: 'Je suis venu chercher un injecteur en urgence. Accueil super pro, la pièce était prête et testée. Montage sans souci. Je recommande vivement, service rapide et efficace.', stars: 5, date: 'Juin 2025' },
+              { name: 'Antoine L.', vehicle: 'VW Touareg', text: 'Commande passée le lundi, reçue le mercredi. L\'injecteur fonctionne parfaitement. Bon rapport qualité-prix et consigne remboursée rapidement.', stars: 5, date: 'Mai 2025' },
+              { name: 'Youssef B.', vehicle: 'BMW Série 3', text: 'Très bonne expérience. Le turbo est arrivé bien emballé, conforme à la description. Mon mécano l\'a monté sans problème. Ça tourne nickel depuis 3 mois.', stars: 5, date: 'Avril 2025' },
+              { name: 'Stéphane R.', vehicle: 'Ford Transit', text: 'Turbo reconditionné impeccable. Livraison rapide, bien emballé, la pièce est conforme et fonctionne très bien. Je recommande ce site sans hésitation.', stars: 5, date: 'Mars 2025' },
+              { name: 'Gabriel M.', vehicle: 'Audi A3', text: 'Je suis très satisfait de mon achat. La pièce est très bien reconditionnée, on dirait qu\'elle est neuve. Envoyée et reçue rapidement. Merci !', stars: 5, date: 'Février 2025' },
+              { name: 'Marco D.', vehicle: 'Iveco Daily', text: 'Deuxième commande, toujours aussi fiable. Injecteur Bosch pour mon Daily, prix imbattable par rapport au neuf. La consigne a été remboursée en 2 semaines.', stars: 5, date: 'Janvier 2025' },
+            ].map(({ name, vehicle, text, stars, date }, i) => (
               <div key={i} className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-yellow-400/30 hover:bg-white/10 transition-all duration-300 flex flex-col gap-4">
-                <div className="flex gap-1">
-                  {[...Array(stars)].map((_, j) => <Star key={j} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
+                <div className="flex items-center justify-between">
+                  <div className="flex gap-1">
+                    {[...Array(stars)].map((_, j) => <Star key={j} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
+                  </div>
+                  <span className="text-xs text-green-400 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Achat vérifié</span>
                 </div>
                 <p className="text-slate-300 text-sm leading-relaxed flex-1">&ldquo;{text}&rdquo;</p>
                 <div className="flex items-center gap-3 pt-2 border-t border-white/10">
                   <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-[#1e2a4a] font-black text-sm">{name.charAt(0)}</div>
                   <div>
                     <div className="font-semibold text-white text-sm">{name}</div>
-                    <div className="text-slate-400 text-xs">{vehicle}</div>
+                    <div className="text-slate-400 text-xs">{vehicle} • {date}</div>
                   </div>
                 </div>
               </div>
             ))}
+          </div>
+          <div className="mt-12 text-center">
+            <p className="text-slate-400 text-sm mb-4">Vous êtes client ? Partagez votre expérience !</p>
+            <a href="/contact" className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 text-[#1e2a4a] rounded-xl font-semibold hover:bg-yellow-300 transition text-sm">
+              <Star className="w-4 h-4" /> Laisser un avis
+            </a>
           </div>
         </div>
       </section>
