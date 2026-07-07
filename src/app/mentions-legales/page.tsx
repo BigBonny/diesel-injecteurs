@@ -4,7 +4,7 @@ import { Scale } from 'lucide-react';
 
 export const metadata = {
   title: 'Mentions légales – Diesel Turbo Injection',
-  description: 'Mentions légales de la société Diesel Turbo Injection, SIRET 848 214 359 00012.',
+  description: 'Mentions légales de SAS France Injection (Diesel Turbo Injection).',
 };
 
 export default function MentionsLegalesPage() {
@@ -27,11 +27,19 @@ export default function MentionsLegalesPage() {
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">1. Éditeur du site</h2>
           <div className="space-y-2 text-slate-700">
-            <p><span className="font-semibold">Raison sociale :</span> Diesel Turbo Injection</p>
-            <p><span className="font-semibold">Forme juridique :</span> Entreprise individuelle</p>
+            <p><span className="font-semibold">Raison sociale :</span> SAS France Injection</p>
+            <p><span className="font-semibold">Forme juridique :</span> Société par Actions Simplifiée (SAS)</p>
+            <p><span className="font-semibold">Nom commercial :</span> Diesel Turbo Injection</p>
+            <p><span className="font-semibold">Capital social :</span> 1 000,00 Euros</p>
             <p><span className="font-semibold">SIRET :</span> 848 214 359 00012</p>
-            <p><span className="font-semibold">Adresse :</span> ZI les Vignes, 5 Rue Bernard, 93000 Bobigny, France</p>
-            <p><span className="font-semibold">TVA intracommunautaire :</span> Non assujetti (micro-entreprise)</p>
+            <p><span className="font-semibold">RCS :</span> 848 214 359 R.C.S Bobigny</p>
+            <p><span className="font-semibold">EUID :</span> FR9301.848214359</p>
+            <p><span className="font-semibold">Date d'immatriculation :</span> 11/02/2019</p>
+            <p><span className="font-semibold">Adresse du siège :</span> 158 Avenue Charles Floquet, 93150 Le Blanc-Mesnil, France</p>
+            <p><span className="font-semibold">Activités principales :</span> Vente et réparation, pièces détachées automobiles</p>
+            <p><span className="font-semibold">Durée de la personne morale :</span> jusqu'au 11/02/2118</p>
+            <p><span className="font-semibold">Clôture de l'exercice social :</span> 31 décembre</p>
+            <p><span className="font-semibold">Président :</span> GOUBI Diaeddine, né le 06/08/1993 à SETIF (Algérie), nationalité Française, domicilié 21 Boulevard Gambetta, 93130 Noisy-le-Sec</p>
             <p><span className="font-semibold">Téléphone :</span>{' '}
               <a href="tel:+33172517665" className="text-yellow-600 hover:underline">01 72 51 76 65</a>
             </p>
@@ -61,14 +69,14 @@ export default function MentionsLegalesPage() {
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">3. Propriété intellectuelle</h2>
           <p className="text-slate-700 leading-relaxed">
-            L'ensemble du contenu de ce site (textes, images, graphismes, logotypes, icônes, sons, logiciels…) est la propriété exclusive de Diesel Turbo Injection ou de ses partenaires, et est protégé par les lois françaises et internationales relatives à la propriété intellectuelle. Toute reproduction, représentation, modification, publication ou transmission, totale ou partielle, du contenu de ce site, par quelque procédé que ce soit, est interdite sans l'autorisation préalable et écrite de Diesel Turbo Injection.
+            L'ensemble du contenu de ce site (textes, images, graphismes, logotypes, icônes, sons, logiciels…) est la propriété exclusive de SAS France Injection ou de ses partenaires, et est protégé par les lois françaises et internationales relatives à la propriété intellectuelle. Toute reproduction, représentation, modification, publication ou transmission, totale ou partielle, du contenu de ce site, par quelque procédé que ce soit, est interdite sans l'autorisation préalable et écrite de SAS France Injection.
           </p>
         </section>
 
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">4. Responsabilité</h2>
           <p className="text-slate-700 leading-relaxed">
-            Diesel Turbo Injection s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur ce site. Toutefois, Diesel Turbo Injection ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à la disposition sur ce site. En conséquence, Diesel Turbo Injection décline toute responsabilité pour toute imprécision, inexactitude ou omission portant sur des informations disponibles sur ce site.
+            SAS France Injection s'efforce d'assurer l'exactitude et la mise à jour des informations diffusées sur ce site. Toutefois, SAS France Injection ne peut garantir l'exactitude, la précision ou l'exhaustivité des informations mises à la disposition sur ce site. En conséquence, SAS France Injection décline toute responsabilité pour toute imprécision, inexactitude ou omission portant sur des informations disponibles sur ce site.
           </p>
         </section>
 

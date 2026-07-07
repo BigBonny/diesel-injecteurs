@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, ArrowRight, Phone, Shield, Truck, Star, Zap } from 'lucide-react';
+import { Search, ArrowRight, Phone, Shield, Truck, Star, Zap, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 
 const BRANDS = ['Renault', 'Peugeot', 'Citroën', 'Volkswagen', 'BMW', 'Mercedes', 'Audi', 'Ford', 'Opel', 'Toyota', 'Fiat'];
@@ -97,7 +97,7 @@ export default function TurboHero() {
               </h1>
 
               <p className={`text-slate-300 text-base sm:text-lg leading-relaxed mb-6 max-w-xl transition-all duration-700 delay-200 ${mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
-                Turbos & injecteurs neufs et reconditionnés OEM. <span className="text-yellow-400 font-semibold">Garantie 2 ans</span> · Livraison <span className="text-white font-semibold">24-48h</span> · Paiement 3x sans frais.
+                Turbos & injecteurs reconditionnés en échange standard. <span className="text-yellow-400 font-semibold">Garantie 2 ans</span> · Livraison <span className="text-white font-semibold">24-48h</span> · Paiement 3x sans frais.
               </p>
 
               <div className={`flex flex-wrap gap-2 mb-8 transition-all duration-700 delay-400 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
@@ -134,7 +134,7 @@ export default function TurboHero() {
                 {[
                   { icon: Shield, text: 'Garantie 2 ans' },
                   { icon: Truck, text: 'Livraison 24-48h' },
-                  { icon: Star, text: '4.9/5 · 15 000 avis' },
+                  { icon: CheckCircle, text: 'Échange standard' },
                   { icon: Zap, text: 'Paiement 3× sans frais' },
                 ].map(({ icon: Icon, text }) => (
                   <span key={text} className="flex items-center gap-2 text-slate-400 text-sm">
@@ -255,9 +255,9 @@ export default function TurboHero() {
         <div className="max-w-7xl mx-auto px-5 sm:px-8 py-5 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
           {[
             { value: '50 000+', label: 'Pièces en stock' },
-            { value: '15 000+', label: 'Clients satisfaits' },
-            { value: '15 ans', label: "D'expertise" },
-            { value: '48 h', label: 'Livraison express' },
+            { value: '2 ans', label: 'Garantie produits' },
+            { value: '24-48h', label: 'Livraison express' },
+            { value: '3×', label: 'Paiement sans frais' },
           ].map(({ value, label }) => (
             <div key={label}>
               <div className="text-xl sm:text-2xl font-black text-yellow-400">{value}</div>

@@ -4,7 +4,7 @@ import { FileText } from 'lucide-react';
 
 export const metadata = {
   title: 'Conditions Générales de Vente – Diesel Turbo Injection',
-  description: 'Conditions générales de vente de Diesel Turbo Injection. SIRET 848 214 359 00012.',
+  description: 'Conditions générales de vente de SAS France Injection (Diesel Turbo Injection).',
 };
 
 export default function CGVPage() {
@@ -28,9 +28,13 @@ export default function CGVPage() {
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">1. Identification du vendeur</h2>
           <div className="space-y-2 text-slate-700">
-            <p><span className="font-semibold">Raison sociale :</span> Diesel Turbo Injection</p>
+            <p><span className="font-semibold">Raison sociale :</span> SAS France Injection</p>
+            <p><span className="font-semibold">Forme juridique :</span> SAS (Société par Actions Simplifiée)</p>
+            <p><span className="font-semibold">Nom commercial :</span> Diesel Turbo Injection</p>
             <p><span className="font-semibold">SIRET :</span> 848 214 359 00012</p>
-            <p><span className="font-semibold">Adresse :</span> ZI les Vignes, 5 Rue Bernard, 93000 Bobigny, France</p>
+            <p><span className="font-semibold">RCS :</span> 848 214 359 R.C.S Bobigny</p>
+            <p><span className="font-semibold">Capital social :</span> 1 000,00 Euros</p>
+            <p><span className="font-semibold">Adresse :</span> 158 Avenue Charles Floquet, 93150 Le Blanc-Mesnil, France</p>
             <p><span className="font-semibold">Téléphone :</span>{' '}
               <a href="tel:+33172517665" className="text-yellow-600 hover:underline">01 72 51 76 65</a>
             </p>
@@ -46,21 +50,21 @@ export default function CGVPage() {
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">2. Objet</h2>
           <p className="text-slate-700 leading-relaxed">
-            Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre Diesel Turbo Injection et toute personne physique ou morale (ci-après « le Client ») souhaitant effectuer un achat via le site <strong>diesel-turbo-injection.com</strong>. Tout achat implique l'acceptation sans réserve des présentes CGV.
+            Les présentes Conditions Générales de Vente (CGV) régissent les relations contractuelles entre SAS France Injection (nom commercial Diesel Turbo Injection) et toute personne physique ou morale (ci-après « le Client ») souhaitant effectuer un achat via le site <strong>diesel-turbo-injection.com</strong>. Tout achat implique l'acceptation sans réserve des présentes CGV.
           </p>
         </section>
 
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">3. Produits</h2>
           <p className="text-slate-700 leading-relaxed">
-            Les produits proposés à la vente sont des pièces automobiles diesel (turbos, injecteurs, pompes à injection, kits de réparation) neuves ou reconditionnées. Les caractéristiques essentielles de chaque produit sont décrites sur leurs fiches produits respectives. Les photographies sont fournies à titre indicatif et ne sont pas contractuelles.
+            Les produits proposés à la vente sont des pièces automobiles diesel (turbos, injecteurs, pompes à injection, kits de réparation) reconditionnées en échange standard. Les caractéristiques essentielles de chaque produit sont décrites sur leurs fiches produits respectives. Les photographies sont fournies à titre indicatif et ne sont pas contractuelles.
           </p>
         </section>
 
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">4. Prix</h2>
           <p className="text-slate-700 leading-relaxed">
-            Les prix sont indiqués en euros toutes taxes comprises (TTC). Diesel Turbo Injection se réserve le droit de modifier ses prix à tout moment. Les produits sont facturés au tarif en vigueur au moment de la validation de la commande. Les frais de livraison sont indiqués lors du processus de commande avant validation définitive.
+            Les prix sont indiqués en euros toutes taxes comprises (TTC). SAS France Injection se réserve le droit de modifier ses prix à tout moment. Les produits sont facturés au tarif en vigueur au moment de la validation de la commande. Les frais de livraison sont indiqués lors du processus de commande avant validation définitive.
           </p>
         </section>
 
@@ -70,14 +74,14 @@ export default function CGVPage() {
             Le Client passe commande en ligne depuis le site diesel-turbo-injection.com. La commande n'est définitive qu'après confirmation du paiement. Un email de confirmation est envoyé au Client à l'adresse fournie lors de la commande.
           </p>
           <p className="text-slate-700 leading-relaxed">
-            Diesel Turbo Injection se réserve le droit d'annuler toute commande d'un Client avec lequel existerait un litige relatif au paiement d'une commande antérieure, ou en cas de rupture de stock imprévue.
+            SAS France Injection se réserve le droit d'annuler toute commande d'un Client avec lequel existerait un litige relatif au paiement d'une commande antérieure, ou en cas de rupture de stock imprévue.
           </p>
         </section>
 
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">6. Paiement</h2>
           <p className="text-slate-700 leading-relaxed">
-            Le paiement s'effectue en ligne par carte bancaire (Visa, Mastercard, CB) ou PayPal. Un paiement en 3 fois sans frais est disponible sous conditions. Toutes les transactions sont sécurisées par cryptage SSL. Les données bancaires du Client ne sont pas conservées par Diesel Turbo Injection.
+            Le paiement s'effectue en ligne par carte bancaire (Visa, Mastercard, CB) ou PayPal. Un paiement en 3 fois sans frais est disponible sous conditions. Toutes les transactions sont sécurisées par cryptage SSL. Les données bancaires du Client ne sont pas conservées par SAS France Injection.
           </p>
         </section>
 
@@ -87,7 +91,7 @@ export default function CGVPage() {
             Les produits sont expédiés en France métropolitaine et dans l'Union Européenne. Le délai de livraison standard est de 24 à 48 heures ouvrées à compter de la validation du paiement (hors week-ends et jours fériés). Les commandes passées avant 14h les jours ouvrés sont expédiées le jour même.
           </p>
           <p className="text-slate-700 leading-relaxed">
-            En cas de retard de livraison imputable au transporteur, Diesel Turbo Injection ne saurait être tenu responsable. Le Client peut suivre sa commande grâce au numéro de suivi fourni par email.
+            En cas de retard de livraison imputable au transporteur, SAS France Injection ne saurait être tenu responsable. Le Client peut suivre sa commande grâce au numéro de suivi fourni par email.
           </p>
         </section>
 
@@ -107,7 +111,7 @@ export default function CGVPage() {
             Tous les produits bénéficient d'une garantie commerciale de <strong>2 ans</strong> couvrant les défauts de fabrication et de conformité. Cette garantie s'applique à compter de la date de livraison. Elle ne couvre pas les dommages résultant d'une mauvaise installation, d'une utilisation inadéquate ou d'une usure normale.
           </p>
           <p className="text-slate-700 leading-relaxed">
-            En cas de panne couverte par la garantie, Diesel Turbo Injection procédera au remplacement ou au remboursement du produit défectueux. Pour toute demande de garantie, contactez-nous au <a href="tel:+33172517665" className="text-yellow-600 hover:underline">01 72 51 76 65</a> ou à <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>.
+            En cas de panne couverte par la garantie, SAS France Injection procédera au remplacement ou au remboursement du produit défectueux. Pour toute demande de garantie, contactez-nous au <a href="tel:+33172517665" className="text-yellow-600 hover:underline">01 72 51 76 65</a> ou à <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>.
           </p>
         </section>
 

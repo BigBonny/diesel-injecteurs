@@ -2,8 +2,8 @@ export default function StructuredData() {
   const organizationSchema = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Diesel Turbo Injection',
-    alternateName: 'Diesel Injecteurs',
+    name: 'SAS France Injection',
+    alternateName: 'Diesel Turbo Injection',
     url: 'https://diesel-turbo-injection.com',
     logo: 'https://diesel-turbo-injection.com/assets/logo.png',
     sameAs: [],
@@ -25,13 +25,19 @@ export default function StructuredData() {
     ],
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'ZI les Vignes, 5 Rue Bernard',
-      addressLocality: 'Bobigny',
-      postalCode: '93000',
+      streetAddress: '158 Avenue Charles Floquet',
+      addressLocality: 'Le Blanc-Mesnil',
+      postalCode: '93150',
+      addressRegion: 'Île-de-France',
       addressCountry: 'FR',
     },
-    taxID: '848 214 359 00012',
     email: 'diesel.injecteurs@gmail.com',
+    taxID: '848 214 359 00012',
+    foundingDate: '2019-02-11',
+    founder: {
+      '@type': 'Person',
+      name: 'Diaeddine Goubi',
+    },
   };
 
   const websiteSchema = {
@@ -52,16 +58,17 @@ export default function StructuredData() {
   const localBusinessSchema = {
     '@context': 'https://schema.org',
     '@type': 'AutoPartsStore',
-    name: 'Diesel Turbo Injection',
+    name: 'SAS France Injection',
     image: 'https://diesel-turbo-injection.com/assets/logo.png',
     url: 'https://diesel-turbo-injection.com',
     telephone: '+33172517665',
     email: 'diesel.injecteurs@gmail.com',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: 'ZI les Vignes, 5 Rue Bernard',
-      addressLocality: 'Bobigny',
-      postalCode: '93000',
+      streetAddress: '158 Avenue Charles Floquet',
+      addressLocality: 'Le Blanc-Mesnil',
+      postalCode: '93150',
+      addressRegion: 'Île-de-France',
       addressCountry: 'FR',
     },
     priceRange: '€€',
@@ -92,13 +99,6 @@ export default function StructuredData() {
         { '@type': 'OfferCatalog', name: 'Pompes haute pression' },
         { '@type': 'OfferCatalog', name: 'Kits CHRA' },
       ],
-    },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '1250',
-      bestRating: '5',
-      worstRating: '1',
     },
   };
 

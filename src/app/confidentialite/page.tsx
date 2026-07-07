@@ -28,9 +28,13 @@ export default function ConfidentialitePage() {
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">1. Responsable du traitement</h2>
           <div className="space-y-2 text-slate-700">
-            <p><span className="font-semibold">Raison sociale :</span> Diesel Turbo Injection</p>
+            <p><span className="font-semibold">Raison sociale :</span> SAS France Injection</p>
+            <p><span className="font-semibold">Forme juridique :</span> SAS (Société par Actions Simplifiée)</p>
+            <p><span className="font-semibold">Nom commercial :</span> Diesel Turbo Injection</p>
             <p><span className="font-semibold">SIRET :</span> 848 214 359 00012</p>
-            <p><span className="font-semibold">Adresse :</span> ZI les Vignes, 5 Rue Bernard, 93000 Bobigny, France</p>
+            <p><span className="font-semibold">RCS :</span> 848 214 359 R.C.S Bobigny</p>
+            <p><span className="font-semibold">Capital social :</span> 1 000,00 Euros</p>
+            <p><span className="font-semibold">Adresse :</span> 158 Avenue Charles Floquet, 93150 Le Blanc-Mesnil, France</p>
             <p><span className="font-semibold">Téléphone :</span>{' '}
               <a href="tel:+33172517665" className="text-yellow-600 hover:underline">01 72 51 76 65</a>
             </p>

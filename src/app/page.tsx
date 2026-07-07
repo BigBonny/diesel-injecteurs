@@ -104,14 +104,14 @@ export default function Home() {
     { icon: Truck, title: 'Livraison Rapide', description: 'Livraison en 24-48h partout en France' },
     { icon: Shield, title: 'Garantie 2 Ans', description: 'Toutes nos pièces sont garanties 2 ans' },
     { icon: Clock, title: 'Commande Rapide', description: 'Trouvez votre pièce en quelques clics' },
-    { icon: CheckCircle, title: 'Qualité Certifiée', description: 'Pièces testées et certifiées OEM' },
+    { icon: CheckCircle, title: 'Qualité Certifiée', description: 'Pièces testées sur banc avant expédition' },
   ];
 
   const featuredProducts = [
-    { name: 'Turbo Garrett GT1749V', price: '349€', originalPrice: '450€', rating: 4.8, reviews: 124, image: '🔧' },
-    { name: 'Injecteur Bosch 0445110', price: '89€', originalPrice: '120€', rating: 4.9, reviews: 89, image: '⚙️' },
-    { name: 'Pompe Denso HP3', price: '289€', originalPrice: '380€', rating: 4.7, reviews: 56, image: '🔩' },
-    { name: 'Kit Réparation Turbo', price: '45€', originalPrice: '65€', rating: 4.6, reviews: 203, image: '🛠️' },
+    { name: 'Turbo GT1749V', price: '349€', image: '🔧' },
+    { name: 'Injecteur 0445110', price: '89€', image: '⚙️' },
+    { name: 'Pompe HP3', price: '289€', image: '🔩' },
+    { name: 'Kit Réparation Turbo', price: '45€', image: '🛠️' },
   ];
 
   const testimonials = [
@@ -136,7 +136,7 @@ export default function Home() {
               { icon: Truck, label: 'Livraison express', sublabel: '24/48h dans le monde entier', color: 'text-yellow-500' },
               { icon: Shield, label: 'Satisfait ou remboursé', sublabel: 'Jusqu\'à 15 jours', color: 'text-yellow-500' },
               { icon: CheckCircle, label: 'Paiement sécurisé', sublabel: '3x sans frais possible', color: 'text-yellow-500' },
-              { icon: Star, label: 'Garantie qualité', sublabel: 'Pièces certifiées OEM', color: 'text-yellow-500' },
+              { icon: Star, label: 'Garantie qualité', sublabel: 'Testées sur banc', color: 'text-yellow-500' },
             ].map((item, idx) => (
               <div key={idx} className="flex items-center gap-4 group">
                 <div className="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center border border-yellow-200 group-hover:bg-yellow-100 group-hover:scale-110 transition-all duration-300">
@@ -335,8 +335,8 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
             {[
               { value: 50000, suffix: '+', label: 'Pièces en stock', sublabel: 'Toutes marques disponibles' },
-              { value: 15000, suffix: '+', label: 'Clients satisfaits', sublabel: 'Note moyenne 4.9/5' },
-              { value: 15, suffix: '+', label: "Années d'expertise", sublabel: "Leader depuis 2009" },
+              { value: 1000, suffix: '+', label: 'Clients accompagnés', sublabel: 'Particuliers et professionnels' },
+              { value: 2, suffix: ' ans', label: 'Garantie produits', sublabel: 'Échange standard reconditionné' },
             ].map((stat, idx) => (
               <div 
                 key={idx} 
@@ -415,13 +415,8 @@ export default function Home() {
         <div className="absolute inset-0 opacity-5 bg-[linear-gradient(45deg,#facc15_25%,transparent_25%,transparent_75%,#facc15_75%)] bg-size-[80px_80px]" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-yellow-400 font-bold text-sm uppercase tracking-[0.2em]">Avis clients vérifiés</span>
+            <span className="text-yellow-400 font-bold text-sm uppercase tracking-[0.2em]">Témoignages clients</span>
             <h2 className="text-4xl md:text-5xl font-black text-white mt-3">Ce que disent <span className="text-yellow-400">nos clients</span></h2>
-            <div className="flex items-center justify-center gap-2 mt-4">
-              {[...Array(5)].map((_, i) => <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
-              <span className="text-white font-bold ml-2">4.9/5</span>
-              <span className="text-slate-400 text-sm">• basé sur les retours clients</span>
-            </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {[
@@ -748,7 +743,7 @@ function CategoryCard({ category, index }: { category: { name: string; icon: Rea
 }
 
 // Product Card Component with Scroll Animation
-function ProductCard({ product, index }: { product: { name: string; price: string; originalPrice: string; rating: number; reviews: number; image: string }; index: number }) {
+function ProductCard({ product, index }: { product: { name: string; price: string; image: string }; index: number }) {
   const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
   
   return (
@@ -759,18 +754,12 @@ function ProductCard({ product, index }: { product: { name: string; price: strin
     >
       <div className="relative h-48 bg-linear-to-br from-slate-200 to-slate-100 flex items-center justify-center">
         <div className="text-6xl">{product.image}</div>
-        <span className="absolute top-4 left-4 px-3 py-1 bg-red-500 text-white text-xs font-bold rounded-full">-22%</span>
         <button className="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow opacity-0 group-hover:opacity-100 transition"><Heart className="w-5 h-5" /></button>
       </div>
       <div className="p-6">
-        <div className="flex items-center gap-1 mb-2">
-          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-          <span className="text-sm text-slate-600">{product.rating}</span>
-        </div>
         <h3 className="text-lg font-bold text-gray-900 mb-2">{product.name}</h3>
         <div className="flex items-baseline gap-2 mb-4">
           <span className="text-2xl font-bold text-blue-600">{product.price}</span>
-          <span className="text-sm text-slate-400 line-through">{product.originalPrice}</span>
         </div>
         <button className="w-full py-3 bg-gray-900 text-white rounded-xl font-semibold hover:bg-blue-600 transition flex items-center justify-center gap-2">
           <ShoppingCart className="w-5 h-5" /> Ajouter
@@ -786,7 +775,7 @@ function FaqSection() {
   const faqs = [
     {
       q: 'Quelle est la différence entre une pièce neuve et reconditionnée ?',
-      a: 'Une pièce reconditionnée (échange standard) est une pièce usagée remise à neuf selon les normes OEM constructeur. Elle est démontée, nettoyée, les composants usés remplacés, puis testée sur banc. Le résultat est identique à une pièce neuve pour 30 à 60% moins cher.',
+      a: 'Une pièce reconditionnée (échange standard) est une pièce usagée remise à neuf. Elle est démontée, nettoyée, les composants usés remplacés, puis testée sur banc. Le résultat est identique à une pièce neuve pour 30 à 60% moins cher.',
     },
     {
       q: 'Qu\'est-ce que la consigne et comment fonctionne-t-elle ?',

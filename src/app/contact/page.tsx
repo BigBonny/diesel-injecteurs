@@ -40,8 +40,8 @@ export default function ContactPage() {
     {
       icon: MapPin,
       label: 'Adresse',
-      value: '93000 Bobigny, France',
-      description: 'ZI les Vignes, 5 Rue Bernard'
+      value: '93150 Le Blanc-Mesnil, France',
+      description: '158 Avenue Charles Floquet'
     },
     {
       icon: Clock,

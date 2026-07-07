@@ -14,39 +14,38 @@ const values = [
   {
     icon: Target,
     title: 'Expertise',
-    description: 'Plus de 15 ans d\'expérience dans les pièces diesel. Notre équipe d\'ingénieurs qualifiés garantit la qualité de chaque produit.'
+    description: 'Notre équipe de techniciens qualifiés garantit la qualité de chaque produit diesel reconditionné.'
   },
   {
     icon: Award,
-    title: 'Qualité OEM',
-    description: 'Toutes nos pièces sont testées et certifiées selon les standards OEM. Garantie 2 ans sur l\'ensemble de notre catalogue.'
+    title: 'Qualité',
+    description: 'Toutes nos pièces sont testées et certifiées. Garantie 2 ans sur l\'ensemble de notre catalogue.'
   },
   {
     icon: Users,
     title: 'Service Client',
-    description: 'Une équipe de spécialistes à votre écoute du lundi au samedi. Conseils personnalisés et devis gratuits en 2h.'
+    description: 'Une équipe de spécialistes à votre écoute. Conseils personnalisés et devis gratuits en 2h.'
   },
   {
     icon: Truck,
     title: 'Logistique',
-    description: 'Stock de 50 000+ pièces pour une livraison express 24h partout en France et en Europe.'
+    description: 'Stock important pour une livraison express 24h partout en France et en Europe.'
   }
 ];
 
 const milestones = [
-  { year: '2009', title: 'Création', desc: 'Fondation d\'Injection Diesel à Paris' },
-  { year: '2012', title: 'Expansion', desc: 'Ouverture de notre entrepôt de 2000m²' },
-  { year: '2015', title: 'E-commerce', desc: 'Lancement de notre boutique en ligne' },
-  { year: '2018', title: 'Europe', desc: 'Livraison dans toute l\'Union Européenne' },
-  { year: '2022', title: 'Innovation', desc: 'Laboratoire de test interne certifié' },
-  { year: '2024', title: 'Leader', desc: '15 000+ clients professionnels et particuliers' }
+  { year: '2019', title: 'Création', desc: 'Immatriculation de SAS France Injection le 11 février 2019, spécialiste pièces diesel' },
+  { year: '2020', title: 'E-commerce', desc: 'Lancement de notre boutique en ligne diesel-turbo-injection.com' },
+  { year: '2021', title: 'Expansion', desc: 'Élargissement du catalogue aux pompes haute pression et kits CHRA' },
+  { year: '2022', title: 'Europe', desc: 'Livraison dans toute l\'Union Européenne' },
+  { year: '2024', title: 'Croissance', desc: 'Renforcement de notre stock et de notre équipe technique' },
 ];
 
 const stats = [
-  { value: '15+', label: 'Années d\'expérience' },
-  { value: '50K+', label: 'Pièces en stock' },
-  { value: '15K+', label: 'Clients satisfaits' },
-  { value: '4.9/5', label: 'Note moyenne' }
+  { value: '2 ans', label: 'Garantie produits' },
+  { value: '24-48h', label: 'Livraison express' },
+  { value: 'UE', label: 'Livraison Europe' },
+  { value: 'Échange', label: 'Standard reconditionné' }
 ];
 
 export default function AboutPage() {
@@ -63,7 +62,7 @@ export default function AboutPage() {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-400/10 rounded-full border border-yellow-400/30 mb-6">
             <Star className="w-4 h-4 text-yellow-400" />
-            <span className="text-yellow-200 text-sm font-medium">Depuis 2009</span>
+            <span className="text-yellow-200 text-sm font-medium">SAS France Injection</span>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-6">
             Les experts du{' '}
@@ -99,13 +98,13 @@ export default function AboutPage() {
             <div>
               <h2 className="text-4xl font-bold text-slate-900 mb-6">Notre Mission</h2>
               <p className="text-lg text-slate-600 mb-6">
-                Chez Injection Diesel, notre mission est simple : rendre les pièces auto de qualité professionnelle 
+                Chez SAS France Injection, notre mission est simple : rendre les pièces auto de qualité professionnelle 
                 accessibles à tous. Que vous soyez un garage professionnel ou un particulier passionné, 
                 nous vous offrons les mêmes standards de qualité.
               </p>
               <p className="text-lg text-slate-600 mb-8">
                 Notre équipe d&apos;experts sélectionne rigoureusement chaque produit. Tous nos turbos et injecteurs 
-                sont testés dans notre laboratoire certifié avant expédition.
+                sont testés sur banc avant expédition.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link href="/produits" className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 text-[#1e2a4a] rounded-xl font-semibold hover:bg-yellow-300 transition">
@@ -135,7 +134,7 @@ export default function AboutPage() {
                     'Injecteurs diesel tous types',
                     'Pompes à injection haute pression',
                     'Kits de réparation complets',
-                    'Pièces OEM et équivalentes'
+                    'Pièces reconditionnées et équivalentes'
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-green-500 shrink-0" />
@@ -240,7 +239,7 @@ export default function AboutPage() {
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mt-8">
                 <TrendingUp className="w-10 h-10 text-cyan-400 mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Prix compétitifs</h3>
-                <p className="text-slate-400 text-sm">Jusqu&apos;à -40% vs concessionnaire</p>
+                <p className="text-slate-400 text-sm">Prix compétitifs vs neuf</p>
               </div>
             </div>
           </div>
@@ -261,10 +260,11 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Notre Adresse</h3>
               <p className="text-slate-600">
-                Diesel Turbo Injection<br />
-                ZI les Vignes, 5 Rue Bernard<br />
-                93000 Bobigny, France<br />
-                SIRET : 848 214 359 00012
+                SAS France Injection<br />
+                158 Avenue Charles Floquet<br />
+                93150 Le Blanc-Mesnil, France<br />
+                SIRET : 848 214 359 00012<br />
+                RCS : 848 214 359 R.C.S Bobigny
               </p>
             </div>
             <div className="bg-slate-50 rounded-2xl p-8 text-center">

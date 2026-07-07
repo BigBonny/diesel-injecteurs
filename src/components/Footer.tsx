@@ -96,7 +96,7 @@ export default function Footer() {
                   <span className="text-2xl font-bold bg-linear-to-r from-white to-gray-300 bg-clip-text text-transparent">
                     Diesel Turbo Injection
                   </span>
-                  <p className="text-xs text-gray-500">Spécialiste pièces diesel</p>
+                  <p className="text-xs text-gray-500">Spécialiste pièces diesel — SAS France Injection</p>
                 </div>
               </div>
 
@@ -105,8 +105,9 @@ export default function Footer() {
                 pour votre moteur diesel avec injecteurs Bosch, Delphi, Siemens et Denso.
               </p>
               <div className="text-gray-500 text-xs space-y-1 mb-6">
-                <p>ZI les Vignes, 5 Rue Bernard, 93000 Bobigny, France</p>
-                <p>SIRET : 848 214 359 00012</p>
+                <p>SAS France Injection — SIRET 848 214 359 00012</p>
+                <p>RCS 848 214 359 R.C.S Bobigny</p>
+                <p>158 Avenue Charles Floquet, 93150 Le Blanc-Mesnil, France</p>
               </div>
 
               {/* Contact Info */}
@@ -256,7 +257,7 @@ export default function Footer() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-sm text-gray-500">
-                © {new Date().getFullYear()} Diesel Turbo Injection. Tous droits réservés.
+                © {new Date().getFullYear()} SAS France Injection. Tous droits réservés.
               </p>
               <div className="flex items-center gap-6 text-sm text-gray-500">
                 <a href="/mentions-legales" className="hover:text-white transition">Mentions légales</a>

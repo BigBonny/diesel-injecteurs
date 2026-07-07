@@ -58,7 +58,7 @@ export async function GET() {
       <description>${desc}</description>
       <link>${baseUrl}/produits/${id}</link>
       <g:image_link>${escapeXml(imageUrl)}</g:image_link>
-      <g:condition>new</g:condition>
+      <g:condition>refurbished</g:condition>
       <g:availability>in stock</g:availability>
       <g:price>${price} EUR</g:price>
       <g:brand>${brand}</g:brand>
@@ -101,14 +101,14 @@ function escapeXml(str: string): string {
 }
 
 function extractBrand(name: string): string {
-  const brands = ['Renault', 'Peugeot', 'Citroën', 'Volkswagen', 'VW', 'BMW', 'Mercedes', 'Audi', 'Ford', 'Opel', 'Toyota', 'Fiat', 'Nissan', 'Hyundai', 'Kia', 'Seat', 'Skoda'];
   const lowerName = name.toLowerCase();
-  for (const brand of brands) {
-    if (lowerName.includes(brand.toLowerCase())) {
-      return brand === 'vw' ? 'Volkswagen' : brand;
-    }
-  }
-  return 'OEM';
+  if (lowerName.includes('garrett')) return 'Garrett';
+  if (lowerName.includes('borgwarner')) return 'BorgWarner';
+  if (lowerName.includes('kkk')) return 'KKK';
+  if (lowerName.includes('holset')) return 'Holset';
+  if (lowerName.includes('ihi')) return 'IHI';
+  if (lowerName.includes('mitsubishi')) return 'Mitsubishi';
+  return 'SAS France Injection';
 }
 
 function getGoogleCategory(name: string): string {
