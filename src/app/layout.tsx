@@ -30,9 +30,9 @@ export const metadata: Metadata = {
   },
   description: "Spécialiste turbo, injecteur et pompe haute pression diesel reconditionnés. Échange standard, garantie 2 ans, livraison 24-48h, consigne remboursée.",
   keywords: ["turbo diesel", "injecteur diesel", "pompe haute pression", "échange standard", "turbo reconditionné", "injecteur Bosch", "pièces auto diesel", "CHRA", "consigne turbo"],
-  authors: [{ name: "Diesel Turbo Injection" }],
-  creator: "Diesel Turbo Injection",
-  publisher: "Diesel Turbo Injection",
+  authors: [{ name: "SAS France Injection" }],
+  creator: "SAS France Injection",
+  publisher: "SAS France Injection",
   metadataBase: new URL("https://diesel-turbo-injection.com"),
   icons: {
     icon: [

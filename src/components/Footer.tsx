@@ -101,8 +101,8 @@ export default function Footer() {
               </div>
 
               <p className="text-gray-400 text-sm leading-relaxed mb-4 max-w-sm">
-                Les experts du turbo reconditionné. Solution fiable et rapide 
-                pour votre moteur diesel avec injecteurs Bosch, Delphi, Siemens et Denso.
+                Spécialiste de la pièce diesel en échange standard. Turbos, injecteurs 
+                et pompes reconditionnés, testés et garantis 2 ans.
               </p>
               <div className="text-gray-500 text-xs space-y-1 mb-6">
                 <p>SAS France Injection — SIRET 848 214 359 00012</p>

@@ -94,7 +94,7 @@ function useScrollReveal<T extends HTMLElement>() {
 export default function Home() {
 
   const categories = [
-    { name: 'Turbos', icon: Zap, color: 'bg-blue-500', description: 'Turbos reconditionnés et neufs' },
+    { name: 'Turbos', icon: Zap, color: 'bg-blue-500', description: 'Turbos reconditionnés en échange standard' },
     { name: 'Injecteurs', icon: Wrench, color: 'bg-green-500', description: 'Injecteurs diesel haute qualité' },
     { name: 'Pompes', icon: Package, color: 'bg-purple-500', description: 'Pompes à injection' },
     { name: 'Kits', icon: Car, color: 'bg-orange-500', description: 'Kits de réparation complets' },
@@ -248,7 +248,7 @@ export default function Home() {
             <span className="text-yellow-500 font-bold text-sm uppercase tracking-[0.2em]">Injecteur échange standard & turbo pas cher</span>
             <h2 className="text-2xl md:text-4xl font-black text-slate-900 mt-3">Solution fiable et rapide pour votre moteur diesel</h2>
             <p className="text-slate-500 mt-4 max-w-3xl mx-auto">
-              Nos injecteurs Bosch, Delphi, Siemens et Denso. Qualité garantie et performance optimale.
+              Nos injecteurs et turbos reconditionnés en échange standard. Qualité garantie et performance optimale.
             </p>
           </div>
 
@@ -302,7 +302,7 @@ export default function Home() {
               <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center mb-6">
                 <Star className="w-6 h-6 text-[#1e2a4a]" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-6">Marques disponibles</h3>
+              <h3 className="text-xl font-bold text-white mb-6">Marques prises en charge</h3>
               <div className="grid grid-cols-2 gap-3">
                 {['Bosch', 'Delphi', 'Siemens', 'Denso'].map((brand) => (
                   <div key={brand} className="bg-white/10 rounded-xl p-3 text-center border border-white/10">
@@ -387,7 +387,7 @@ export default function Home() {
             {/* Connector line desktop */}
             <div className="hidden md:block absolute top-14 left-[calc(16.66%+1rem)] right-[calc(16.66%+1rem)] h-0.5 bg-linear-to-r from-yellow-400 to-blue-500 z-0" />
             {[
-              { step: '01', icon: Search, title: 'Trouvez votre pièce', desc: 'Recherchez par immatriculation, marque ou référence. Notre catalogue couvre 50 000+ références.' },
+              { step: '01', icon: Search, title: 'Trouvez votre pièce', desc: 'Recherchez par immatriculation, marque ou référence. Notre catalogue couvre un large choix de pièces diesel.' },
               { step: '02', icon: ShoppingCart, title: 'Commandez en ligne', desc: 'Paiement sécurisé, 3x sans frais. Vous recevez une confirmation immédiate par email ou SMS.' },
               { step: '03', icon: Package, title: 'Livraison express', desc: 'Expédié le jour même avant 14h. Emballé avec soin, suivi en temps réel. Livraison 24-48h.' },
             ].map(({ step, icon: Icon, title, desc }) => (
@@ -775,7 +775,7 @@ function FaqSection() {
   const faqs = [
     {
       q: 'Quelle est la différence entre une pièce neuve et reconditionnée ?',
-      a: 'Une pièce reconditionnée (échange standard) est une pièce usagée remise à neuf. Elle est démontée, nettoyée, les composants usés remplacés, puis testée sur banc. Le résultat est identique à une pièce neuve pour 30 à 60% moins cher.',
+      a: 'Une pièce reconditionnée (échange standard) est une pièce usagée remise à neuf. Elle est démontée, nettoyée, les composants usés remplacés, puis testée sur banc. Le résultat est une pièce fonctionnellement équivalente à une pièce neuve, à un prix plus avantageux.',
     },
     {
       q: 'Qu\'est-ce que la consigne et comment fonctionne-t-elle ?',
@@ -791,7 +791,7 @@ function FaqSection() {
     },
     {
       q: 'Quelle garantie avez-vous sur vos pièces ?',
-      a: 'Toutes nos pièces sont garanties 2 ans, qu\'elles soient neuves ou reconditionnées. En cas de défaillance, nous remplaçons ou remboursons la pièce sans frais. La garantie couvre les défauts de fabrication et de reconditionnement.',
+      a: 'Toutes nos pièces reconditionnées sont garanties 2 ans. En cas de défaillance, nous remplaçons ou remboursons la pièce sans frais. La garantie couvre les défauts de fabrication et de reconditionnement.',
     },
     {
       q: 'Puis-je payer en plusieurs fois ?',

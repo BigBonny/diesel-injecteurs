@@ -242,7 +242,7 @@ export default function TurboHero() {
                 {productCount !== null ? (
                   <><span className="text-yellow-400 font-semibold">{productCount.toLocaleString('fr-FR')} références</span> disponibles · Livraison 24-48h</>
                 ) : (
-                  <>Plus de <span className="text-yellow-400 font-semibold">50 000 références</span> disponibles · Livraison 24-48h</>
+                  <>Large choix de <span className="text-yellow-400 font-semibold">pièces diesel</span> disponibles · Livraison 24-48h</>
                 )}
               </p>
             </div>
@@ -254,7 +254,7 @@ export default function TurboHero() {
       <div className="relative z-10 border-t border-white/10 bg-white/5 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-5 sm:px-8 py-5 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
           {[
-            { value: '50 000+', label: 'Pièces en stock' },
+            { value: productCount !== null ? productCount.toLocaleString('fr-FR') : 'Catalogue', label: 'Pièces diesel' },
             { value: '2 ans', label: 'Garantie produits' },
             { value: '24-48h', label: 'Livraison express' },
             { value: '3×', label: 'Paiement sans frais' },

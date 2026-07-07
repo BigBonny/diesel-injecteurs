@@ -71,8 +71,8 @@ export default function AboutPage() {
             </span>
           </h1>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            Solution fiable et rapide pour votre moteur diesel avec nos injecteurs Bosch, Delphi, Siemens et Denso. 
-            Qualité garantie et performance optimale.
+            Spécialiste de la pièce diesel en échange standard. 
+            Turbos, injecteurs et pompes reconditionnés, testés et garantis.
           </p>
         </div>
       </section>
@@ -124,17 +124,17 @@ export default function AboutPage() {
                     <Wrench className="w-8 h-8 text-yellow-600" />
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-slate-900">50 000+</div>
-                    <div className="text-slate-600">Pièces référencées</div>
+                        <div className="text-2xl font-bold text-slate-900">Catalogue</div>
+                    <div className="text-slate-600">Pièces diesel en échange standard</div>
                   </div>
                 </div>
                 <div className="space-y-4">
                   {[
-                    'Turbos neufs et reconditionnés',
+                    'Turbos reconditionnés en échange standard',
                     'Injecteurs diesel tous types',
                     'Pompes à injection haute pression',
                     'Kits de réparation complets',
-                    'Pièces reconditionnées et équivalentes'
+                    'Pièces testées sur banc avant expédition'
                   ].map((item, i) => (
                     <div key={i} className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-green-500 shrink-0" />
@@ -174,7 +174,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <span className="text-yellow-500 font-semibold text-sm uppercase tracking-wider">Notre histoire</span>
-            <h2 className="text-4xl font-bold text-slate-900 mt-2">15 ans d&apos;excellence</h2>
+            <h2 className="text-4xl font-bold text-slate-900 mt-2">Depuis 2019</h2>
           </div>
           <div className="relative">
             <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-yellow-300 hidden md:block" />
@@ -206,17 +206,17 @@ export default function AboutPage() {
                 Une équipe d&apos;<span className="text-yellow-400">experts passionnés</span>
               </h2>
               <p className="text-lg text-slate-400 mb-8">
-                Nos techniciens et ingénieurs cumulent plus de 100 ans d&apos;expérience combinée dans le diesel. 
-                Chaque membre de l&apos;équipe partage une passion commune : vous offrir le meilleur service possible.
+                Notre équipe met son expertise du diesel au service de chaque client. 
+                Chaque pièce est inspectée et testée avant expédition pour garantir sa fiabilité.
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                  <div className="text-3xl font-bold text-yellow-400 mb-2">25+</div>
-                  <div className="text-slate-400">Experts techniques</div>
+                  <div className="text-3xl font-bold text-yellow-400 mb-2">2 ans</div>
+                  <div className="text-slate-400">Garantie produits</div>
                 </div>
                 <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                  <div className="text-3xl font-bold text-yellow-300 mb-2">98%</div>
-                  <div className="text-slate-400">Taux de satisfaction</div>
+                  <div className="text-3xl font-bold text-yellow-300 mb-2">Échange</div>
+                  <div className="text-slate-400">Standard reconditionné</div>
                 </div>
               </div>
             </div>
@@ -229,7 +229,7 @@ export default function AboutPage() {
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 mt-8">
                 <Shield className="w-10 h-10 text-green-400 mb-4" />
                 <h3 className="text-lg font-semibold mb-2">Garantie 2 ans</h3>
-                <p className="text-slate-400 text-sm">Sérénité totale avec notre garantie pièces et main d&apos;œuvre</p>
+                <p className="text-slate-400 text-sm">Sérénité totale avec notre garantie sur les défauts de fabrication</p>
               </div>
               <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
                 <Clock className="w-10 h-10 text-blue-400 mb-4" />

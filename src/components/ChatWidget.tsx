@@ -50,11 +50,11 @@ export default function ChatWidget() {
     const lowerText = userText.toLowerCase();
     
     if (lowerText.includes('turbo') || lowerText.includes('turbos')) {
-      return "🔧 Nous avons +5,000 turbos en stock ! Pour vous aider au mieux, pourriez-vous me donner :\n\n• La marque et modèle de votre véhicule\n• L'année de mise en circulation\n• La puissance du moteur\n\nOu appelez-nous au +33 1 23 45 67 89 pour une assistance immédiate.";
+      return "🔧 Nous avons un large choix de turbos reconditionnés ! Pour vous aider au mieux, pourriez-vous me donner :\n\n• La marque et modèle de votre véhicule\n• L'année de mise en circulation\n• La puissance du moteur\n\nOu appelez-nous au 01 72 51 76 65 pour une assistance immédiate.";
     }
     
     if (lowerText.includes('injecteur') || lowerText.includes('injecteurs') || lowerText.includes('prix')) {
-      return "💰 Nos injecteurs reconditionnés commencent à 79€ (garantie 2 ans incluses).\n\nLes prix varient selon :\n• La marque (Bosch, Delphi, Denso...)\n• Le type de moteur\n• Échange standard ou neuf\n\nConsultez notre catalogue ou demandez un devis personnalisé !";
+      return "💰 Nos injecteurs reconditionnés commencent à 79€ (garantie 2 ans incluse).\n\nLes prix varient selon :\n• La marque du véhicule\n• Le type de moteur\n• Échange standard (reconditionné)\n\nConsultez notre catalogue ou demandez un devis personnalisé !";
     }
     
     if (lowerText.includes('livraison') || lowerText.includes('délai') || lowerText.includes('expédition')) {
