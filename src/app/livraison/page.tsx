@@ -161,8 +161,8 @@ export default function LivraisonPage() {
           <p className="text-slate-800 font-medium mb-2">Besoin d&apos;aide ?</p>
           <p className="text-slate-600 text-sm mb-4">Notre équipe est disponible pour répondre à toutes vos questions.</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="tel:+33172517665" className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 text-[#1e2a4a] rounded-xl font-semibold hover:bg-yellow-300 transition text-sm">
-              📞 01 72 51 76 65
+            <a href="tel:+33612429880" className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 text-[#1e2a4a] rounded-xl font-semibold hover:bg-yellow-300 transition text-sm">
+              📞 06 12 42 98 80
             </a>
             <a href="mailto:diesel.injecteurs@gmail.com" className="inline-flex items-center gap-2 px-6 py-3 border border-slate-300 bg-white text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition text-sm">
               ✉️ diesel.injecteurs@gmail.com

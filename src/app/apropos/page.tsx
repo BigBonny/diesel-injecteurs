@@ -273,7 +273,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Téléphone</h3>
               <p className="text-slate-600">
-                <a href="tel:+33172517665" className="hover:text-yellow-600 transition">01 72 51 76 65</a><br />
+                <a href="tel:+33612429880" className="hover:text-yellow-600 transition">06 12 42 98 80</a><br />
                 WhatsApp : <a href="https://wa.me/33612429880" className="hover:text-yellow-600 transition">06 12 42 98 80</a>
               </p>
             </div>

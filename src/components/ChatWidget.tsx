@@ -50,7 +50,7 @@ export default function ChatWidget() {
     const lowerText = userText.toLowerCase();
     
     if (lowerText.includes('turbo') || lowerText.includes('turbos')) {
-      return "🔧 Nous avons un large choix de turbos reconditionnés ! Pour vous aider au mieux, pourriez-vous me donner :\n\n• La marque et modèle de votre véhicule\n• L'année de mise en circulation\n• La puissance du moteur\n\nOu appelez-nous au 01 72 51 76 65 pour une assistance immédiate.";
+      return "🔧 Nous avons un large choix de turbos reconditionnés ! Pour vous aider au mieux, pourriez-vous me donner :\n\n• La marque et modèle de votre véhicule\n• L'année de mise en circulation\n• La puissance du moteur\n\nOu appelez-nous au 06 12 42 98 80 pour une assistance immédiate.";
     }
     
     if (lowerText.includes('injecteur') || lowerText.includes('injecteurs') || lowerText.includes('prix')) {

@@ -36,7 +36,7 @@ export default function ConfidentialitePage() {
             <p><span className="font-semibold">Capital social :</span> 1 000,00 Euros</p>
             <p><span className="font-semibold">Adresse :</span> 158 Avenue Charles Floquet, 93150 Le Blanc-Mesnil, France</p>
             <p><span className="font-semibold">Téléphone :</span>{' '}
-              <a href="tel:+33172517665" className="text-yellow-600 hover:underline">01 72 51 76 65</a>
+              <a href="tel:+33612429880" className="text-yellow-600 hover:underline">06 12 42 98 80</a>
             </p>
             <p><span className="font-semibold">Email :</span>{' '}
               <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>
@@ -126,7 +126,7 @@ export default function ConfidentialitePage() {
             Pour exercer ces droits, contactez-nous par email à{' '}
             <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>{' '}
             ou par téléphone au{' '}
-            <a href="tel:+33172517665" className="text-yellow-600 hover:underline">01 72 51 76 65</a>.
+            <a href="tel:+33612429880" className="text-yellow-600 hover:underline">06 12 42 98 80</a>.
             Vous pouvez également introduire une réclamation auprès de la <strong>CNIL</strong> (cnil.fr).
           </p>
         </section>

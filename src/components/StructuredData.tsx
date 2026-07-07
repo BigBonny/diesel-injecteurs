@@ -10,7 +10,7 @@ export default function StructuredData() {
     contactPoint: [
       {
         '@type': 'ContactPoint',
-        telephone: '+33-1-72-51-76-65',
+        telephone: '+33-6-12-42-98-80',
         contactType: 'customer service',
         availableLanguage: ['French'],
         areaServed: ['FR', 'BE', 'LU', 'DE', 'ES', 'IT', 'PT', 'NL'],
@@ -61,7 +61,7 @@ export default function StructuredData() {
     name: 'SAS France Injection',
     image: 'https://diesel-turbo-injection.com/assets/logo.png',
     url: 'https://diesel-turbo-injection.com',
-    telephone: '+33172517665',
+    telephone: '+33612429880',
     email: 'diesel.injecteurs@gmail.com',
     address: {
       '@type': 'PostalAddress',

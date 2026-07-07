@@ -41,7 +41,7 @@ export default function MentionsLegalesPage() {
             <p><span className="font-semibold">Clôture de l'exercice social :</span> 31 décembre</p>
             <p><span className="font-semibold">Président :</span> GOUBI Diaeddine, né le 06/08/1993 à SETIF (Algérie), nationalité Française, domicilié 21 Boulevard Gambetta, 93130 Noisy-le-Sec</p>
             <p><span className="font-semibold">Téléphone :</span>{' '}
-              <a href="tel:+33172517665" className="text-yellow-600 hover:underline">01 72 51 76 65</a>
+              <a href="tel:+33612429880" className="text-yellow-600 hover:underline">06 12 42 98 80</a>
             </p>
             <p><span className="font-semibold">WhatsApp :</span>{' '}
               <a href="https://wa.me/33612429880" className="text-yellow-600 hover:underline">06 12 42 98 80</a>

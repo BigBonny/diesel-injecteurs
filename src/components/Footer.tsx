@@ -112,13 +112,13 @@ export default function Footer() {
 
               {/* Contact Info */}
               <div className="space-y-3">
-                <a href="tel:+33172517665" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
+                <a href="tel:+33612429880" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
                   <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-blue-600/20 transition">
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500">Téléphone fixe</p>
-                    <p className="font-semibold">01 72 51 76 65</p>
+                    <p className="text-xs text-gray-500">Téléphone</p>
+                    <p className="font-semibold">06 12 42 98 80</p>
                   </div>
                 </a>
                 <a href="https://wa.me/33612429880" target="_blank" rel="noopener noreferrer" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
