@@ -12,59 +12,6 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-// Animated Counter Component
-function AnimatedCounter({ end, duration = 2000, suffix = '' }: { end: number; duration?: number; suffix?: string }) {
-  const [count, setCount] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.5 }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!isVisible) return;
-
-    let startTime: number;
-    let animationFrame: number;
-
-    const animate = (currentTime: number) => {
-      if (!startTime) startTime = currentTime;
-      const progress = Math.min((currentTime - startTime) / duration, 1);
-      
-      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-      
-      setCount(Math.floor(easeOutQuart * end));
-
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
-      }
-    };
-
-    animationFrame = requestAnimationFrame(animate);
-
-    return () => cancelAnimationFrame(animationFrame);
-  }, [isVisible, end, duration]);
-
-  return (
-    <span ref={ref} className="tabular-nums">
-      {count.toLocaleString()}{suffix}
-    </span>
-  );
-}
 
 // Scroll Reveal Hook
 function useScrollReveal<T extends HTMLElement>() {
@@ -112,12 +59,6 @@ export default function Home() {
     { name: 'Injecteur 0445110', price: '89€', image: '⚙️' },
     { name: 'Pompe HP3', price: '289€', image: '🔩' },
     { name: 'Kit Réparation Turbo', price: '45€', image: '🛠️' },
-  ];
-
-  const testimonials = [
-    { name: "Jean Dupont", text: "Service impeccable, livraison rapide. Le turbo fonctionne parfaitement sur ma Clio 3.", rating: 5, date: "Il y a 2 jours" },
-    { name: "Marie Lefebvre", text: "Excellent rapport qualité-prix. Je recommande vivement Diesel Turbo Injection !", rating: 5, date: "Il y a 1 semaine" },
-    { name: "Pierre Martin", text: "Commande facile, produit de qualité. Mon garage n'achète plus qu'ici.", rating: 5, date: "Il y a 2 semaines" },
   ];
 
   return (
@@ -318,43 +259,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats - With Animated Counters */}
-      <section className="py-20 bg-[#1e2a4a] text-white relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-yellow-400/5 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="text-center mb-16">
-            <span className="text-yellow-400 font-bold text-sm uppercase tracking-[0.2em]">Nos chiffres</span>
-            <h2 className="text-3xl md:text-5xl font-black mt-3">Ils nous font confiance</h2>
-            <p className="text-slate-400 text-lg mt-4">Des milliers de professionnels nous font confiance chaque jour</p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
-            {[
-              { value: 50000, suffix: '+', label: 'Pièces en stock', sublabel: 'Toutes marques disponibles' },
-              { value: 1000, suffix: '+', label: 'Clients accompagnés', sublabel: 'Particuliers et professionnels' },
-              { value: 2, suffix: ' ans', label: 'Garantie produits', sublabel: 'Échange standard reconditionné' },
-            ].map((stat, idx) => (
-              <div 
-                key={idx} 
-                className="group relative bg-white/5 rounded-2xl p-8 border border-white/10 hover:border-yellow-400/50 transition-all duration-500"
-              >
-                <div className="relative text-center">
-                  <div className="text-5xl md:text-6xl font-black text-yellow-400 mb-2">
-                    <AnimatedCounter end={stat.value} suffix={stat.suffix} />
-                  </div>
-                  <div className="text-xl font-bold mb-1">{stat.label}</div>
-                  <div className="text-sm text-slate-400">{stat.sublabel}</div>
-                </div>
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-yellow-400 group-hover:w-1/2 transition-all duration-500" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Brand Logos Marquee */}
       <section className="py-14 bg-white border-y border-slate-100 overflow-hidden">
@@ -410,49 +314,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="py-24 bg-[#1e2a4a] relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5 bg-[linear-gradient(45deg,#facc15_25%,transparent_25%,transparent_75%,#facc15_75%)] bg-size-[80px_80px]" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-yellow-400 font-bold text-sm uppercase tracking-[0.2em]">Témoignages clients</span>
-            <h2 className="text-4xl md:text-5xl font-black text-white mt-3">Ce que disent <span className="text-yellow-400">nos clients</span></h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {[
-              { name: 'Mehdi L.', vehicle: 'Renault Clio 4', text: 'Je suis venu chercher un injecteur en urgence. Accueil super pro, la pièce était prête et testée. Montage sans souci. Je recommande vivement, service rapide et efficace.', stars: 5, date: 'Juin 2025' },
-              { name: 'Antoine L.', vehicle: 'VW Touareg', text: 'Commande passée le lundi, reçue le mercredi. L\'injecteur fonctionne parfaitement. Bon rapport qualité-prix et consigne remboursée rapidement.', stars: 5, date: 'Mai 2025' },
-              { name: 'Youssef B.', vehicle: 'BMW Série 3', text: 'Très bonne expérience. Le turbo est arrivé bien emballé, conforme à la description. Mon mécano l\'a monté sans problème. Ça tourne nickel depuis 3 mois.', stars: 5, date: 'Avril 2025' },
-              { name: 'Stéphane R.', vehicle: 'Ford Transit', text: 'Turbo reconditionné impeccable. Livraison rapide, bien emballé, la pièce est conforme et fonctionne très bien. Je recommande ce site sans hésitation.', stars: 5, date: 'Mars 2025' },
-              { name: 'Gabriel M.', vehicle: 'Audi A3', text: 'Je suis très satisfait de mon achat. La pièce est très bien reconditionnée, on dirait qu\'elle est neuve. Envoyée et reçue rapidement. Merci !', stars: 5, date: 'Février 2025' },
-              { name: 'Marco D.', vehicle: 'Iveco Daily', text: 'Deuxième commande, toujours aussi fiable. Injecteur Bosch pour mon Daily, prix imbattable par rapport au neuf. La consigne a été remboursée en 2 semaines.', stars: 5, date: 'Janvier 2025' },
-            ].map(({ name, vehicle, text, stars, date }, i) => (
-              <div key={i} className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-yellow-400/30 hover:bg-white/10 transition-all duration-300 flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-1">
-                    {[...Array(stars)].map((_, j) => <Star key={j} className="w-4 h-4 fill-yellow-400 text-yellow-400" />)}
-                  </div>
-                  <span className="text-xs text-green-400 flex items-center gap-1"><CheckCircle className="w-3 h-3" /> Achat vérifié</span>
-                </div>
-                <p className="text-slate-300 text-sm leading-relaxed flex-1">&ldquo;{text}&rdquo;</p>
-                <div className="flex items-center gap-3 pt-2 border-t border-white/10">
-                  <div className="w-10 h-10 bg-yellow-400 rounded-full flex items-center justify-center text-[#1e2a4a] font-black text-sm">{name.charAt(0)}</div>
-                  <div>
-                    <div className="font-semibold text-white text-sm">{name}</div>
-                    <div className="text-slate-400 text-xs">{vehicle} • {date}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-12 text-center">
-            <p className="text-slate-400 text-sm mb-4">Vous êtes client ? Partagez votre expérience !</p>
-            <a href="/contact" className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 text-[#1e2a4a] rounded-xl font-semibold hover:bg-yellow-300 transition text-sm">
-              <Star className="w-4 h-4" /> Laisser un avis
-            </a>
-          </div>
-        </div>
-      </section>
 
       {/* FAQ */}
       <FaqSection />
@@ -659,7 +520,7 @@ export default function Home() {
           </h2>
           
           <p className="text-xl text-[#1e2a4a]/70 mb-10 max-w-2xl mx-auto font-medium">
-            Rejoignez 15,000+ professionnels et particuliers qui nous font confiance pour leurs pièces auto.
+            Contactez-nous pour un devis ou pour trouver la pièce qu&apos;il vous faut.
           </p>
 
           <div className="flex flex-wrap justify-center gap-4">
@@ -834,27 +695,3 @@ function FaqSection() {
   );
 }
 
-// Testimonial Card Component with Scroll Animation
-function TestimonialCard({ testimonial, index }: { testimonial: { name: string; text: string; rating: number; date: string }; index: number }) {
-  const { ref, isVisible } = useScrollReveal<HTMLDivElement>();
-  
-  return (
-    <div 
-      ref={ref}
-      className={`bg-slate-100 rounded-2xl p-8 transform ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-      style={{ transitionDuration: '600ms', transitionDelay: `${index * 100}ms` }}
-    >
-      <div className="flex gap-1 mb-4">
-        {[...Array(testimonial.rating)].map((_, i) => <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
-      </div>
-      <p className="text-slate-700 mb-6 italic">&ldquo;{testimonial.text}&rdquo;</p>
-      <div className="flex items-center justify-between">
-        <div>
-          <div className="font-semibold">{testimonial.name}</div>
-          <div className="text-sm text-slate-500">{testimonial.date}</div>
-        </div>
-        <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">{testimonial.name.charAt(0)}</div>
-      </div>
-    </div>
-  );
-}
