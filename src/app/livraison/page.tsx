@@ -29,7 +29,7 @@ export default function LivraisonPage() {
         <section className="grid md:grid-cols-3 gap-6">
           {[
             { icon: Clock, title: 'Expédition 24h', desc: 'Commande passée avant 14h expédiée le jour même (jours ouvrés).' },
-            { icon: Truck, title: 'Livraison 24-48h', desc: 'En France métropolitaine via Colissimo, DPD ou Chronopost.' },
+            { icon: Truck, title: 'Livraison 24-48h', desc: 'En France métropolitaine via FedEx, Colissimo ou Chronopost.' },
             { icon: ShieldCheck, title: 'Suivi inclus', desc: 'Numéro de suivi envoyé par email dès l\'expédition.' },
           ].map((item, idx) => (
             <div key={idx} className="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm text-center">
@@ -41,6 +41,11 @@ export default function LivraisonPage() {
             </div>
           ))}
         </section>
+
+        {/* Carrier logos */}
+        <div className="flex items-center justify-center gap-8 py-4">
+          <img src="/assets/fedex.svg" alt="FedEx" className="h-10 object-contain" />
+        </div>
 
         {/* Shipping zones */}
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">

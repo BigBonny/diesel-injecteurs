@@ -134,6 +134,14 @@ export default function RetourConsignePage() {
         </div>
       </section>
 
+      {/* Carrier logo */}
+      <div className="py-8 bg-white border-y border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center gap-4">
+          <span className="text-sm text-slate-400 font-medium">Retours expédiés via</span>
+          <img src="/assets/fedex.svg" alt="FedEx" className="h-8 object-contain" />
+        </div>
+      </div>
+
       {/* Important Notes */}
       <section className="py-20 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
