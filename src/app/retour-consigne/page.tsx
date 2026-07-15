@@ -29,7 +29,7 @@ const steps = [
     number: '04',
     icon: RotateCcw,
     title: 'Retour avec étiquette',
-    description: 'Conservez l\'emballage et collez le bordereau de retour prépayé sur le colis. Envoyez le colis avec l\'étiquette GLS fournie.'
+    description: 'Conservez l\'emballage et collez le bordereau de retour prépayé sur le colis. Envoyez le colis avec l\'étiquette FedEx fournie.'
   },
   {
     number: '05',
@@ -96,8 +96,8 @@ export default function RetourConsignePage() {
               </div>
             </div>
             <a
-              href="/assets/CONSIGNE DIESEL INJECTEURS.pdf"
-              download="CONSIGNE DIESEL INJECTEURS.pdf"
+              href="/assets/CONSIGNE EURO SYSTEM.pdf"
+              download="CONSIGNE EURO SYSTEM.pdf"
               className="flex items-center gap-2 px-6 py-3 bg-[#1e2a4a] text-white rounded-xl font-semibold hover:bg-[#162038] transition shrink-0"
             >
               <Download className="w-5 h-5" />
