@@ -44,7 +44,7 @@ export default function LivraisonPage() {
 
         {/* Carrier logos */}
         <div className="flex items-center justify-center gap-8 py-4">
-          <img src="/assets/fedex.svg" alt="FedEx" className="h-10 object-contain" />
+          <img src="/assets/Fedex-logo.png" alt="FedEx" className="h-10 object-contain" />
         </div>
 
         {/* Shipping zones */}
