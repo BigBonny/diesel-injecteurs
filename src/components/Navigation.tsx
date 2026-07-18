@@ -85,7 +85,7 @@ function NavigationInner() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-center gap-2 py-2 text-xs sm:text-sm font-bold text-slate-900">
               <Zap className="w-4 h-4" />
-              <span>Promo spéciale <strong>-20% sur les turbos Garrett</strong> Livraison express 24/48h</span>
+              <span>Garantie 2 ans sur toutes nos pièces reconditionnées — Livraison express 24/48h</span>
               <Zap className="w-4 h-4" />
             </div>
           </div>

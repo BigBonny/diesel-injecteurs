@@ -33,6 +33,7 @@ export default function MentionsLegalesPage() {
             <p><span className="font-semibold">Capital social :</span> 1 000,00 Euros</p>
             <p><span className="font-semibold">SIRET :</span> 848 214 359 00012</p>
             <p><span className="font-semibold">RCS :</span> 848 214 359 R.C.S Bobigny</p>
+            <p><span className="font-semibold">TVA intracommunautaire :</span> FR88 848 214 359</p>
             <p><span className="font-semibold">EUID :</span> FR9301.848214359</p>
             <p><span className="font-semibold">Date d'immatriculation :</span> 11/02/2019</p>
             <p><span className="font-semibold">Adresse du siège :</span> 158 Avenue Charles Floquet, 93150 Le Blanc-Mesnil, France</p>

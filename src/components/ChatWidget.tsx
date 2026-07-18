@@ -13,7 +13,7 @@ interface Message {
 const initialMessages: Message[] = [
   {
     id: 1,
-    text: "👋 Bonjour ! Je suis l'assistant virtuel d'Injection Diesel. Comment puis-je vous aider aujourd'hui ?",
+    text: "👋 Bonjour ! Je suis l'assistant virtuel de Diesel Turbo Injection. Comment puis-je vous aider aujourd'hui ?",
     sender: 'bot',
     timestamp: new Date(),
   },
