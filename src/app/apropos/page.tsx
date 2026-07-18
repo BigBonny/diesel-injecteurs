@@ -33,14 +33,6 @@ const values = [
   }
 ];
 
-const milestones = [
-  { year: '2019', title: 'Création', desc: 'Immatriculation de SAS France Injection le 11 février 2019, spécialiste pièces diesel' },
-  { year: '2020', title: 'E-commerce', desc: 'Lancement de notre boutique en ligne diesel-turbo-injection.com' },
-  { year: '2021', title: 'Expansion', desc: 'Élargissement du catalogue aux pompes haute pression et kits CHRA' },
-  { year: '2022', title: 'Europe', desc: 'Livraison dans toute l\'Union Européenne' },
-  { year: '2024', title: 'Croissance', desc: 'Renforcement de notre stock et de notre équipe technique' },
-];
-
 const stats = [
   { value: '2 ans', label: 'Garantie produits' },
   { value: '24-48h', label: 'Livraison express' },
@@ -165,34 +157,6 @@ export default function AboutPage() {
                 <p className="text-slate-600">{value.description}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-yellow-500 font-semibold text-sm uppercase tracking-wider">Notre histoire</span>
-            <h2 className="text-4xl font-bold text-slate-900 mt-2">Depuis 2019</h2>
-          </div>
-          <div className="relative">
-            <div className="absolute left-1/2 -translate-x-1/2 h-full w-0.5 bg-yellow-300 hidden md:block" />
-            <div className="space-y-12">
-              {milestones.map((milestone, idx) => (
-                <div key={idx} className={`flex items-center gap-8 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}>
-                  <div className="flex-1 text-right md:text-right">
-                    <div className={`bg-white rounded-xl p-6 shadow-md border border-slate-200 inline-block ${idx % 2 === 0 ? 'md:ml-auto' : 'md:mr-auto'}`}>
-                      <div className="text-2xl font-bold text-yellow-500 mb-1">{milestone.year}</div>
-                      <div className="text-lg font-semibold text-slate-900 mb-1">{milestone.title}</div>
-                      <div className="text-slate-600">{milestone.desc}</div>
-                    </div>
-                  </div>
-                  <div className="w-4 h-4 bg-yellow-400 rounded-full border-4 border-white shadow hidden md:block relative z-10" />
-                  <div className="flex-1" />
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
