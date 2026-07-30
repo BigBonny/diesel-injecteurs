@@ -31,7 +31,7 @@ export default function StructuredData() {
       addressRegion: 'Île-de-France',
       addressCountry: 'FR',
     },
-    email: 'diesel.injecteurs@gmail.com',
+    email: 'contact@diesel-turbo-injection.com',
     taxID: '848 214 359 00012',
     foundingDate: '2019-02-11',
     founder: {
@@ -62,7 +62,7 @@ export default function StructuredData() {
     image: 'https://diesel-turbo-injection.com/assets/logo.png',
     url: 'https://diesel-turbo-injection.com',
     telephone: '+33612429880',
-    email: 'diesel.injecteurs@gmail.com',
+    email: 'contact@diesel-turbo-injection.com',
     address: {
       '@type': 'PostalAddress',
       streetAddress: '158 Avenue Charles Floquet',

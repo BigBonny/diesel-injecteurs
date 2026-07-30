@@ -382,7 +382,7 @@ export default function Home() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white mb-1">Email</h3>
-                    <p className="text-lg sm:text-xl font-bold text-cyan-400 mb-1 break-all">diesel.injecteurs@gmail.com</p>
+                    <p className="text-lg sm:text-xl font-bold text-cyan-400 mb-1 break-all">contact@diesel-turbo-injection.com</p>
                     <p className="text-sm text-gray-500">Réponse sous 2h</p>
                   </div>
                 </div>

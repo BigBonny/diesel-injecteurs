@@ -80,7 +80,7 @@ export default function GarantiePage() {
           </h2>
           <div className="space-y-6">
             {[
-              { step: '1', title: 'Contactez-nous', desc: 'Appelez-nous au 06 12 42 98 80 ou envoyez un email à diesel.injecteurs@gmail.com avec votre numéro de commande et une description du problème.' },
+              { step: '1', title: 'Contactez-nous', desc: 'Appelez-nous au 06 12 42 98 80 ou envoyez un email à contact@diesel-turbo-injection.com avec votre numéro de commande et une description du problème.' },
               { step: '2', title: 'Diagnostic', desc: 'Notre équipe technique évalue votre demande sous 48h et vous indique la marche à suivre (retour du produit ou autre solution).' },
               { step: '3', title: 'Retour du produit', desc: 'Si un retour est nécessaire, nous vous fournissons une étiquette de retour prépayée. Emballez soigneusement le produit.' },
               { step: '4', title: 'Remplacement ou remboursement', desc: 'Après réception et vérification, nous procédons au remplacement du produit (expédition sous 24-48h) ou au remboursement intégral.' },
@@ -119,8 +119,8 @@ export default function GarantiePage() {
             <a href="tel:+33612429880" className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 text-[#1e2a4a] rounded-xl font-semibold hover:bg-yellow-300 transition text-sm">
               <Phone className="w-4 h-4" /> 06 12 42 98 80
             </a>
-            <a href="mailto:diesel.injecteurs@gmail.com" className="inline-flex items-center gap-2 px-6 py-3 border border-slate-300 bg-white text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition text-sm">
-              <Mail className="w-4 h-4" /> diesel.injecteurs@gmail.com
+            <a href="mailto:contact@diesel-turbo-injection.com" className="inline-flex items-center gap-2 px-6 py-3 border border-slate-300 bg-white text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition text-sm">
+              <Mail className="w-4 h-4" /> contact@diesel-turbo-injection.com
             </a>
           </div>
         </section>

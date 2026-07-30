@@ -130,13 +130,13 @@ export default function Footer() {
                     <p className="font-semibold">06 12 42 98 80</p>
                   </div>
                 </a>
-                <a href="mailto:diesel.injecteurs@gmail.com" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
+                <a href="mailto:contact@diesel-turbo-injection.com" className="group flex items-center gap-3 text-gray-400 hover:text-white transition">
                   <div className="w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center group-hover:bg-cyan-600/20 transition">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
                     <p className="text-xs text-gray-500">Email</p>
-                    <p className="font-semibold">diesel.injecteurs@gmail.com</p>
+                    <p className="font-semibold">contact@diesel-turbo-injection.com</p>
                   </div>
                 </a>
               </div>

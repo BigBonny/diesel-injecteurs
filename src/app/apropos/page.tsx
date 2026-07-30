@@ -247,7 +247,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-2">Email</h3>
               <p className="text-slate-600">
-                <a href="mailto:diesel.injecteurs@gmail.com" className="hover:text-yellow-600 transition">diesel.injecteurs@gmail.com</a>
+                <a href="mailto:contact@diesel-turbo-injection.com" className="hover:text-yellow-600 transition">contact@diesel-turbo-injection.com</a>
               </p>
             </div>
           </div>

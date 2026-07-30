@@ -33,8 +33,8 @@ export default function ContactPage() {
     {
       icon: Mail,
       label: 'Email',
-      value: 'diesel.injecteurs@gmail.com',
-      href: 'mailto:diesel.injecteurs@gmail.com',
+      value: 'contact@diesel-turbo-injection.com',
+      href: 'mailto:contact@diesel-turbo-injection.com',
       description: 'Réponse sous 24h'
     },
     {

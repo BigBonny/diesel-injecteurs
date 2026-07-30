@@ -169,8 +169,8 @@ export default function LivraisonPage() {
             <a href="tel:+33612429880" className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 text-[#1e2a4a] rounded-xl font-semibold hover:bg-yellow-300 transition text-sm">
               📞 06 12 42 98 80
             </a>
-            <a href="mailto:diesel.injecteurs@gmail.com" className="inline-flex items-center gap-2 px-6 py-3 border border-slate-300 bg-white text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition text-sm">
-              ✉️ diesel.injecteurs@gmail.com
+            <a href="mailto:contact@diesel-turbo-injection.com" className="inline-flex items-center gap-2 px-6 py-3 border border-slate-300 bg-white text-slate-700 rounded-xl font-semibold hover:bg-slate-50 transition text-sm">
+              ✉️ contact@diesel-turbo-injection.com
             </a>
           </div>
         </section>

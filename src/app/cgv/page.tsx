@@ -39,7 +39,7 @@ export default function CGVPage() {
               <a href="tel:+33612429880" className="text-yellow-600 hover:underline">06 12 42 98 80</a>
             </p>
             <p><span className="font-semibold">Email :</span>{' '}
-              <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>
+              <a href="mailto:contact@diesel-turbo-injection.com" className="text-yellow-600 hover:underline">contact@diesel-turbo-injection.com</a>
             </p>
             <p><span className="font-semibold">Site web :</span>{' '}
               <a href="https://diesel-turbo-injection.com" className="text-yellow-600 hover:underline">diesel-turbo-injection.com</a>
@@ -101,7 +101,7 @@ export default function CGVPage() {
             Conformément à l'article L221-18 du Code de la Consommation, le Client dispose d'un délai de <strong>14 jours calendaires</strong> à compter de la réception du produit pour exercer son droit de rétractation, sans avoir à justifier de motifs ni à payer de pénalités.
           </p>
           <p className="text-slate-700 leading-relaxed">
-            Pour exercer ce droit, le Client doit notifier sa décision par email à <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a> ou par téléphone au <a href="tel:+33612429880" className="text-yellow-600 hover:underline">06 12 42 98 80</a>. Le produit devra être retourné dans son état et emballage d'origine. Les frais de retour sont à la charge du Client sauf en cas de produit défectueux.
+            Pour exercer ce droit, le Client doit notifier sa décision par email à <a href="mailto:contact@diesel-turbo-injection.com" className="text-yellow-600 hover:underline">contact@diesel-turbo-injection.com</a> ou par téléphone au <a href="tel:+33612429880" className="text-yellow-600 hover:underline">06 12 42 98 80</a>. Le produit devra être retourné dans son état et emballage d'origine. Les frais de retour sont à la charge du Client sauf en cas de produit défectueux.
           </p>
         </section>
 
@@ -111,7 +111,7 @@ export default function CGVPage() {
             Tous les produits bénéficient d'une garantie commerciale de <strong>2 ans</strong> couvrant les défauts de fabrication et de conformité. Cette garantie s'applique à compter de la date de livraison. Elle ne couvre pas les dommages résultant d'une mauvaise installation, d'une utilisation inadéquate ou d'une usure normale.
           </p>
           <p className="text-slate-700 leading-relaxed">
-            En cas de panne couverte par la garantie, SAS France Injection procédera au remplacement ou au remboursement du produit défectueux. Pour toute demande de garantie, contactez-nous au <a href="tel:+33612429880" className="text-yellow-600 hover:underline">06 12 42 98 80</a> ou à <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>.
+            En cas de panne couverte par la garantie, SAS France Injection procédera au remplacement ou au remboursement du produit défectueux. Pour toute demande de garantie, contactez-nous au <a href="tel:+33612429880" className="text-yellow-600 hover:underline">06 12 42 98 80</a> ou à <a href="mailto:contact@diesel-turbo-injection.com" className="text-yellow-600 hover:underline">contact@diesel-turbo-injection.com</a>.
           </p>
         </section>
 
@@ -125,7 +125,7 @@ export default function CGVPage() {
         <section className="bg-white rounded-2xl p-8 border border-slate-200 shadow-sm">
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">11. Données personnelles</h2>
           <p className="text-slate-700 leading-relaxed">
-            Les données personnelles collectées lors de la commande sont utilisées exclusivement pour le traitement et le suivi des commandes. Elles ne sont jamais cédées à des tiers à des fins commerciales. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données en contactant <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>.
+            Les données personnelles collectées lors de la commande sont utilisées exclusivement pour le traitement et le suivi des commandes. Elles ne sont jamais cédées à des tiers à des fins commerciales. Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression de vos données en contactant <a href="mailto:contact@diesel-turbo-injection.com" className="text-yellow-600 hover:underline">contact@diesel-turbo-injection.com</a>.
           </p>
         </section>
 

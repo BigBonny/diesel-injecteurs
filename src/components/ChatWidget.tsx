@@ -70,7 +70,7 @@ export default function ChatWidget() {
     }
     
     if (lowerText.includes('contact') || lowerText.includes('téléphone') || lowerText.includes('email')) {
-      return "📞 Nos coordonnées :\n\n• Tél : +33 1 23 45 67 89\n• Email : contact@injection-diesel.fr\n• Chat : Disponible 24/7\n\nHoraires : Lun-Ven 8h-19h, Sam 9h-17h\nRéponse garantie sous 2h !";
+      return "📞 Nos coordonnées :\n\n• Tél : +33 1 23 45 67 89\n• Email : contact@diesel-turbo-injection.com\n• Chat : Disponible 24/7\n\nHoraires : Lun-Ven 8h-19h, Sam 9h-17h\nRéponse garantie sous 2h !";
     }
     
     return "🤔 Je comprends. Pour vous aider au mieux, pourriez-vous préciser :\n\n• Le type de pièce recherchée (turbo, injecteur, pompe...)\n• Les informations de votre véhicule (marque, modèle, année)\n• Ou contactez directement un expert au +33 1 23 45 67 89\n\nNous sommes là pour vous !";

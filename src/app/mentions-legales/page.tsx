@@ -48,7 +48,7 @@ export default function MentionsLegalesPage() {
               <a href="https://wa.me/33612429880" className="text-yellow-600 hover:underline">06 12 42 98 80</a>
             </p>
             <p><span className="font-semibold">Email :</span>{' '}
-              <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>
+              <a href="mailto:contact@diesel-turbo-injection.com" className="text-yellow-600 hover:underline">contact@diesel-turbo-injection.com</a>
             </p>
             <p><span className="font-semibold">Site web :</span>{' '}
               <a href="https://diesel-turbo-injection.com" className="text-yellow-600 hover:underline">diesel-turbo-injection.com</a>
@@ -85,7 +85,7 @@ export default function MentionsLegalesPage() {
           <h2 className="text-2xl font-bold text-slate-900 mb-6 pb-3 border-b border-slate-100">5. Données personnelles</h2>
           <p className="text-slate-700 leading-relaxed">
             Les informations collectées sur ce site font l'objet d'un traitement informatique destiné à la gestion des commandes et à la relation client. Conformément au Règlement Général sur la Protection des Données (RGPD) et à la loi Informatique et Libertés, vous disposez d'un droit d'accès, de rectification, de suppression et de portabilité de vos données personnelles. Pour exercer ces droits, contactez-nous à{' '}
-            <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>.
+            <a href="mailto:contact@diesel-turbo-injection.com" className="text-yellow-600 hover:underline">contact@diesel-turbo-injection.com</a>.
           </p>
         </section>
 

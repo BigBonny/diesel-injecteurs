@@ -39,7 +39,7 @@ export default function ConfidentialitePage() {
               <a href="tel:+33612429880" className="text-yellow-600 hover:underline">06 12 42 98 80</a>
             </p>
             <p><span className="font-semibold">Email :</span>{' '}
-              <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>
+              <a href="mailto:contact@diesel-turbo-injection.com" className="text-yellow-600 hover:underline">contact@diesel-turbo-injection.com</a>
             </p>
           </div>
         </section>
@@ -124,7 +124,7 @@ export default function ConfidentialitePage() {
           </ul>
           <p className="text-slate-700 leading-relaxed">
             Pour exercer ces droits, contactez-nous par email à{' '}
-            <a href="mailto:diesel.injecteurs@gmail.com" className="text-yellow-600 hover:underline">diesel.injecteurs@gmail.com</a>{' '}
+            <a href="mailto:contact@diesel-turbo-injection.com" className="text-yellow-600 hover:underline">contact@diesel-turbo-injection.com</a>{' '}
             ou par téléphone au{' '}
             <a href="tel:+33612429880" className="text-yellow-600 hover:underline">06 12 42 98 80</a>.
             Vous pouvez également introduire une réclamation auprès de la <strong>CNIL</strong> (cnil.fr).
